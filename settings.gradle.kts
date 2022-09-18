@@ -12,7 +12,6 @@ dependencyResolutionManagement {
     }
 
 }
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -36,5 +35,8 @@ pluginManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "MClient"
 include(
-        "app",
+    "app",
+    "app-ui",
+    "app-common",
+    "app-components",
 )

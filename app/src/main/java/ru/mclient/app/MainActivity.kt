@@ -4,40 +4,36 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.arkivanov.decompose.defaultComponentContext
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
+import ru.mclient.app.ui.login.LoginComponentUI
 import ru.mclient.app.ui.theme.MClientTheme
+import ru.mclient.common.login.WorkingLoginComponent
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val component = WorkingLoginComponent(
+            componentContext = defaultComponentContext(),
+            client = HttpClient(Android)
+        )
         setContent {
             MClientTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    LoginComponentUI(
+                        component = component,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MClientTheme {
-        Greeting("Android")
     }
 }

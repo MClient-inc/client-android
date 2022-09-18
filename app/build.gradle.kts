@@ -27,8 +27,8 @@ android {
         release {
             isMinifyEnabled = true
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -48,6 +48,15 @@ android {
 
 dependencies {
     implementation(Dependencies.Compose.ui)
+    implementation(Dependencies.Compose.foundation)
+    implementation(Dependencies.Compose.material3)
     implementation(Dependencies.Material.design)
     implementation(Dependencies.Android.splash)
+    implementation(Dependencies.Activity.compose)
+    implementation(Dependencies.Ktor.android)
+    implementation(Dependencies.Decompose.core)
+    implementation(Dependencies.Decompose.core)
+    implementation(projects.appCommon)
+    implementation(projects.appComponents)
+    implementation(projects.appUi)
 }
