@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="register">Зарегистрироваться</string>
+    <string name="login">Войти</string>
+    <string name="username">Имя</string>
+    <string name="password">Пароль</string>
+    <string name="repeatPassword">Повторите пароль</string>
+    <string name="mail">Почта</string>
+</resources>
