@@ -8,6 +8,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.apache.commons.validator.routines.EmailValidator
 import ru.mclient.common.login.Register
 import ru.mclient.common.login.RegisterState
 import ru.mclient.common.utils.CoroutineInstance
@@ -17,28 +18,40 @@ class WorkingRegisterComponent(
     private val client: HttpClient
 ) : Register, ComponentContext by componentContext {
 
-    private val store = instanceKeeper.getOrCreate { RemoteRegisterViewModel(client) }
+    private val store = instanceKeeper.getOrCreate { RemoteRegisterViewModel(client, EmailValidator.getInstance()) }
 
     override val state: StateFlow<RegisterState>
         get() = store.state
 
-    override fun onUpdate(mail: String, username: String, password: String, repeatedPassword: String) {
-        store.onUpdate(mail, username, password, repeatedPassword)
+    override fun onUpdate(
+        email: String,
+        username: String,
+        password: String,
+        repeatedPassword: String
+    ) {
+        store.onUpdate(email, username, password, repeatedPassword)
     }
 
-    override fun onRegister(mail: String, username: String, password: String, repeatedPassword: String) {
-        store.onRegister(mail, username, password, repeatedPassword)
+    override fun onRegister(
+        email: String,
+        username: String,
+        password: String,
+        repeatedPassword: String
+    ) {
+        store.onRegister(email, username, password, repeatedPassword)
     }
 
     class RemoteRegisterViewModel(
-        private val client: HttpClient
+        private val client: HttpClient,
+        private val validator: EmailValidator
     ) : CoroutineInstance() {
         override fun onDestroy() {}
 
         val state: MutableStateFlow<RegisterState> =
             MutableStateFlow(
                 RegisterState(
-                    mail = "",
+                    email = "",
+                    isEmailValid = true,
                     username = "",
                     password = "",
                     repeatedPassword = "",
@@ -47,10 +60,12 @@ class WorkingRegisterComponent(
                 )
             )
 
-        fun onUpdate(mail: String, username: String, password: String, repeatedPassword : String) {
+        fun onUpdate(email: String, username: String, password: String, repeatedPassword: String) {
             if (state.value.isRegistering) return
+
             state.value = state.value.copy(
-                mail = mail,
+                email = email,
+                isEmailValid = validator.isValid(email),
                 username = username,
                 password = password,
                 repeatedPassword = repeatedPassword,
@@ -58,9 +73,13 @@ class WorkingRegisterComponent(
             )
         }
 
-        fun onRegister(mail: String, username: String, password: String, repeatedPassword: String) {
+        fun onRegister(
+            email: String,
+            username: String,
+            password: String,
+            repeatedPassword: String
+        ) {
             if (state.value.isRegistering) return
-
             state.value = state.value.copy(isRegistering = true)
             scope.launch {
                 try {

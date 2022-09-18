@@ -9,7 +9,8 @@ class TestErrorRegisterComponent : Register {
     override val state: MutableStateFlow<RegisterState> =
         MutableStateFlow(
             RegisterState(
-                mail = "",
+                email = "",
+                isEmailValid = true,
                 username = "",
                 password = "",
                 repeatedPassword = "",
@@ -18,16 +19,16 @@ class TestErrorRegisterComponent : Register {
             )
         )
 
-    override fun onUpdate(mail: String, username: String, password: String, repeatedPassword : String) {
+    override fun onUpdate(email: String, username: String, password: String, repeatedPassword : String) {
         state.value = state.value.copy(
-            mail = mail,
+            email = email,
             username = username,
             password = password,
             repeatedPassword = repeatedPassword
         )
     }
 
-    override fun onRegister(mail: String, username: String, password: String, repeatedPassword: String) {
+    override fun onRegister(email: String, username: String, password: String, repeatedPassword: String) {
         state.value = state.value.copy(isError = true)
     }
 }

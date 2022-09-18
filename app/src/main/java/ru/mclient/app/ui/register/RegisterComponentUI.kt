@@ -10,7 +10,7 @@ import ru.mclient.ui.RegisterUIState
 
 fun RegisterState.toUI(): RegisterUIState {
     return RegisterUIState(
-        mail = mail,
+        email = email,
         username = username,
         password = password,
         repeatedPassword = repeatedPassword,
@@ -24,10 +24,10 @@ fun RegisterComponentUI(component: Register, modifier: Modifier) {
     val state = component.state.collectAsState().value.toUI()
     Register(
         state = state,
-        onUpdate = { component.onUpdate(it.mail, it.username, it.password, it.repeatedPassword) },
+        onUpdate = { component.onUpdate(it.email, it.username, it.password, it.repeatedPassword) },
         onRegister = {
             component.onRegister(
-                mail = it.mail,
+                email = it.email,
                 username = it.username,
                 password = it.password,
                 repeatedPassword = it.repeatedPassword

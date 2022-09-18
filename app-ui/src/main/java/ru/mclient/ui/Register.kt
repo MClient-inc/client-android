@@ -1,7 +1,6 @@
 package ru.mclient.ui
 
 import android.os.Parcelable
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
@@ -14,7 +13,7 @@ import ru.shafran.ui.R
 
 @Parcelize
 data class RegisterUIState(
-    val mail: String,
+    val email: String,
     val username: String,
     val password: String,
     val repeatedPassword: String,
@@ -23,14 +22,14 @@ data class RegisterUIState(
 ) : Parcelable
 
 class RegisterUIInput(
-    val mail: String,
+    val email: String,
     val username: String,
     val password: String,
     val repeatedPassword: String
 )
 
 fun RegisterUIState.toInput(
-    mail: String = this.mail,
+    mail: String = this.email,
     username: String = this.username,
     password: String = this.password,
     repeatedPassword: String = this.repeatedPassword
@@ -59,10 +58,10 @@ fun Register(
         OutlinedTextField(
             label = {
                 Text(
-                    text = stringResource(id = R.string.mail)
+                    text = stringResource(id = R.string.email)
                 )
             },
-            value = state.mail,
+            value = state.email,
             onValueChange = { onUpdate(state.toInput(mail = it)) },
             enabled = !state.isRegistering,
             modifier = Modifier.fillMaxWidth(),
@@ -91,7 +90,6 @@ fun Register(
             enabled = !state.isRegistering,
             modifier = Modifier.fillMaxWidth()
         )
-
         OutlinedTextField(
             label = {
                 Text(
@@ -103,13 +101,12 @@ fun Register(
             enabled = !state.isRegistering,
             modifier = Modifier.fillMaxWidth()
         )
-
         OutlinedButton(
             onClick = { onRegister(state.toInput()) },
             enabled = !state.isRegistering,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Зарегистрироваться")
+            Text(stringResource(id = R.string.register))
         }
     }
 }

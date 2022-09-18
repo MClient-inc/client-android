@@ -150,6 +150,10 @@ interface Dependencies {
     }
 
 
+    object Apache : Dependencies {
+        const val validators = "commons-validator:commons-validator:1.7"
+    }
+
     object Camera : Dependencies {
         //TODO("camera")
         const val version = "1.1.0"

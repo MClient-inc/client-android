@@ -3,7 +3,8 @@ package ru.mclient.common.login
 import kotlinx.coroutines.flow.StateFlow
 
 data class RegisterState(
-    val mail: String,
+    val email: String,
+    val isEmailValid: Boolean,
     val username: String,
     val password: String,
     val repeatedPassword: String,
@@ -15,8 +16,8 @@ interface Register {
 
     val state: StateFlow<RegisterState>
 
-    fun onUpdate(mail: String, username: String, password: String, repeatedPassword: String)
+    fun onUpdate(email: String, username: String, password: String, repeatedPassword: String)
 
-    fun onRegister(mail: String, username: String, password: String, repeatedPassword: String)
+    fun onRegister(email: String, username: String, password: String, repeatedPassword: String)
 
 }

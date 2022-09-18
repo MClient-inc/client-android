@@ -2,8 +2,8 @@
 <resources>
     <string name="register">Зарегистрироваться</string>
     <string name="login">Войти</string>
-    <string name="username">Имя</string>
+    <string name="username">Имя пользователя</string>
     <string name="password">Пароль</string>
     <string name="repeatPassword">Повторите пароль</string>
-    <string name="mail">Почта</string>
+    <string name="email">Почта</string>
 </resources>
