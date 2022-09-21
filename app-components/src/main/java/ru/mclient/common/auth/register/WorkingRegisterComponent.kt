@@ -1,5 +1,6 @@
-package ru.mclient.common.register
+package ru.mclient.common.auth.register
 
+import androidx.core.util.PatternsCompat.EMAIL_ADDRESS
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import io.ktor.client.*
@@ -8,9 +9,8 @@ import io.ktor.http.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.apache.commons.validator.routines.EmailValidator
-import ru.mclient.common.login.Register
-import ru.mclient.common.login.RegisterState
+import ru.mclient.common.auth.Register
+import ru.mclient.common.auth.RegisterState
 import ru.mclient.common.utils.CoroutineInstance
 
 class WorkingRegisterComponent(
@@ -18,7 +18,8 @@ class WorkingRegisterComponent(
     private val client: HttpClient
 ) : Register, ComponentContext by componentContext {
 
-    private val store = instanceKeeper.getOrCreate { RemoteRegisterViewModel(client, EmailValidator.getInstance()) }
+    private val store =
+        instanceKeeper.getOrCreate { RemoteRegisterViewModel(client) }
 
     override val state: StateFlow<RegisterState>
         get() = store.state
@@ -43,9 +44,8 @@ class WorkingRegisterComponent(
 
     class RemoteRegisterViewModel(
         private val client: HttpClient,
-        private val validator: EmailValidator
     ) : CoroutineInstance() {
-        override fun onDestroy() {}
+
 
         val state: MutableStateFlow<RegisterState> =
             MutableStateFlow(
@@ -55,20 +55,24 @@ class WorkingRegisterComponent(
                     username = "",
                     password = "",
                     repeatedPassword = "",
-                    isRegistering = false,
+                    isLoading = false,
                     isError = false
                 )
             )
 
         fun onUpdate(email: String, username: String, password: String, repeatedPassword: String) {
-            if (state.value.isRegistering) return
+            if (state.value.isLoading) return
 
+            var trimmedEmail = email.filterNot(Char::isWhitespace)
+            if (trimmedEmail.length > 256) {
+                trimmedEmail = trimmedEmail.slice(0 until 256)
+            }
             state.value = state.value.copy(
-                email = email,
-                isEmailValid = validator.isValid(email),
-                username = username,
-                password = password,
-                repeatedPassword = repeatedPassword,
+                email = trimmedEmail,
+                isEmailValid = EMAIL_ADDRESS.matcher(trimmedEmail).matches(),
+                username = username.filterNot(Char::isWhitespace),
+                password = password.filterNot(Char::isWhitespace),
+                repeatedPassword = repeatedPassword.filterNot(Char::isWhitespace),
                 isError = false
             )
         }
@@ -79,18 +83,27 @@ class WorkingRegisterComponent(
             password: String,
             repeatedPassword: String
         ) {
-            if (state.value.isRegistering) return
-            state.value = state.value.copy(isRegistering = true)
+            if (state.value.isLoading) return
+            val trimmedEmail = email.filterNot(Char::isWhitespace)
+            state.value = state.value.copy(
+                email = trimmedEmail,
+                isEmailValid = EMAIL_ADDRESS.matcher(trimmedEmail).matches(),
+                username = username.filterNot(Char::isWhitespace),
+                password = password.filterNot(Char::isWhitespace),
+                repeatedPassword = repeatedPassword.filterNot(Char::isWhitespace),
+                isError = false,
+                isLoading = true,
+            )
             scope.launch {
                 try {
                     val response = client.post("/register")
                     if (response.status.isSuccess()) {
                         TODO("register success")
                     } else {
-                        state.value = state.value.copy(isError = true, isRegistering = false)
+                        state.value = state.value.copy(isError = true, isLoading = false)
                     }
                 } catch (ea: Exception) {
-                    state.value = state.value.copy(isError = true, isRegistering = false)
+                    state.value = state.value.copy(isError = true, isLoading = false)
                 }
             }
         }

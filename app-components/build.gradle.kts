@@ -46,6 +46,5 @@ dependencies {
     implementation(Dependencies.Coroutines.core)
     implementation(Dependencies.Decompose.core)
     implementation(Dependencies.Ktor.core)
-    implementation(Dependencies.Apache.validators)
     implementation(projects.appCommon)
 }

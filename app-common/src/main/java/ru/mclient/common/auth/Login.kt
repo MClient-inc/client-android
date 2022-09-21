@@ -1,4 +1,4 @@
-package ru.mclient.common.login
+package ru.mclient.common.auth
 
 import kotlinx.coroutines.flow.StateFlow
 

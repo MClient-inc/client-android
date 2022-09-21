@@ -3,7 +3,7 @@ object Config {
     const val compileSdk = 33
     const val minSdk = 28
     const val targetSdk = 33
-    const val packageName = "ru.shafran.cards"
+    const val packageName = "ru.mclient.app"
 
 }
 

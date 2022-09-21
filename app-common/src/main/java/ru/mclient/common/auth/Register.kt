@@ -1,4 +1,4 @@
-package ru.mclient.common.login
+package ru.mclient.common.auth
 
 import kotlinx.coroutines.flow.StateFlow
 
@@ -9,7 +9,7 @@ data class RegisterState(
     val password: String,
     val repeatedPassword: String,
     val isError: Boolean,
-    val isRegistering: Boolean
+    val isLoading: Boolean
 )
 
 interface Register {

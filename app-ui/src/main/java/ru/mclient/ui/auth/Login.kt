@@ -1,13 +1,16 @@
-package ru.mclient.ui
+package ru.mclient.ui.auth
 
 import android.os.Parcelable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.parcelize.Parcelize
+import ru.mclient.ui.view.DesignedTextButton
+import ru.mclient.ui.view.DesignedTextField
 
 @Parcelize
 data class LoginUIState(
@@ -29,7 +32,6 @@ fun LoginUIState.toInput(
     return LoginUIInput(username, password)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Login(
     state: LoginUIState,
@@ -46,25 +48,27 @@ fun Login(
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.fillMaxWidth(),
             )
-        OutlinedTextField(
-
+        DesignedTextField(
             value = state.username,
             onValueChange = { onUpdate(state.toInput(username = it)) },
+            label = "Имя пользователя",
             enabled = !state.isLoading,
+            singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
-        OutlinedTextField(
+        DesignedTextField(
             value = state.password,
             onValueChange = { onUpdate(state.toInput(password = it)) },
+            label = "Пародь",
             enabled = !state.isLoading,
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        OutlinedButton(
+        DesignedTextButton(
+            text = "Войти",
             onClick = { onLogin(state.toInput()) },
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Войти")
-        }
+        )
     }
 }

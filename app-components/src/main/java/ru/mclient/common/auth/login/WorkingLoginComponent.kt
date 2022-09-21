@@ -1,13 +1,16 @@
-package ru.mclient.common.login
+package ru.mclient.common.auth.login
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.mclient.common.auth.Login
+import ru.mclient.common.auth.LoginState
 import ru.mclient.common.utils.CoroutineInstance
 
 class WorkingLoginComponent(
@@ -48,15 +51,17 @@ class WorkingLoginComponent(
                 return
             }
             state.value =
-                state.value.copy(username = username, password = password, isError = false)
+                state.value.copy(username = username.filterNot(Char::isWhitespace), password = password.filterNot(Char::isWhitespace), isError = false)
         }
 
         fun onLogin(username: String, password: String) {
             if (state.value.isLoading) {
                 return
             }
-            state.value = state.value.copy(isLoading = true)
+            state.value =
+                state.value.copy(username = username.filterNot(Char::isWhitespace), password = password.filterNot(Char::isWhitespace), isLoading = true)
             scope.launch {
+                delay(1500)
                 try {
                     val response = client.post("/auth")
                     if (response.status.isSuccess()) {

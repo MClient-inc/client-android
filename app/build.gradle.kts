@@ -55,7 +55,7 @@ dependencies {
     implementation(Dependencies.Activity.compose)
     implementation(Dependencies.Ktor.android)
     implementation(Dependencies.Decompose.core)
-    implementation(Dependencies.Decompose.core)
+    implementation(Dependencies.Decompose.compose)
     implementation(projects.appCommon)
     implementation(projects.appComponents)
     implementation(projects.appUi)

@@ -1,5 +1,6 @@
 package ru.mclient.common.utils
 
+import androidx.annotation.CallSuper
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.lifecycle.doOnDestroy
@@ -17,6 +18,7 @@ abstract class CoroutineInstance : InstanceKeeper.Instance {
 
     protected val scope = MainScope()
 
+    @CallSuper
     override fun onDestroy() {
         scope.cancel()
     }
