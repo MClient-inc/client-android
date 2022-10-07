@@ -1,37 +1,15 @@
 package ru.mclient.app
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import com.arkivanov.decompose.defaultComponentContext
-import io.ktor.client.*
-import io.ktor.client.engine.android.*
-import ru.mclient.app.ui.root.RootUI
-import ru.mclient.app.ui.theme.MClientTheme
-import ru.mclient.common.root.RootComponent
+import androidx.appcompat.app.AppCompatActivity
+import org.koin.androidx.scope.ScopeActivity
+import ru.mclient.startup.setupMainActivity
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val component = RootComponent(
-            componentContext = defaultComponentContext(), client = HttpClient(Android)
-        )
-
-
-        setContent {
-            MClientTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    RootUI(component = component, modifier = Modifier.fillMaxSize())
-                }
-            }
-        }
+        setupMainActivity()
     }
+
 }

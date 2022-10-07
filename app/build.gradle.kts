@@ -10,6 +10,7 @@ android {
     compileSdk = Config.compileSdk
     buildToolsVersion = "30.0.3"
 
+
     defaultConfig {
         applicationId = Config.packageName
         minSdk = Config.minSdk
@@ -21,6 +22,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        manifestPlaceholders["appAuthRedirectScheme"] = "ru.mclient.oauth"
     }
 
     buildTypes {
@@ -47,16 +50,9 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.Compose.ui)
-    implementation(Dependencies.Compose.foundation)
-    implementation(Dependencies.Compose.material3)
-    implementation(Dependencies.Material.design)
-    implementation(Dependencies.Android.splash)
-    implementation(Dependencies.Activity.compose)
-    implementation(Dependencies.Ktor.android)
-    implementation(Dependencies.Decompose.core)
-    implementation(Dependencies.Decompose.compose)
-    implementation(projects.appCommon)
-    implementation(projects.appComponents)
-    implementation(projects.appUi)
+    implementation(Dependencies.Android.core)
+    implementation(Dependencies.Appcompat.core)
+    implementation(Dependencies.Koin.android)
+    implementation(projects.appStartup)
+    implementation(Dependencies.Compose.runtime)
 }

@@ -9,6 +9,7 @@ data class LoginState(
     val isError: Boolean,
 )
 
+
 interface Login {
 
     val state: StateFlow<LoginState>

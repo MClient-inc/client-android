@@ -6,4 +6,8 @@
     <string name="password">Пароль</string>
     <string name="repeatPassword">Повторите пароль</string>
     <string name="email">Почта</string>
+    <string name="home_navitem">Главная</string>
+    <string name="company_navitem">Компания</string>
+    <string name="storage_navitem">Склад</string>
+    <string name="loyalty_navitem">Лояльность</string>
 </resources>

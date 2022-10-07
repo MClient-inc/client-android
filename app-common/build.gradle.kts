@@ -4,8 +4,6 @@ plugins {
     kotlin("android") version Dependencies.Kotlin.version
 }
 
-logger
-
 android {
     compileSdk = Config.compileSdk
 

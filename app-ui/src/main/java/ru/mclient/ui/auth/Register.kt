@@ -20,7 +20,7 @@ import ru.mclient.ui.view.DesignedTextField
 import ru.shafran.ui.R
 
 @Parcelize
-data class RegisterUIState(
+data class RegisterPageState(
     val email: String,
     val username: String,
     val password: String,
@@ -37,7 +37,7 @@ class RegisterUIInput(
     val repeatedPassword: String
 )
 
-fun RegisterUIState.toInput(
+fun RegisterPageState.toInput(
     mail: String = this.email,
     username: String = this.username,
     password: String = this.password,
@@ -48,7 +48,7 @@ fun RegisterUIState.toInput(
 
 @Composable
 fun Register(
-    state: RegisterUIState,
+    state: RegisterPageState,
     onUpdate: (RegisterUIInput) -> Unit,
     onRegister: (RegisterUIInput) -> Unit,
     modifier: Modifier = Modifier,

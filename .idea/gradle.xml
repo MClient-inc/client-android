@@ -14,8 +14,16 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/app-common" />
             <option value="$PROJECT_DIR$/app-components" />
+            <option value="$PROJECT_DIR$/app-components-ui" />
+            <option value="$PROJECT_DIR$/app-startup" />
             <option value="$PROJECT_DIR$/app-ui" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/network-api-core" />
+            <option value="$PROJECT_DIR$/network-api-impl" />
+            <option value="$PROJECT_DIR$/network-local-core" />
+            <option value="$PROJECT_DIR$/network-local-impl" />
+            <option value="$PROJECT_DIR$/network-mvi-core" />
+            <option value="$PROJECT_DIR$/network-mvi-impl" />
           </set>
         </option>
       </GradleProjectSettings>

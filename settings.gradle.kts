@@ -39,4 +39,12 @@ include(
     "app-ui",
     "app-common",
     "app-components",
+    "app-components-ui",
+    "app-startup",
+    "network-api-core",
+    "network-api-impl",
+    "network-local-core",
+    "network-local-impl",
+    "network-mvi-core",
+    "network-mvi-impl",
 )

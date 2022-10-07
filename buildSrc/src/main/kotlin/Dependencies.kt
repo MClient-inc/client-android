@@ -13,6 +13,12 @@ interface Dependencies {
         const val core = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
     }
 
+    object OAuth: Dependencies {
+
+        const val android = "net.openid:appauth:0.11.0"
+
+    }
+
     object Material : Dependencies {
         const val version = "1.7.0-beta01"
         const val design = "com.google.android.material:material:$version"
@@ -54,7 +60,7 @@ interface Dependencies {
     }
 
     object MVI : Dependencies {
-        const val version = "3.0.1"
+        const val version = "3.0.2"
         const val core = "com.arkivanov.mvikotlin:mvikotlin:$version"
         const val main = "com.arkivanov.mvikotlin:mvikotlin-main:$version"
         const val logging = "com.arkivanov.mvikotlin:mvikotlin-logging:$version"
@@ -70,25 +76,25 @@ interface Dependencies {
     }
 
     object Decompose : Dependencies {
-        const val version = "1.0.0-alpha-02"
+        const val version = "1.0.0-alpha-06"
         const val core = "com.arkivanov.decompose:decompose:$version"
         const val compose = "com.arkivanov.decompose:extensions-compose-jetpack:$version"
     }
 
     object Activity : Dependencies {
-        const val version = "1.6.0-beta01"
+        const val version = "1.6.0"
         const val core = "androidx.activity:activity-ktx:$version"
         const val compose = "androidx.activity:activity-compose:$version"
     }
 
     object Appcompat : Dependencies {
-        const val version = "1.6.0-beta01"
+        const val version = "1.6.0-rc01"
         const val core = "androidx.appcompat:appcompat:$version"
     }
 
     object Android : Dependencies {
-        const val agpVersion = "7.2.2"
-        const val version = "1.9.0-beta01"
+        const val agpVersion = "7.3.0"
+        const val version = "1.9.0"
         const val core = "androidx.core:core-ktx:$version"
         const val splash = "androidx.core:core-splashscreen:1.0.0"
         const val startup = "androidx.startup:startup-runtime:1.1.1"
@@ -113,26 +119,34 @@ interface Dependencies {
     }
 
     object Compose : Dependencies {
-        const val compilerVersion = "1.3.0"
-        const val version = "1.3.0-alpha03"
+        const val compilerVersion = "1.3.1"
+        const val version = "1.3.0-beta03"
         const val ui = "androidx.compose.ui:ui:$version"
+        const val runtime = "androidx.compose.runtime:runtime:$version"
         const val material = "androidx.compose.material:material:$version"
-        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha16"
+        const val material3 = "androidx.compose.material3:material3:1.0.0-beta03"
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val tooling = "androidx.compose.ui:ui-tooling:$version"
     }
 
     object Koin : Dependencies {
-        const val version = "3.2.0"
+        const val version = "3.2.2"
         const val android = "io.insert-koin:koin-android:$version"
         const val core = "io.insert-koin:koin-core:$version"
-        const val annotations = "io.insert-koin:koin-annotations:1.0.1"
-        const val compiler = "io.insert-koin:koin-ksp-compiler:1.0.1"
+        const val annotations = "io.insert-koin:koin-annotations:1.0.3"
+        const val compiler = "io.insert-koin:koin-ksp-compiler:1.0.3"
+    }
+
+    object Kodein : Dependencies {
+        const val version = "7.14.0"
+        const val core = "org.kodein.di:kodein-di:$version"
+        const val android = "org.kodein.di:kodein-di-framework-android-x-viewmodel:$version"
+        const val conf = "org.kodein.di:kodein-di-conf:$version"
     }
 
     object Accompanist : Dependencies {
-        const val version = "0.26.1-alpha"
+        const val version = "0.26.4-beta"
         const val swiperefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
         const val permissions = "com.google.accompanist:accompanist-permissions:$version"
         const val placeholder = "com.google.accompanist:accompanist-placeholder-material:$version"

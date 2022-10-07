@@ -4,8 +4,6 @@ plugins {
     kotlin("android") version Dependencies.Kotlin.version
 }
 
-logger
-
 android {
     compileSdk = Config.compileSdk
 
@@ -45,6 +43,9 @@ dependencies {
     implementation(Dependencies.Android.core)
     implementation(Dependencies.Coroutines.core)
     implementation(Dependencies.Decompose.core)
-    implementation(Dependencies.Ktor.core)
-    implementation(projects.appCommon)
+    implementation(Dependencies.MVI.coroutines)
+    implementation(Dependencies.MVI.core)
+    implementation(Dependencies.Koin.core)
+    api(projects.appCommon)
+    implementation(projects.networkMviCore)
 }
