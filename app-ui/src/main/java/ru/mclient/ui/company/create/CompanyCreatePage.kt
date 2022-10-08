@@ -50,29 +50,6 @@ fun CompanyCreatePage(
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         DesignedTextField(
-            value = state.title,
-            onValueChange = {
-                onUpdate(state.toInput(title = it))
-            },
-            label = stringResource(R.string.company_title),
-            singleLine = true,
-            enabled = !state.isLoading,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        DesignedTextField(
-            value = state.description,
-            onValueChange = {
-                onUpdate(state.toInput(description = it))
-            },
-            label = stringResource(R.string.company_description),
-            singleLine = false,
-            maxLines = 3,
-            enabled = !state.isLoading,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        DesignedTextField(
             value = state.codename,
             onValueChange = {
                 onUpdate(state.toInput(codename = it))
@@ -83,11 +60,30 @@ fun CompanyCreatePage(
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth()
         )
+        DesignedTextField(
+            value = state.title,
+            onValueChange = {
+                onUpdate(state.toInput(title = it))
+            },
+            label = stringResource(R.string.company_title),
+            singleLine = true,
+            enabled = !state.isLoading,
+            modifier = Modifier.fillMaxWidth()
+        )
+        DesignedTextField(
+            value = state.description,
+            onValueChange = {
+                onUpdate(state.toInput(description = it))
+            },
+            label = stringResource(R.string.company_description),
+            singleLine = false,
+            maxLines = 6,
+            enabled = !state.isLoading,
+            modifier = Modifier.fillMaxWidth()
+        )
         DesignedTextButton(
             text = stringResource(R.string.company_registerButtonName),
             onClick = { onCreate(state.toInput()) }
         )
-
-
     }
 }

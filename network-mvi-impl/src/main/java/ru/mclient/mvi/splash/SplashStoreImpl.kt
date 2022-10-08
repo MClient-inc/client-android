@@ -68,7 +68,6 @@ class SplashStoreImpl(
 
     }
 
-
     sealed class Message {
         object Authenticated : Message()
         object Unauthenticated : Message()
