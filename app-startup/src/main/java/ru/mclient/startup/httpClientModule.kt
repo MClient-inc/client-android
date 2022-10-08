@@ -57,11 +57,11 @@ val httpClientModule = module {
             Auth {
                 bearer {
                     realm = null
-                    this.loadTokens {
+                    loadTokens {
                         val tokens = authLocalSource.getTokens()
                         tokens?.let { BearerTokens(it.accessToken, it.refreshToken) }
                     }
-                    this.refreshTokens {
+                    refreshTokens {
                         val tokens = oldTokens ?: return@refreshTokens null
                         authNetworkSource.refreshToken(RefreshTokenInput(tokens.refreshToken)).let {
                             BearerTokens(it.accessToken, it.refreshToken)
@@ -75,9 +75,9 @@ val httpClientModule = module {
                 })
             }
             install(Logging) {
-                this.logger =
+                logger =
                     MessageLengthLimitingLogger(delegate = AndroidLogger())
-                this.level = LogLevel.ALL
+                level = LogLevel.ALL
             }
         }
     } bind HttpClient::class

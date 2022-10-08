@@ -1,6 +1,7 @@
 package ru.mclient.local.auth
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.dataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.Serializable

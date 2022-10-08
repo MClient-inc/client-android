@@ -19,5 +19,6 @@ fun RootNavHost(instance: Root.Child, modifier: Modifier) {
     when (instance) {
         is Root.Child.Auth -> AuthHostUI(component = instance.component, modifier = modifier)
         is Root.Child.Main -> MainUI(component = instance.component, modifier = modifier)
+        is Root.Child.Splash -> {}
     }
 }

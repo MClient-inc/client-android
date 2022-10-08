@@ -7,27 +7,35 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.arkivanov.decompose.defaultComponentContext
 import org.koin.android.ext.android.getKoin
-import org.koin.androidx.scope.ScopeActivity
 import org.koin.core.component.getScopeId
-import org.koin.core.component.getScopeName
 import org.koin.core.qualifier.TypeQualifier
 import org.koin.core.scope.Scope
+import ru.mclient.common.root.Root
 import ru.mclient.common.root.RootComponent
 import ru.mclient.common.withActivity
 import ru.mclient.common.withDI
 import ru.mclient.startup.theme.MClientTheme
 import ru.mclient.ui.root.RootUI
 
-
 fun AppCompatActivity.setupMainActivity() {
+    val component = rootComponent()
+    setupSplash(component)
+    setContent(component)
+}
+
+fun AppCompatActivity.rootComponent(): Root {
     val scope = createActivityScope()
-    val component = RootComponent(
-        componentContext = defaultComponentContext().withActivity(this).withDI(scope),
+    return RootComponent(
+        componentContext = defaultComponentContext().withActivity(this).withDI(scope)
     )
+}
+
+fun AppCompatActivity.setContent(component: Root) {
     setContent {
         MClientTheme(
             dynamicColor = false,
@@ -39,6 +47,12 @@ fun AppCompatActivity.setupMainActivity() {
                 RootUI(component = component, modifier = Modifier.fillMaxSize())
             }
         }
+    }
+}
+
+fun AppCompatActivity.setupSplash(component: Root) {
+    installSplashScreen().setKeepOnScreenCondition {
+        !component.isSplashShown
     }
 }
 

@@ -2,6 +2,7 @@ package ru.mclient.common.root
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.active
 import com.arkivanov.decompose.router.stack.navigate
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -10,6 +11,7 @@ import ru.mclient.common.DIComponentContext
 import ru.mclient.common.auth.host.AuthHostComponent
 import ru.mclient.common.diChildStack
 import ru.mclient.common.main.MainHostComponent
+import ru.mclient.common.splash.SplashComponent
 
 class RootComponent(
     componentContext: DIComponentContext,
@@ -19,9 +21,19 @@ class RootComponent(
 
     override val childStack: Value<ChildStack<*, Root.Child>> = diChildStack(
         source = navigator,
-        initialConfiguration = Config.Auth,
+        initialConfiguration = Config.Splash,
         childFactory = this::createChild
     )
+
+    override val isSplashShown: Boolean = childStack.active.instance is Root.Child.Splash
+
+    private fun onAuthenticated() {
+        navigator.navigate { listOf(Config.Main) }
+    }
+
+    private fun onUnauthenticated() {
+        navigator.navigate { listOf(Config.Auth) }
+    }
 
     private fun createChild(
         config: Config,
@@ -32,7 +44,7 @@ class RootComponent(
                 Root.Child.Auth(
                     AuthHostComponent(
                         componentContext = componentContext,
-                        onAuthorized = { navigator.navigate { listOf(Config.Main) } }
+                        onAuthorized = this::onAuthenticated,
                     )
                 )
             }
@@ -44,6 +56,14 @@ class RootComponent(
                     )
                 )
             }
+
+            Config.Splash -> Root.Child.Splash(
+                SplashComponent(
+                    componentContext = componentContext,
+                    onAuthenticated = this::onAuthenticated,
+                    onUnauthenticated = this::onUnauthenticated,
+                )
+            )
         }
     }
 
@@ -54,6 +74,9 @@ class RootComponent(
 
         @Parcelize
         object Main : Config()
+
+        @Parcelize
+        object Splash : Config()
 
     }
 
