@@ -10,4 +10,9 @@
     <string name="company_navitem">Компания</string>
     <string name="storage_navitem">Склад</string>
     <string name="loyalty_navitem">Лояльность</string>
+    <string name="company_title">Название компании</string>
+    <string name="company_description">Описание компании</string>
+    <string name="company_codename">Кодовое имя компании (mycompany-001)</string>
+    <string name="company_registerButtonName">Зарегистрировать компанию</string>
+
 </resources>

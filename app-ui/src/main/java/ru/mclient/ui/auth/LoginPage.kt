@@ -20,7 +20,7 @@ data class LoginPageState(
     val error: String?,
 ) : Parcelable
 
-class LoginUIInput(
+class LoginPageInput(
     val username: String,
     val password: String,
 )
@@ -28,15 +28,15 @@ class LoginUIInput(
 fun LoginPageState.toInput(
     username: String = this.username,
     password: String = this.password
-): LoginUIInput {
-    return LoginUIInput(username, password)
+): LoginPageInput {
+    return LoginPageInput(username, password)
 }
 
 @Composable
 fun LoginPage(
     state: LoginPageState,
-    onUpdate: (LoginUIInput) -> Unit,
-    onLogin: (LoginUIInput) -> Unit,
+    onUpdate: (LoginPageInput) -> Unit,
+    onLogin: (LoginPageInput) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -59,7 +59,7 @@ fun LoginPage(
         DesignedTextField(
             value = state.password,
             onValueChange = { onUpdate(state.toInput(password = it)) },
-            label = "Пародь",
+            label = "Пароль",
             enabled = !state.isLoading,
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
