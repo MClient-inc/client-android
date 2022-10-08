@@ -83,7 +83,7 @@ fun ExternalLoginPage(
                 AnimatedVisibility(state.timerEndAt >= time) {
                     val seconds = toSeconds(state.timerEndAt, time)
                     Text(
-                        text = """(через $seconds сек.)""",
+                        text = "(через $seconds сек.)",
                         style = MaterialTheme.typography.caption
                     )
                 }

@@ -1,17 +1,17 @@
 package ru.mclient.ui.utils
 
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
+
+private val SlowOutSlowInEasing = CubicBezierEasing(0.3f, 0.3f, 0.3f, 1f)
 
 fun Modifier.pulse(to: Float = 1.2f): Modifier {
     return composed {
@@ -20,7 +20,7 @@ fun Modifier.pulse(to: Float = 1.2f): Modifier {
             initialValue = 1f,
             targetValue = to,
             animationSpec = infiniteRepeatable(
-                animation = tween(750, easing = FastOutLinearInEasing),
+                animation = tween(750, easing = SlowOutSlowInEasing),
                 repeatMode = RepeatMode.Reverse
             )
         )
