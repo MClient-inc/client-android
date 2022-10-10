@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -54,7 +55,8 @@ fun ServiceCreatePage(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(15.dp)
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         DesignedTextField(
             value = state.serviceName,
@@ -91,7 +93,6 @@ fun ServiceCreatePage(
             text = stringResource(R.string.company_service_add),
             onClick = { onCreate(state.toInput()) }
         )
-
     }
 }
 
