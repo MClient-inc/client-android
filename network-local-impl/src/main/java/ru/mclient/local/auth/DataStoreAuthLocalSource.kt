@@ -11,7 +11,6 @@ import org.koin.core.annotation.Single
 class DataStoreAuthTokens(
     val accessToken: String,
     val refreshToken: String,
-    val idToken: String,
 )
 
 @Single
@@ -24,7 +23,7 @@ class DataStoreAuthLocalSource(private val context: Context) : AuthLocalSource {
 
     private fun DataStoreAuthTokens.toTokens(): AuthLocalStorageData {
         return AuthLocalStorageData(
-            accessToken = accessToken, refreshToken = refreshToken, idToken = idToken
+            accessToken = accessToken, refreshToken = refreshToken
         )
     }
 
@@ -32,12 +31,11 @@ class DataStoreAuthLocalSource(private val context: Context) : AuthLocalSource {
         return context.authDataStore.data.first()?.toTokens()
     }
 
-    override suspend fun saveTokens(accessToken: String, refreshToken: String, idToken: String) {
+    override suspend fun saveTokens(accessToken: String, refreshToken: String) {
         context.authDataStore.updateData {
             DataStoreAuthTokens(
                 accessToken = accessToken,
                 refreshToken = refreshToken,
-                idToken = idToken
             )
         }
     }

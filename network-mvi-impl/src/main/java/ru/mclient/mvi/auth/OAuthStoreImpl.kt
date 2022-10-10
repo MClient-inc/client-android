@@ -28,15 +28,16 @@ class OAuthStoreImpl(
         executorFactory = {
             Executor(dispatcher, authNetworkSource, authLocalSource, accountNetworkSource)
         },
-        reducer = Reducer<OAuthLoginStore.State, Message> {
-            when (it) {
+        reducer = Reducer<OAuthLoginStore.State, Message> { message ->
+            when (message) {
                 Message.OAuthPageStarted -> OAuthLoginStore.State.OAuthPage(System.currentTimeMillis() + 10000)
                 Message.Failed -> OAuthLoginStore.State.Failure
                 Message.LoginAccount -> OAuthLoginStore.State.TokensLoading
                 is Message.Success -> OAuthLoginStore.State.Success(
-                    username = it.username,
-                    name = it.name,
-                    avatar = it.avatar,
+                    id = message.id,
+                    username = message.username,
+                    name = message.name,
+                    avatar = message.avatar,
                 )
             }
         }
@@ -67,7 +68,10 @@ class OAuthStoreImpl(
                 is OAuthLoginStore.Intent.OAuthPageCompleted -> {
                     dispatch(Message.LoginAccount)
                     scope.launch {
-                        Log.d("NetworkAuthDebug", "Get token from code with verifier ${intent.codeVerifier}")
+                        Log.d(
+                            "NetworkAuthDebug",
+                            "Get token from code with verifier ${intent.codeVerifier}"
+                        )
                         val tokens =
                             try {
                                 authNetworkSource.getTokensFromCode(
@@ -83,7 +87,6 @@ class OAuthStoreImpl(
                         authLocalSource.saveTokens(
                             accessToken = tokens.accessToken,
                             refreshToken = tokens.refreshToken,
-                            idToken = tokens.idToken
                         )
                         val account =
                             try {
@@ -92,11 +95,14 @@ class OAuthStoreImpl(
                                 syncDispatch(Message.Failed)
                                 return@launch
                             }
-                        syncDispatch(Message.Success(
-                            name = account.name,
-                            username = account.username,
-                            avatar = account.avatar
-                        ))
+                        syncDispatch(
+                            Message.Success(
+                                id = account.id,
+                                name = account.name,
+                                username = account.username,
+                                avatar = account.avatar
+                            )
+                        )
                     }
                 }
 
@@ -118,6 +124,7 @@ class OAuthStoreImpl(
         object Failed : Message()
         object LoginAccount : Message()
         data class Success(
+            val id: Long,
             val name: String,
             val username: String,
             val avatar: String?

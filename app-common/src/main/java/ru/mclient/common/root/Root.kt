@@ -20,6 +20,8 @@ interface Root {
 
         class Splash(val component: SplashHost) : Child()
 
+        class ApplicationScope(val component: ApplicationCompanyScopeSelectorHost) : Child()
+
     }
 
 }

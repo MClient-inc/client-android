@@ -1,6 +1,5 @@
 package ru.mclient.common
 
-import androidx.activity.ComponentActivity
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -9,58 +8,63 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.parcelable.Parcelable
+import kotlinx.coroutines.CoroutineScope
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.scope.Scope
+import ru.mclient.common.utils.createCoroutineScope
 import kotlin.reflect.KClass
 
-interface ActivityComponentContext : ComponentContext {
-    val activity: ComponentActivity
+interface CoroutineComponentContext : ComponentContext {
+
+    val componentScope: CoroutineScope
+
 }
 
-private class DefaultActivityComponentContext(
+private class DefaultCoroutineComponentContext(
     componentContext: ComponentContext,
-    override val activity: ComponentActivity
-) :
-    ActivityComponentContext, ComponentContext by componentContext {
+) : CoroutineComponentContext, ComponentContext by componentContext {
+
+    override val componentScope = createCoroutineScope()
+
 }
 
-interface DIComponentContext : ActivityComponentContext, KoinScopeComponent
+interface DIComponentContext : CoroutineComponentContext, KoinScopeComponent
 
 private class DefaultDIComponentContext(
-    componentContext: ActivityComponentContext,
+    componentContext: CoroutineComponentContext,
     override val scope: Scope
-) : DIComponentContext, ActivityComponentContext by componentContext
+) : DIComponentContext, CoroutineComponentContext by componentContext
 
-fun ActivityComponentContext.withDI(scope: Scope): DIComponentContext {
+fun CoroutineComponentContext.withDI(scope: Scope): DIComponentContext {
     return DefaultDIComponentContext(this, scope)
 }
 
-fun ComponentContext.withActivity(activity: ComponentActivity): ActivityComponentContext {
-    return DefaultActivityComponentContext(this, activity)
+fun ComponentContext.withCoroutine(): CoroutineComponentContext {
+    return DefaultCoroutineComponentContext(this)
 }
 
-fun ActivityComponentContext.childAndroidComponentContext(
+fun CoroutineComponentContext.childCoroutineComponentContext(
     key: String,
     lifecycle: Lifecycle? = null
-): ActivityComponentContext {
-    return childContext(key, lifecycle).withActivity(activity)
+): CoroutineComponentContext {
+    return childContext(key, lifecycle).withCoroutine()
 }
 
-fun DIComponentContext.childKodeinContext(
+fun DIComponentContext.childDIContext(
     key: String,
     lifecycle: Lifecycle? = null
 ): DIComponentContext {
-    return childAndroidComponentContext(key, lifecycle).withDI(scope)
+    return childCoroutineComponentContext(key, lifecycle).withDI(scope)
 }
 
 
-inline fun <C : Parcelable, T : Any> ActivityComponentContext.androidChildStack(
+inline fun <C : Parcelable, T : Any> CoroutineComponentContext.androidChildStack(
     source: StackNavigationSource<C>,
     noinline initialStack: () -> List<C>,
     configurationClass: KClass<out C>,
     key: String = "DefaultChildStack",
     handleBackButton: Boolean = false,
-    crossinline childFactory: (configuration: C, ActivityComponentContext) -> T
+    crossinline childFactory: (configuration: C, CoroutineComponentContext) -> T
 ): Value<ChildStack<C, T>> {
     return childStack(
         source,
@@ -69,16 +73,16 @@ inline fun <C : Parcelable, T : Any> ActivityComponentContext.androidChildStack(
         key,
         handleBackButton
     ) { configuration, componentContext ->
-        childFactory(configuration, componentContext.withActivity(activity))
+        childFactory(configuration, componentContext.withCoroutine())
     }
 }
 
-inline fun <reified C : Parcelable, T : Any> ActivityComponentContext.androidChildStack(
+inline fun <reified C : Parcelable, T : Any> CoroutineComponentContext.androidChildStack(
     source: StackNavigationSource<C>,
     noinline initialStack: () -> List<C>,
     key: String = "DefaultRouter",
     handleBackButton: Boolean = false,
-    noinline childFactory: (configuration: C, ActivityComponentContext) -> T
+    noinline childFactory: (configuration: C, CoroutineComponentContext) -> T
 ): Value<ChildStack<C, T>> =
     androidChildStack(
         source = source,
@@ -89,12 +93,12 @@ inline fun <reified C : Parcelable, T : Any> ActivityComponentContext.androidChi
         childFactory = childFactory,
     )
 
-inline fun <reified C : Parcelable, T : Any> ActivityComponentContext.androidChildStack(
+inline fun <reified C : Parcelable, T : Any> CoroutineComponentContext.androidChildStack(
     source: StackNavigationSource<C>,
     initialConfiguration: C,
     key: String = "DefaultRouter",
     handleBackButton: Boolean = false,
-    noinline childFactory: (configuration: C, ActivityComponentContext) -> T
+    noinline childFactory: (configuration: C, CoroutineComponentContext) -> T
 ): Value<ChildStack<C, T>> =
     androidChildStack(
         source = source,
@@ -104,7 +108,6 @@ inline fun <reified C : Parcelable, T : Any> ActivityComponentContext.androidChi
         handleBackButton = handleBackButton,
         childFactory = childFactory,
     )
-
 
 
 inline fun <C : Parcelable, T : Any> DIComponentContext.diChildStack(

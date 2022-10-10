@@ -16,8 +16,6 @@ class CompanyCreateComponent(
 
     private val store: CompanyCreateStore = getStore()
 
-    private val componentScope = createCoroutineScope()
-
     private fun CompanyCreateStore.State.toState(): CompanyCreateState {
         return CompanyCreateState(
             title = title,

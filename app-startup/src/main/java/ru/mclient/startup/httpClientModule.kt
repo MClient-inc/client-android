@@ -20,6 +20,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import ru.mclient.local.auth.AuthLocalSource
+import ru.mclient.local.auth.AuthLocalStorageData
 import ru.mclient.network.auth.AuthNetworkSource
 import ru.mclient.network.auth.RefreshTokenInput
 import ru.shafran.startup.BuildConfig
@@ -62,9 +63,15 @@ val httpClientModule = module {
                         tokens?.let { BearerTokens(it.accessToken, it.refreshToken) }
                     }
                     refreshTokens {
-                        val tokens = oldTokens ?: return@refreshTokens null
-                        authNetworkSource.refreshToken(RefreshTokenInput(tokens.refreshToken)).let {
-                            BearerTokens(it.accessToken, it.refreshToken)
+                        val tokens = authLocalSource.getTokens() ?: return@refreshTokens null
+                        try {
+                            authNetworkSource.refreshToken(RefreshTokenInput(tokens.refreshToken))
+                                .let {
+                                    authLocalSource.saveTokens(it.accessToken, it.refreshToken)
+                                    BearerTokens(it.accessToken, it.refreshToken)
+                                }
+                        } catch (e: Exception) {
+                            null
                         }
                     }
                 }

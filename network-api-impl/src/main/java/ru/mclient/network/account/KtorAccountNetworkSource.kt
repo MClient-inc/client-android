@@ -9,7 +9,9 @@ import org.koin.core.annotation.Single
 
 @Serializable
 class GetAccountResponse(
+    val id: Long,
     val username: String,
+    val name: String,
 )
 
 @Single
@@ -23,8 +25,9 @@ class KtorAccountNetworkSource(
         val response = client.get("/account")
         val body = response.body<GetAccountResponse>()
         return GetBaseCurrentProfileInfoOutput(
+            id = body.id,
             username = body.username,
-            name = body.username,
+            name = body.name,
             avatar = null
         )
     }

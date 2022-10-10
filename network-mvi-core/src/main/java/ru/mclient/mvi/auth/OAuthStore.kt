@@ -24,6 +24,7 @@ interface OAuthLoginStore :
 
         @Parcelize
         class Success(
+            val id: Long,
             val username: String,
             val name: String,
             val avatar: String?,

@@ -17,7 +17,7 @@ import org.koin.core.qualifier.TypeQualifier
 import org.koin.core.scope.Scope
 import ru.mclient.common.root.Root
 import ru.mclient.common.root.RootComponent
-import ru.mclient.common.withActivity
+import ru.mclient.common.withCoroutine
 import ru.mclient.common.withDI
 import ru.mclient.startup.theme.MClientTheme
 import ru.mclient.ui.root.RootUI
@@ -31,7 +31,7 @@ fun AppCompatActivity.setupMainActivity() {
 fun AppCompatActivity.rootComponent(): Root {
     val scope = createActivityScope()
     return RootComponent(
-        componentContext = defaultComponentContext().withActivity(this).withDI(scope)
+        componentContext = defaultComponentContext().withCoroutine().withDI(scope)
     )
 }
 

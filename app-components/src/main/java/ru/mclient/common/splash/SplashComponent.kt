@@ -10,18 +10,16 @@ import ru.mclient.mvi.splash.SplashStore
 
 class SplashComponent(
     componentContext: DIComponentContext,
-    onAuthenticated: () -> Unit,
+    onAuthenticated: (Long) -> Unit,
     onUnauthenticated: () -> Unit,
 ) : SplashHost, DIComponentContext by componentContext {
-
-    private val componentScope = createCoroutineScope()
 
     private val store: SplashStore = getStoreSavedState("splash_store")
 
     init {
         store.states.onEach {
             when(it) {
-                SplashStore.State.Authenticated -> onAuthenticated()
+                is SplashStore.State.Authenticated -> onAuthenticated(it.accountId)
                 SplashStore.State.Loading -> {}
                 SplashStore.State.Unauthenticated -> onUnauthenticated()
             }

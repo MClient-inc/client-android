@@ -8,16 +8,16 @@ interface SplashStore : Store<SplashStore.Intent, SplashStore.State, SplashStore
 
     sealed class Intent
 
-    sealed class State: Parcelable {
+    sealed class State : Parcelable {
 
         @Parcelize
-        object Authenticated: State()
+        data class Authenticated(val accountId: Long) : State()
 
         @Parcelize
-        object Unauthenticated: State()
+        object Unauthenticated : State()
 
         @Parcelize
-        object Loading: State()
+        object Loading : State()
 
     }
 

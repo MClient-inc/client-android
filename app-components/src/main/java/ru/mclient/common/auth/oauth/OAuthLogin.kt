@@ -15,21 +15,18 @@ import org.koin.core.component.get
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.auth.ExternalLogin
 import ru.mclient.common.auth.ExternalLoginState
-import ru.mclient.common.utils.createCoroutineScope
 import ru.mclient.common.utils.getStore
 import ru.mclient.mvi.auth.OAuthLoginStore
 
 class OAuthLogin(
     componentContext: DIComponentContext,
-    private val onAuthorized: () -> Unit,
+    private val onAuthorized: (Long) -> Unit,
 ) : ExternalLogin,
     DIComponentContext by componentContext {
 
     private val oAuthRequest: OAuthRequest = get()
 
     private val registry: ActivityResultRegistry = get()
-
-    private val componentScope = createCoroutineScope()
 
     private val loginRegister = registry.register(
         "login_result",
@@ -103,9 +100,10 @@ class OAuthLogin(
                     isRetryAvailable = false,
                     timerEndAt = 0,
                     account = ExternalLoginState.Account(
+                        id = id,
                         username = username,
                         name = name,
-                        avatar = avatar
+                        avatar = avatar,
                     )
                 )
 
@@ -127,7 +125,7 @@ class OAuthLogin(
     }
 
     override fun onAuthenticated() {
-        state.value.account ?: return
-        onAuthorized.invoke()
+        val id = state.value.account?.id ?: return
+        onAuthorized.invoke(id)
     }
 }

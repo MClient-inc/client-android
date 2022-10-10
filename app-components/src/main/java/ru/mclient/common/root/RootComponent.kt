@@ -27,12 +27,19 @@ class RootComponent(
 
     override val isSplashShown: Boolean = childStack.active.instance is Root.Child.Splash
 
-    private fun onAuthenticated() {
-        navigator.navigate { listOf(Config.Main) }
+    private fun onAuthenticated(accountId: Long) {
+        navigator.navigate { listOf(Config.ApplicationScope(accountId = accountId)) }
     }
 
     private fun onUnauthenticated() {
         navigator.navigate { listOf(Config.Auth) }
+    }
+
+    private fun onSelected(
+        accountId: Long,
+        companyId: Long,
+    ) {
+        navigator.navigate { listOf(Config.Main(accountId = accountId, companyId = companyId)) }
     }
 
     private fun createChild(
@@ -64,6 +71,13 @@ class RootComponent(
                     onUnauthenticated = this::onUnauthenticated,
                 )
             )
+
+            is Config.ApplicationScope -> Root.Child.ApplicationScope(
+                ApplicationCompanyScopeSelectorHostComponent(
+                    componentContext = componentContext,
+                    accountId = config.accountId,
+                    onSelect = { onSelected(config.accountId, it) })
+            )
         }
     }
 
@@ -73,10 +87,18 @@ class RootComponent(
         object Auth : Config()
 
         @Parcelize
-        object Main : Config()
+        data class Main(
+            val accountId: Long,
+            val companyId: Long,
+        ) : Config()
 
         @Parcelize
         object Splash : Config()
+
+        @Parcelize
+        class ApplicationScope(
+            val accountId: Long,
+        ) : Config()
 
     }
 

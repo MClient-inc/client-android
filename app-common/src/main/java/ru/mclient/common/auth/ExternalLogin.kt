@@ -14,6 +14,7 @@ data class ExternalLoginState(
 
     @Parcelize
     data class Account(
+        val id: Long,
         val username: String,
         val name: String,
         val avatar: String?

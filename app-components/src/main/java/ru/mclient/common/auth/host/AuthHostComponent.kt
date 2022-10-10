@@ -16,7 +16,7 @@ import ru.mclient.common.diChildStack
 
 class AuthHostComponent(
     componentContext: DIComponentContext,
-   private val onAuthorized: () -> Unit,
+   private val onAuthorized: (Long) -> Unit,
 ) : AuthHost, DIComponentContext by componentContext {
 
     private val navigator = StackNavigation<Config>()

@@ -6,6 +6,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 import ru.mclient.mvi.SyncCoroutineExecutor
+import ru.mclient.mvi.company.create.CompanyCreateStore
 
 @Factory
 class CompanyCreateStoreImpl(
