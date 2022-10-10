@@ -1,42 +1,40 @@
-package ru.mclient.ui.company.create
+package ru.mclient.ui.company.staff.create
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import ru.mclient.common.company.create.CompanyCreate
-import ru.mclient.common.company.create.CompanyCreateState
+import ru.mclient.common.company.staff.create.StaffCreate
+import ru.mclient.common.company.staff.create.StaffCreateState
 
-fun CompanyCreateState.toUI(): CompanyCreatePageState {
-    return CompanyCreatePageState(
-        title = title,
+fun StaffCreateState.toUI(): StaffCreatePageState {
+    return StaffCreatePageState(
+        username = username,
         codename = codename,
-        description = description,
         isLoading = false,
         error = if (isError) "Непредвиденная ошибка" else null
     )
 }
 
 @Composable
-fun CompanyCreateUI(component: CompanyCreate, modifier: Modifier) {
+fun StaffCreateUI(component : StaffCreate, modifier: Modifier) {
     val state = component.state.collectAsState().value.toUI()
+
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
-        CompanyCreatePage(
+        StaffCreatePage(
             modifier = modifier,
             state = state,
             onUpdate = {
                 component.onUpdate(
-                    title = it.title,
-                    codename = it.codename,
-                    description = it.description
+                    username = it.username,
+                    codename = it.codename
                 )
             },
             onCreate = {
                 component.onCreate(
-                    title = it.title,
-                    codename = it.codename,
-                    description = it.description
+                    username = it.username,
+                    codename = it.codename
                 )
             }
         )
