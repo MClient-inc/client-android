@@ -1,14 +1,17 @@
 package ru.mclient.ui.company.service.create
 
+import android.text.InputType
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.view.DesignedTextButton
@@ -85,8 +88,9 @@ fun ServiceCreatePage(
             },
             label = stringResource(R.string.company_service_cost),
             maxLines = 3,
-            enabled = false,
-            modifier = Modifier.fillMaxWidth()
+            enabled = !state.isLoading,
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
 //        create service
@@ -99,31 +103,31 @@ fun ServiceCreatePage(
     }
 }
 
-//@Preview
-//@Composable
-//fun WorkerCreatePage1(
-//) {
-//
-//    val bebra = remember { mutableStateOf(ServiceCreatePageState(
-//        serviceName = "",
-//        description = "",
-//        cost = 0,
-//        isLoading = false,
-//        error = null
-//    )) }
-//
-//    ServiceCreatePage(
-//        modifier = Modifier.fillMaxSize(),
-//        state = bebra.value,
-//        onUpdate = {
-//            bebra.value = bebra.value.copy(
-//                serviceName = it.serviceName,
-//                description = it.description,
-//                cost = it.cost
-//            )
-//        },
-//        onCreate = {
-//
-//        }
-//    )
-//}
+@Preview
+@Composable
+fun WorkerCreatePage1(
+) {
+
+    val bebra = remember { mutableStateOf(ServiceCreatePageState(
+        serviceName = "",
+        description = "",
+        cost = 0,
+        isLoading = false,
+        error = null
+    )) }
+
+    ServiceCreatePage(
+        modifier = Modifier.fillMaxSize(),
+        state = bebra.value,
+        onUpdate = {
+            bebra.value = bebra.value.copy(
+                serviceName = it.serviceName,
+                description = it.description,
+                cost = it.cost
+            )
+        },
+        onCreate = {
+
+        }
+    )
+}
