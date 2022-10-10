@@ -26,7 +26,7 @@ interface Dependencies {
 
     object Ksp : Dependencies {
         const val plugin = "com.google.devtools.ksp"
-        const val version = "1.7.10-1.0.6"
+        const val version = "1.7.20-1.0.6"
     }
 
     object Apollo {
@@ -37,7 +37,7 @@ interface Dependencies {
     }
 
     object Kotlin : Dependencies {
-        const val version = "1.7.10"
+        const val version = "1.7.20"
     }
 
     object Napier : Dependencies {
@@ -46,7 +46,7 @@ interface Dependencies {
     }
 
     object Coroutines : Dependencies {
-        const val version = "1.6.3"
+        const val version = "1.6.4"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val guava = "org.jetbrains.kotlinx:kotlinx-coroutines-guava:$version"
@@ -119,15 +119,16 @@ interface Dependencies {
     }
 
     object Compose : Dependencies {
-        const val compilerVersion = "1.3.1"
-        const val version = "1.3.0-beta03"
+        const val compilerVersion = "1.3.2"
+        const val version = "1.3.0-rc01"
         const val ui = "androidx.compose.ui:ui:$version"
         const val runtime = "androidx.compose.runtime:runtime:$version"
         const val material = "androidx.compose.material:material:$version"
-        const val material3 = "androidx.compose.material3:material3:1.0.0-beta03"
+        const val material3 = "androidx.compose.material3:material3:1.0.0-rc01"
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val tooling = "androidx.compose.ui:ui-tooling:$version"
+        const val toolingPreview = "androidx.compose.ui:ui-tooling-preview:$version"
     }
 
     object Koin : Dependencies {

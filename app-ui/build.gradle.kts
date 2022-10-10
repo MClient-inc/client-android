@@ -18,8 +18,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -53,4 +55,6 @@ dependencies {
     implementation(Dependencies.Compose.material3)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Activity.compose)
+    debugImplementation(Dependencies.Compose.tooling)
+    implementation(Dependencies.Compose.toolingPreview)
 }
