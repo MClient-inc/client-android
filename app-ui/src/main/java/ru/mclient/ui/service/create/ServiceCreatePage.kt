@@ -1,14 +1,15 @@
-package ru.mclient.ui.company.service.create
+package ru.mclient.ui.service.create
 
-import android.text.InputType
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -21,7 +22,7 @@ import ru.shafran.ui.R
 data class ServiceCreatePageState(
     val serviceName: String,
     val description: String,
-    val cost: Int,
+    val cost: String,
     val isLoading: Boolean,
     val error: String?
 )
@@ -29,13 +30,13 @@ data class ServiceCreatePageState(
 class ServiceCreatePageInput(
     val serviceName: String,
     val description: String,
-    val cost: Int
+    val cost: String
 )
 
 fun ServiceCreatePageState.toInput(
     serviceName: String = this.serviceName,
     description: String = this.description,
-    cost: Int = this.cost
+    cost: String = this.cost
 ): ServiceCreatePageInput {
     return ServiceCreatePageInput(
         serviceName = serviceName,
@@ -55,8 +56,6 @@ fun ServiceCreatePage(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
-
-//        service name
         DesignedTextField(
             value = state.serviceName,
             onValueChange = {
@@ -67,8 +66,6 @@ fun ServiceCreatePage(
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth()
         )
-
-//        service description
         DesignedTextField(
             value = state.description,
             onValueChange = {
@@ -79,22 +76,17 @@ fun ServiceCreatePage(
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth()
         )
-
-//        service cost
         DesignedTextField(
-            value = state.cost.toString(),
+            value = state.cost,
             onValueChange = {
-//                onUpdate(state.toInput(cost = it.toInt())) TODO()
+                onUpdate(state.toInput(cost = it))
             },
             label = stringResource(R.string.company_service_cost),
-            maxLines = 3,
+            maxLines = 1,
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-
-//        create service
-
         DesignedTextButton(
             text = stringResource(R.string.company_service_add),
             onClick = { onCreate(state.toInput()) }
@@ -105,29 +97,30 @@ fun ServiceCreatePage(
 
 @Preview
 @Composable
-fun WorkerCreatePage1(
+fun ServiceCreatePreview(
 ) {
-
-    val bebra = remember { mutableStateOf(ServiceCreatePageState(
-        serviceName = "",
-        description = "",
-        cost = 0,
-        isLoading = false,
-        error = null
-    )) }
+    var state by remember {
+        mutableStateOf(
+            ServiceCreatePageState(
+                serviceName = "",
+                description = "",
+                cost = "0",
+                isLoading = false,
+                error = null
+            )
+        )
+    }
 
     ServiceCreatePage(
         modifier = Modifier.fillMaxSize(),
-        state = bebra.value,
+        state = state,
         onUpdate = {
-            bebra.value = bebra.value.copy(
+            state = state.copy(
                 serviceName = it.serviceName,
                 description = it.description,
-                cost = it.cost
+                cost = it.cost.filter(Char::isDigit)
             )
         },
-        onCreate = {
-
-        }
+        onCreate = {}
     )
 }

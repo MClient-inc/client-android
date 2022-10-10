@@ -1,4 +1,4 @@
-package ru.mclient.common.company.staff.create
+package ru.mclient.common.staff.create
 
 import kotlinx.coroutines.flow.StateFlow
 

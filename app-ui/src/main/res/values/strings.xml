@@ -11,11 +11,10 @@
     <string name="storage_navitem">Склад</string>
     <string name="loyalty_navitem">Лояльность</string>
     <string name="company_title">Название компании</string>
-    <string name="company_description">Описание компании</string>
-    <string name="company_codename">Кодовое имя компании (mycompany-001)</string>
+    <string name="company_description">Описание компании</string><string name="company_codename">Кодовое имя компании (mycompany_001)</string>
     <string name="company_registerButtonName">Зарегистрировать компанию</string>
     <string name="company_staff_name">Имя работника</string>
-    <string name="company_staff_codename">Кодовое имя работника (vasya-001)</string>
+    <string name="company_staff_codename">Кодовое имя работника (mystaff_01)</string>
     <string name="company_staff_register_new">Зарегистрировать нового работника</string>
     <string name="company_service_create_name">Название услуги</string>
     <string name="company_service_create_description">Описание услуги</string>

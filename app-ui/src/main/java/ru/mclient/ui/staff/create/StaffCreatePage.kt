@@ -1,11 +1,18 @@
-package ru.mclient.ui.company.staff.create
+package ru.mclient.ui.staff.create
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.view.DesignedTextButton
 import ru.mclient.ui.view.DesignedTextField
@@ -43,7 +50,8 @@ fun StaffCreatePage(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(15.dp)
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 //        codename
         DesignedTextField(
@@ -77,26 +85,28 @@ fun StaffCreatePage(
     }
 }
 
-//@Preview
-//@Composable
-//fun WorkerCreatePage1(
-//) {
-//
-//    val bebra = remember { mutableStateOf(WorkerCreatePageState(
-//        username = "",
-//        codename = "",
-//        isLoading = false,
-//        isError = null
-//    )) }
-//
-//    WorkerCreatePage(
-//        modifier = Modifier.fillMaxSize(),
-//        state = bebra.value,
-//        onUpdate = {
-//            bebra.value = bebra.value.copy(username = it.username, codename = it.codename)
-//        },
-//        onCreate = {
-//
-//        }
-//    )
-//}
+@Preview
+@Composable
+fun StaffCreatePagePreview() {
+    var state by remember{
+        mutableStateOf(
+            StaffCreatePageState(
+                username = "",
+                codename = "",
+                isLoading = false,
+                error = null,
+            )
+        )
+    }
+
+    StaffCreatePage(
+        modifier = Modifier.fillMaxSize(),
+        state = state,
+        onUpdate = {
+            state = state.copy(username = it.username, codename = it.codename)
+        },
+        onCreate = {
+
+        }
+    )
+}
