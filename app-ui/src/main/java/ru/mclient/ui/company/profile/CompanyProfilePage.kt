@@ -1,10 +1,11 @@
-package ru.mclient.ui.company
+package ru.mclient.ui.company.profile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.DesignedDrawable
 import ru.mclient.ui.view.DesignedIcon
+import ru.mclient.ui.view.DesignedRefreshColumn
 import ru.mclient.ui.view.DesignedString
 import ru.mclient.ui.view.DesignedText
 import ru.mclient.ui.view.outlined
@@ -32,15 +34,22 @@ import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
 
 data class CompanyProfilePageState(
-    val title: DesignedString,
-    val codename: DesignedString,
-    val description: DesignedString,
-)
+    val profile: Profile?,
+    val isLoading: Boolean,
+    val isRefreshing: Boolean,
+) {
+    data class Profile(
+        val title: DesignedString,
+        val codename: DesignedString,
+        val description: DesignedString,
+    )
+}
 
 
 @Composable
 fun CompanyProfilePage(
     state: CompanyProfilePageState,
+    onRefresh: () -> Unit,
     onEdit: () -> Unit,
     onClients: () -> Unit,
     onServices: () -> Unit,
@@ -48,18 +57,21 @@ fun CompanyProfilePage(
     onNetwork: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
+    DesignedRefreshColumn(
+        refreshing = state.isRefreshing,
+        onRefresh = onRefresh,
         modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        CompanyProfileHeaderComponent(
-            state = state,
-            onEdit = onEdit,
-            modifier = Modifier
-                .fillMaxWidth()
-                .outlined()
-                .padding(10.dp)
-        )
+        if (state.profile != null)
+            CompanyProfileHeaderComponent(
+                profile = state.profile,
+                onEdit = onEdit,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .outlined()
+                    .padding(10.dp)
+            )
         CompanyProfileBodyComponent(
             onClients = onClients,
             onServices = onServices,
@@ -82,7 +94,7 @@ class MenuItem(
 
 @Composable
 fun CompanyProfileHeaderComponent(
-    state: CompanyProfilePageState,
+    profile: CompanyProfilePageState.Profile,
     onEdit: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -97,17 +109,17 @@ fun CompanyProfileHeaderComponent(
         )
         Column {
             DesignedText(
-                text = state.title,
+                text = profile.title,
                 style = MaterialTheme.typography.headlineSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
             DesignedText(
-                text = state.codename,
+                text = profile.codename,
                 style = MaterialTheme.typography.labelSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
-                )
+            )
             Spacer(modifier = Modifier.height(10.dp))
             DesignedButton(
                 text = "Редактировать".toDesignedString(),
@@ -167,17 +179,22 @@ fun CompanyProfileBodyItems(menu: List<MenuItem>, modifier: Modifier = Modifier)
 fun CompanyProfilePagePreview() {
     CompanyProfilePage(
         state = CompanyProfilePageState(
-            title = "Компания А".toDesignedString(),
-            codename = "mycompany_1234".toDesignedString(),
-            description = "это реп для коллег человек куллер говорит буль буль".toDesignedString()
+            profile = CompanyProfilePageState.Profile(
+                title = "Компания А".toDesignedString(),
+                codename = "mycompany_1234".toDesignedString(),
+                description = "это реп для коллег человек куллер говорит буль буль".toDesignedString()
+            ),
+            isLoading = false,
+            isRefreshing = false,
         ),
+        onRefresh = {},
         onEdit = {},
         onClients = {},
         onServices = {},
         onStaff = {},
         onNetwork = {},
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(10.dp)
     )
 }

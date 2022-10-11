@@ -14,10 +14,12 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -78,31 +80,12 @@ fun DesignedLazyColumn(
             .pullRefresh(
                 state = refreshState,
                 enabled = enabled,
-            )
+            ),
     ) {
-        val progress = minOf(1.4f, refreshState.progress)
-        val columnOffset = animateDpAsState(getRefreshOffset(refreshing, progress))
-        val indicatorOffset = animateDpAsState(getRefreshProgressOffset(refreshing, progress))
-        val indicatorAlpha = animateFloatAsState(getIndicatorAlpha(refreshing, FastOutSlowInEasing.transform(progress)))
-        val scale = animateFloatAsState(getRefreshProgressScale(refreshing, progress))
-        if (refreshing) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .offset(y = indicatorOffset.value)
-            )
-        } else {
-            CircularProgressIndicator(
-                progress = refreshState.progress,
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .offset(y = indicatorOffset.value)
-                    .alpha(indicatorAlpha.value)
-                    .scale(scale.value)
-            )
-        }
+        DesignedIndicator(refreshing, refreshState, Modifier.align(Alignment.TopCenter))
+        val columnOffset by animateDpAsState(getRefreshOffset(refreshing, refreshState.progress))
         DesignedLazyColumn(
-            modifier = modifier.offset(y = columnOffset.value),
+            modifier = modifier.offset(y = columnOffset),
             state = state,
             contentPadding = contentPadding,
             reverseLayout = reverseLayout,
@@ -116,7 +99,31 @@ fun DesignedLazyColumn(
     }
 }
 
-private fun getRefreshOffset(refreshing: Boolean, progress: Float): Dp {
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun DesignedIndicator(refreshing: Boolean, refreshState: PullRefreshState, modifier: Modifier) {
+    val progress = minOf(1.4f, refreshState.progress)
+    val indicatorOffset = animateDpAsState(getRefreshProgressOffset(refreshing, progress))
+    val indicatorAlpha =
+        animateFloatAsState(getIndicatorAlpha(refreshing, FastOutSlowInEasing.transform(progress)))
+    val scale = animateFloatAsState(getRefreshProgressScale(refreshing, progress))
+    if (refreshing) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .offset(y = indicatorOffset.value)
+        )
+    } else {
+        CircularProgressIndicator(
+            progress = refreshState.progress,
+            modifier = modifier
+                .offset(y = indicatorOffset.value)
+                .alpha(indicatorAlpha.value)
+                .scale(scale.value)
+        )
+    }
+}
+
+fun getRefreshOffset(refreshing: Boolean, progress: Float): Dp {
     if (progress == 0f && refreshing) {
         return 60.dp
     }
