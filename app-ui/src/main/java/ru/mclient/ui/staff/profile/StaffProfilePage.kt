@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.view.DesignedTextButton
@@ -43,8 +44,8 @@ fun StaffProfilePage(
             modifier = Modifier.size(125.dp)
         )
         Column {
-            Text(text = state.name, style = MaterialTheme.typography.headlineSmall)
-            Text(text = state.codename, style = MaterialTheme.typography.labelSmall)
+            Text(text = state.name, style = MaterialTheme.typography.headlineSmall, overflow = TextOverflow.Ellipsis)
+            Text(text = state.codename, style = MaterialTheme.typography.labelSmall, overflow = TextOverflow.Ellipsis)
             Spacer(modifier = Modifier.height(10.dp))
             DesignedTextButton(
                 text = "Редактировать",

@@ -7,5 +7,5 @@ import ru.mclient.common.company.Company
 
 @Composable
 fun CompanyUI(component: Company, modifier: Modifier) {
-    CompanyPage(modifier = modifier)
+    CompanyProfilePage(modifier = modifier)
 }
