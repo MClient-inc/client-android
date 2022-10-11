@@ -9,8 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.parcelize.Parcelize
-import ru.mclient.ui.view.DesignedTextButton
+import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.DesignedTextField
+import ru.mclient.ui.view.toDesignedString
 
 @Parcelize
 data class LoginPageState(
@@ -64,8 +65,8 @@ fun LoginPage(
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        DesignedTextButton(
-            text = "Войти",
+        DesignedButton(
+            text = "Войти".toDesignedString(),
             onClick = { onLogin(state.toInput()) },
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth()

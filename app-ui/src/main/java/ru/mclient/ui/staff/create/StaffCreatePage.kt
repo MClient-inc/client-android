@@ -14,8 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.mclient.ui.view.DesignedTextButton
+import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.DesignedTextField
+import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
 
 data class StaffCreatePageState(
@@ -77,8 +78,8 @@ fun StaffCreatePage(
             modifier = Modifier.fillMaxWidth()
         )
 //        create Staff
-        DesignedTextButton(
-            text = stringResource(R.string.company_staff_register_new),
+        DesignedButton(
+            text = stringResource(R.string.company_staff_register_new).toDesignedString(),
             onClick = { onCreate(state.toInput()) }
         )
 

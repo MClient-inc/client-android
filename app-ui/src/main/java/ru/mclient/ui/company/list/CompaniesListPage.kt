@@ -15,9 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ru.mclient.ui.companynetwork.list.CompanyNetworksListPageState
+import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.DesignedLazyColumn
-import ru.mclient.ui.view.DesignedTextButton
+import ru.mclient.ui.view.toDesignedString
 
 data class CompaniesListPageState(
     val companies: List<Company>,
@@ -64,7 +64,7 @@ fun CompaniesListPage(
                         contentAlignment = Alignment.Center
                     ) {
                         Text("Пусто...")
-                        DesignedTextButton(text = "Обновить", onClick = onRefresh)
+                        DesignedButton(text = "Обновить".toDesignedString(), onClick = onRefresh)
                     }
                 }
             }

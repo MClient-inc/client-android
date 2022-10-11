@@ -18,7 +18,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.utils.currentTime
 import ru.mclient.ui.utils.pulse
-import ru.mclient.ui.view.DesignedTextButton
+import ru.mclient.ui.view.DesignedButton
+import ru.mclient.ui.view.toDesignedString
 import kotlin.math.max
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit
@@ -63,7 +64,7 @@ fun ExternalLoginPage(
             modifier = Modifier
         )
         AnimatedVisibility(visible = state.account != null) {
-            DesignedTextButton(text = "Продолжить", onClick = onAuthenticated)
+            DesignedButton(text = "Продолжить".toDesignedString(), onClick = onAuthenticated)
         }
         AnimatedVisibility(
             visible = state.isRetryAvailable,
@@ -75,8 +76,8 @@ fun ExternalLoginPage(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val time = currentTime(threshold = 1000)
-                DesignedTextButton(
-                    text = "Перейти в браузер",
+                DesignedButton(
+                    text = "Перейти в браузер".toDesignedString(),
                     onClick = onRetry,
                     enabled = state.timerEndAt < time,
                 )

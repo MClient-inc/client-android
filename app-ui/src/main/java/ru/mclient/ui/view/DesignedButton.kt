@@ -1,14 +1,16 @@
 package ru.mclient.ui.view
 
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
-fun DesignedTextButton(
-    text: String,
+fun DesignedButton(
+    text: DesignedString,
     onClick: () -> Unit,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
@@ -16,5 +18,11 @@ fun DesignedTextButton(
         onClick = onClick,
         enabled = enabled,
         modifier = modifier,
-    ) { Text(text) }
+    ) {
+        DesignedText(
+            text = text,
+            overflow = overflow,
+            maxLines = maxLines
+        )
+    }
 }

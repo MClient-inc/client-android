@@ -15,8 +15,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.parcelize.Parcelize
-import ru.mclient.ui.view.DesignedTextButton
+import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.DesignedTextField
+import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
 
 @Parcelize
@@ -105,8 +106,8 @@ fun Register(
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        DesignedTextButton(
-            text = stringResource(id = R.string.register),
+        DesignedButton(
+            text = stringResource(id = R.string.register).toDesignedString(),
             onClick = { onRegister(state.toInput()) },
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth()

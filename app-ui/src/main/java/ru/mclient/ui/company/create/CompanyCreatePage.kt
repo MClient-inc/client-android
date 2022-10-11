@@ -3,13 +3,13 @@ package ru.mclient.ui.company.create
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ru.mclient.ui.view.DesignedTextButton
+import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.DesignedTextField
+import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
 
 data class CompanyCreatePageState(
@@ -81,8 +81,8 @@ fun CompanyCreatePage(
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth()
         )
-        DesignedTextButton(
-            text = stringResource(R.string.company_registerButtonName),
+        DesignedButton(
+            text = stringResource(R.string.company_registerButtonName).toDesignedString(),
             onClick = { onCreate(state.toInput()) }
         )
     }

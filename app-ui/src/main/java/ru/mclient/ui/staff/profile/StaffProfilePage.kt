@@ -17,7 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.mclient.ui.view.DesignedTextButton
+import ru.mclient.ui.view.DesignedButton
+import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
 
 data class StaffProfilePageState(
@@ -44,11 +45,19 @@ fun StaffProfilePage(
             modifier = Modifier.size(125.dp)
         )
         Column {
-            Text(text = state.name, style = MaterialTheme.typography.headlineSmall, overflow = TextOverflow.Ellipsis)
-            Text(text = state.codename, style = MaterialTheme.typography.labelSmall, overflow = TextOverflow.Ellipsis)
+            Text(
+                text = state.name,
+                style = MaterialTheme.typography.headlineSmall,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = state.codename,
+                style = MaterialTheme.typography.labelSmall,
+                overflow = TextOverflow.Ellipsis
+            )
             Spacer(modifier = Modifier.height(10.dp))
-            DesignedTextButton(
-                text = "Редактировать",
+            DesignedButton(
+                text = "Редактировать".toDesignedString(),
                 onClick = onEdit,
                 modifier = Modifier.fillMaxWidth()
             )

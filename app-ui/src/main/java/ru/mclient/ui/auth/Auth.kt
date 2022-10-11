@@ -4,7 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ru.mclient.ui.view.DesignedTextButton
+import ru.mclient.ui.view.DesignedButton
+import ru.mclient.ui.view.toDesignedString
 
 
 data class AuthUIState(
@@ -20,14 +21,14 @@ fun Auth(
     modifier: Modifier,
 ) {
     Column(modifier = modifier) {
-        DesignedTextButton(
-            text = "Уже есть аккаунт",
+        DesignedButton(
+            text = "Уже есть аккаунт".toDesignedString(),
             onClick = onLogin,
             enabled = state.isLoginAvailable,
             modifier = Modifier.fillMaxWidth(),
         )
-        DesignedTextButton(
-            text = "Я новичок",
+        DesignedButton(
+            text = "Я новичок".toDesignedString(),
             onClick = onRegister,
             enabled = state.isRegisterAvailable,
             modifier = Modifier.fillMaxWidth(),
