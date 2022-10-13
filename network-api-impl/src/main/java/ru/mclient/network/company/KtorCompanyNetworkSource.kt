@@ -42,6 +42,21 @@ class KtorCompanyNetworkSource(
         )
     }
 
+    override suspend fun getCompany(input: GetCompanyInput): GetCompanyOutput {
+        val response = client.get("/companies/${input.companyId}")
+        val body = response.body<GetCompanyBranchResponse>()
+        return GetCompanyOutput(
+            company = GetCompanyOutput.Company(
+                id = body.id,
+                codename = body.codename,
+                title = body.title,
+                description = "",
+                networkId = body.networkId,
+                icon = null,
+            )
+        )
+    }
+
     override suspend fun getNetworks(input: GetCompanyNetworksInput): GetCompanyNetworksOutput {
         val response = client.get("/networks")
         val body = response.body<GetCompanyNetworksResponse>()
@@ -92,6 +107,7 @@ class GetCompanyBranchesForNetworkResponse(
         val codename: String,
     )
 }
+
 @Serializable
 class GetCompanyNetworksResponse(
     val networks: List<CompanyNetwork>,
@@ -103,3 +119,11 @@ class GetCompanyNetworksResponse(
         val codename: String,
     )
 }
+
+@Serializable
+class GetCompanyBranchResponse(
+    val id: Long,
+    val title: String,
+    val codename: String,
+    val networkId: Long,
+)

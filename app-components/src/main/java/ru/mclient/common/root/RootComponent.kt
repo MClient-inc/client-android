@@ -60,6 +60,7 @@ class RootComponent(
                 Root.Child.Main(
                     MainHostComponent(
                         componentContext = componentContext,
+                        applicationCompanyId = config.companyId,
                     )
                 )
             }

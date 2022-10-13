@@ -7,6 +7,8 @@ interface CompanyNetworkSource {
 
     suspend fun getCompanies(input: GetCompaniesByNetworkInput): GetCompaniesByNetworkOutput
 
+    suspend fun getCompany(input: GetCompanyInput): GetCompanyOutput
+
     suspend fun getNetworks(input: GetCompanyNetworksInput): GetCompanyNetworksOutput
 
 }

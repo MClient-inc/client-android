@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 data class CompanyProfileState(
     val profile: Profile?,
     val isLoading: Boolean,
+    val isFailure: Boolean,
 ) {
     data class Profile(
         val title: String,

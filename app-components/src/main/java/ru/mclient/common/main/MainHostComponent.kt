@@ -14,7 +14,8 @@ import ru.mclient.common.loyalty.LoyaltyComponent
 import ru.mclient.common.storage.StorageComponent
 
 class MainHostComponent(
-    componentContext: DIComponentContext
+    componentContext: DIComponentContext,
+    private val applicationCompanyId: Long,
 ) : MainHost, DIComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
@@ -43,7 +44,7 @@ class MainHostComponent(
 
     private fun createChild(config: Config, componentContext: DIComponentContext): MainHost.Child {
         return when (config) {
-            is Config.Company -> MainHost.Child.Company(CompanyComponent())
+            is Config.Company -> MainHost.Child.Company(CompanyComponent(componentContext, applicationCompanyId))
             is Config.Loyalty -> MainHost.Child.Loyalty(LoyaltyComponent())
             is Config.Home -> MainHost.Child.Home(HomeComponent())
             is Config.Storage -> MainHost.Child.Storage(StorageComponent())

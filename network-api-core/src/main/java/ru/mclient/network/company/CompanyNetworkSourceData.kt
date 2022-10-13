@@ -27,6 +27,22 @@ class GetCompaniesByNetworkOutput(
         val icon: String?,
     )
 }
+class GetCompanyInput(
+    val companyId: Long,
+)
+
+class GetCompanyOutput(
+    val company: Company,
+) {
+    class Company(
+        val id: Long,
+        val title: String,
+        val codename: String,
+        val description: String,
+        val icon: String?,
+        val networkId: Long,
+    )
+}
 
 class GetCompanyNetworksInput(val accountId: Long)
 
