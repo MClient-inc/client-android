@@ -39,8 +39,8 @@ class CompaniesListForNetworkComponent(
         store.accept(CompaniesListForNetworkStore.Intent.Refresh)
     }
 
-    override fun onSelect(company: CompaniesListState.Company) {
-        onSelect.invoke(company)
+    override fun onSelect(companyId: Long) {
+        state.value.companies.find { it.id == companyId }?.let { onSelect.invoke(it) }
     }
 
 }

@@ -13,6 +13,7 @@ import ru.mclient.mvi.company.profile.CompanyProfileStore
 class CompanyProfileComponent(
     componentContext: DIComponentContext,
     companyId: Long,
+    private val onStaff: () -> Unit,
 ) : CompanyProfile, DIComponentContext by componentContext {
 
     private val store: CompanyProfileStore =
@@ -56,7 +57,7 @@ class CompanyProfileComponent(
     }
 
     override fun onStaff() {
-        TODO("Not yet implemented")
+        onStaff.invoke()
     }
 
     override fun onNetwork() {

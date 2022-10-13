@@ -9,6 +9,7 @@ import ru.mclient.common.childDIContext
 class CompanyProfileHostComponent(
     componentContext: DIComponentContext,
     companyId: Long,
+    onStaff: () -> Unit,
 ) : CompanyProfileHost, DIComponentContext by componentContext {
 
 
@@ -16,5 +17,10 @@ class CompanyProfileHostComponent(
         state = TopBarState("Компания")
     )
 
-    override val profile: CompanyProfile = CompanyProfileComponent(childDIContext("company_profile"), companyId)
+    override val profile: CompanyProfile =
+        CompanyProfileComponent(
+            componentContext = childDIContext(key = "company_profile"),
+            companyId = companyId,
+            onStaff = onStaff,
+        )
 }

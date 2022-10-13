@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package ru.mclient.ui.view
 
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -7,6 +9,7 @@ import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.PullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -97,6 +101,82 @@ fun DesignedLazyColumn(
         )
 
     }
+}
+
+
+fun LazyListScope.DefaultLoadingContent() {
+    item {
+        Box(
+            modifier = Modifier.fillParentMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("Идёт загрузка...")
+        }
+    }
+}
+
+fun LazyListScope.DefaultEmptyContent(onRefresh: () -> Unit) {
+    item {
+        Column(
+            modifier = Modifier.fillParentMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text("Пусто...")
+            DesignedButton(text = "Обновить".toDesignedString(), onClick = onRefresh)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun DesignedLazyColumn(
+    refreshing: Boolean,
+    enabled: Boolean,
+    onRefresh: () -> Unit,
+    loading: Boolean,
+    empty: Boolean,
+    modifier: Modifier = Modifier,
+    state: LazyListState = rememberLazyListState(),
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    reverseLayout: Boolean = false,
+    verticalArrangement: Arrangement.Vertical =
+        if (!reverseLayout) Arrangement.Top else Arrangement.Bottom,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
+    userScrollEnabled: Boolean = true,
+    emptyContent: LazyListScope.() -> Unit = { DefaultEmptyContent(onRefresh) },
+    loadingContent: LazyListScope.() -> Unit = LazyListScope::DefaultLoadingContent,
+    content: LazyListScope.() -> Unit,
+) {
+    DesignedLazyColumn(
+        refreshing,
+        enabled,
+        onRefresh,
+        modifier,
+        state,
+        contentPadding,
+        reverseLayout,
+        verticalArrangement,
+        horizontalAlignment,
+        flingBehavior,
+        userScrollEnabled,
+        content = {
+            when {
+                loading && empty -> {
+                    loadingContent()
+                }
+
+                !loading && empty -> {
+                    emptyContent()
+                }
+
+                else -> {
+                    content()
+                }
+            }
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)

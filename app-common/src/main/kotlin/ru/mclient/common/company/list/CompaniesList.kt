@@ -20,6 +20,6 @@ interface CompaniesList {
 
     fun onRefresh()
 
-    fun onSelect(company: CompaniesListState.Company)
+    fun onSelect(companyId: Long)
 
 }
