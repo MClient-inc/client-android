@@ -16,77 +16,92 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.MessageLengthLimitingLogger
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import org.koin.core.qualifier.named
-import org.koin.dsl.bind
+import org.koin.core.module.dsl.named
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import ru.mclient.local.auth.AuthLocalSource
+import ru.mclient.local.auth.AuthLocalStorageData
 import ru.mclient.network.auth.AuthNetworkSource
 import ru.mclient.network.auth.RefreshTokenInput
 import ru.shafran.startup.BuildConfig
 
+@Suppress("FunctionName")
+fun AuthorizedHttpClient(
+    networkSource: AuthNetworkSource,
+    localSource: AuthLocalSource
+): HttpClient {
+    return HttpClient(CIO) {
+        defaultRequest {
+            url(BuildConfig.REST_URI)
+        }
+        Auth {
+            bearer {
+                realm = null
+                loadTokens {
+                    val tokens = localSource.getTokens()
+                    tokens?.let { BearerTokens(it.accessToken, it.refreshToken) }
+                }
+                refreshTokens {
+                    val tokens = localSource.getTokens() ?: return@refreshTokens null
+                    if (tokens.toBearer() != oldTokens) {
+                        return@refreshTokens tokens.toBearer()
+                    }
+                    try {
+                        networkSource.refreshToken(RefreshTokenInput(tokens.refreshToken))
+                            .let {
+                                val token = localSource.saveTokens(it.accessToken, it.refreshToken)
+                                token.toBearer()
+                            }
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+            }
+        }
+        install(ContentNegotiation) {
+            json(json = Json {
+                ignoreUnknownKeys = true
+            })
+        }
+        install(Logging) {
+            logger =
+                MessageLengthLimitingLogger(delegate = AndroidLogger())
+            level = LogLevel.ALL
+        }
+    }
+}
+
+private fun AuthLocalStorageData.toBearer(): BearerTokens {
+    return BearerTokens(accessToken, refreshToken)
+}
+
+@Suppress("FunctionName")
+fun UnauthorizedHttpClient(): HttpClient {
+    return HttpClient(CIO) {
+        Auth {
+            basic {
+                realm = null
+                credentials {
+                    BasicAuthCredentials(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
+                }
+            }
+        }
+        install(ContentNegotiation) {
+            json(json = Json {
+                ignoreUnknownKeys = true
+            })
+        }
+        install(Logging) {
+            this.logger =
+                MessageLengthLimitingLogger(delegate = AndroidLogger())
+            this.level = LogLevel.ALL
+        }
+    }
+}
+
 val httpClientModule = module {
-    single(qualifier = named("unauthorized")) {
-        HttpClient(CIO) {
-            Auth {
-                basic {
-                    realm = null
-                    credentials {
-                        BasicAuthCredentials(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
-                    }
-                }
-            }
-            install(ContentNegotiation) {
-                json(json = Json {
-                    ignoreUnknownKeys = true
-                })
-            }
-            install(Logging) {
-                this.logger =
-                    MessageLengthLimitingLogger(delegate = AndroidLogger())
-                this.level = LogLevel.ALL
-            }
-        }
-    } bind HttpClient::class
-    single(qualifier = named("authorized")) {
-        val authNetworkSource = get<AuthNetworkSource>()
-        val authLocalSource = get<AuthLocalSource>()
-        HttpClient(CIO) {
-            defaultRequest {
-                url(BuildConfig.REST_URI)
-            }
-            Auth {
-                bearer {
-                    realm = null
-                    loadTokens {
-                        val tokens = authLocalSource.getTokens()
-                        tokens?.let { BearerTokens(it.accessToken, it.refreshToken) }
-                    }
-                    refreshTokens {
-                        val tokens = authLocalSource.getTokens() ?: return@refreshTokens null
-                        try {
-                            authNetworkSource.refreshToken(RefreshTokenInput(tokens.refreshToken))
-                                .let {
-                                    authLocalSource.saveTokens(it.accessToken, it.refreshToken)
-                                    BearerTokens(it.accessToken, it.refreshToken)
-                                }
-                        } catch (e: Exception) {
-                            null
-                        }
-                    }
-                }
-            }
-            install(ContentNegotiation) {
-                json(json = Json {
-                    ignoreUnknownKeys = true
-                })
-            }
-            install(Logging) {
-                logger =
-                    MessageLengthLimitingLogger(delegate = AndroidLogger())
-                level = LogLevel.ALL
-            }
-        }
-    } bind HttpClient::class
+    singleOf(::UnauthorizedHttpClient, options = { named("unauthorized") })
+    singleOf(::AuthorizedHttpClient, options = { named("authorized") })
 }
 
 class AndroidLogger() : Logger {

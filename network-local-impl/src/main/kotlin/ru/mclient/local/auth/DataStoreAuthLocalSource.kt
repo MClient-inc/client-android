@@ -30,13 +30,16 @@ class DataStoreAuthLocalSource(private val context: Context) : AuthLocalSource {
         return context.authDataStore.data.first()?.toTokens()
     }
 
-    override suspend fun saveTokens(accessToken: String, refreshToken: String) {
-        context.authDataStore.updateData {
-            DataStoreAuthTokens(
-                accessToken = accessToken,
-                refreshToken = refreshToken,
-            )
-        }
+    override suspend fun saveTokens(
+        accessToken: String,
+        refreshToken: String
+    ): AuthLocalStorageData {
+        val tokens = DataStoreAuthTokens(
+            accessToken = accessToken,
+            refreshToken = refreshToken,
+        )
+        context.authDataStore.updateData { tokens }
+        return AuthLocalStorageData(accessToken, refreshToken)
     }
 }
 
