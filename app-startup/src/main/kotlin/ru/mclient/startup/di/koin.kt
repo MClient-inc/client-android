@@ -8,7 +8,7 @@ import org.koin.core.logger.Level
 import org.koin.ksp.generated.module
 import ru.mclient.local.LocalModule
 import ru.mclient.mvi.mviModule
-import ru.mclient.network.apiNetworkModule
+import ru.mclient.network.ApiNetworkModule
 import ru.mclient.startup.httpClientModule
 import ru.mclient.startup.oauth.androidOAuthModule
 
@@ -21,7 +21,7 @@ fun Context.initializeKoin(): KoinApplication {
             androidOAuthModule,
             baseMviModule,
             mviModule,
-            apiNetworkModule,
+            ApiNetworkModule().module,
             LocalModule().module
         )
     }
