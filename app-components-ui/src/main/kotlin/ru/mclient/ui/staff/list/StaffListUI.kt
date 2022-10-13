@@ -19,7 +19,7 @@ fun StaffListState.toUI(): StaffListPageState {
             )
         },
         isLoading = isLoading,
-        isRefreshing = isLoading && staff.isEmpty()
+        isRefreshing = isLoading && staff.isNotEmpty()
     )
 }
 

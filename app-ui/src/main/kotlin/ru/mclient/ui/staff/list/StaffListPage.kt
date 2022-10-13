@@ -11,12 +11,15 @@ import androidx.compose.material3.ListItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import ru.mclient.ui.utils.defaultPlaceholder
 import ru.mclient.ui.view.DesignedDrawable
 import ru.mclient.ui.view.DesignedIcon
 import ru.mclient.ui.view.DesignedLazyColumn
 import ru.mclient.ui.view.DesignedString
 import ru.mclient.ui.view.DesignedText
 import ru.mclient.ui.view.toDesignedDrawable
+import ru.mclient.ui.view.toDesignedString
+import ru.shafran.ui.R
 
 data class StaffListPageState(
     val staff: List<Staff>,
@@ -45,6 +48,14 @@ fun StaffListPage(
         loading = state.isLoading,
         empty = state.staff.isEmpty(),
         modifier = modifier,
+        loadingContent = {
+            items(6) {
+                StaffItemPlaceholder(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+        },
     ) {
         items(state.staff) { staff ->
             StaffItem(staff = staff,
@@ -70,6 +81,37 @@ fun StaffItem(
             DesignedIcon(
                 icon = staff.icon ?: Icons.Outlined.Menu.toDesignedDrawable(),
                 modifier = Modifier.size(35.dp)
+            )
+        },
+    )
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun StaffItemPlaceholder(
+    modifier: Modifier,
+) {
+    ListItem(
+        headlineText = {
+            DesignedText(
+                "Имя работника".toDesignedString(),
+                modifier = Modifier.defaultPlaceholder()
+            )
+        },
+        supportingText = {
+            DesignedText(
+                "Кодовое имя".toDesignedString(),
+                modifier = Modifier.defaultPlaceholder()
+            )
+        },
+        modifier = modifier,
+        leadingContent = {
+            DesignedIcon(
+                icon = R.drawable.company.toDesignedDrawable(),
+                modifier = Modifier
+                    .size(35.dp)
+                    .defaultPlaceholder()
             )
         },
     )

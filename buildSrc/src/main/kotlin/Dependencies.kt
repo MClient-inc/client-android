@@ -147,10 +147,10 @@ interface Dependencies {
     }
 
     object Accompanist : Dependencies {
-        const val version = "0.26.4-beta"
+        const val version = "0.26.5-rc"
         const val swiperefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
         const val permissions = "com.google.accompanist:accompanist-permissions:$version"
-        const val placeholder = "com.google.accompanist:accompanist-placeholder-material:$version"
+        const val placeholder = "com.google.accompanist:accompanist-placeholder:$version"
     }
 
     object Ktor : Dependencies {
