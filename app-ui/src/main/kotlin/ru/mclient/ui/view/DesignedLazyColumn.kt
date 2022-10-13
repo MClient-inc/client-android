@@ -109,7 +109,7 @@ fun DesignedIndicator(refreshing: Boolean, refreshState: PullRefreshState, modif
     val scale = animateFloatAsState(getRefreshProgressScale(refreshing, progress))
     if (refreshing) {
         CircularProgressIndicator(
-            modifier = Modifier
+            modifier = modifier
                 .offset(y = indicatorOffset.value)
         )
     } else {
