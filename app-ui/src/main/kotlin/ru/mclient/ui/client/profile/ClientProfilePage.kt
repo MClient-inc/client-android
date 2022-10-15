@@ -68,17 +68,16 @@ fun ClientProfilePage(
 }
 
 fun phoneNumberFormatter(phoneNumber: String): DesignedString {
-    val formatterNumber = StringBuilder().append(phoneNumber)
-    if (phoneNumber.length == 11) {
-        if (phoneNumber.startsWith("7")) {
-            formatterNumber.insert(0, "+")
-            formatterNumber.insert(2, "(")
-            formatterNumber.insert(6, ")")
-            formatterNumber.insert(10, "-")
-            formatterNumber.insert(13, "-")
-        }
-    }
-    return formatterNumber.toString().toDesignedString()
+    if (phoneNumber.length != 11 && !phoneNumber.startsWith("7"))
+        return phoneNumber.toDesignedString()
+    return buildString {
+        append(phoneNumber)
+        insert(0, "+")
+        insert(2, "(")
+        insert(6, ")")
+        insert(10, "-")
+        insert(13, "-")
+    }.toDesignedString()
 }
 
 @Composable
