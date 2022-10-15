@@ -97,7 +97,7 @@ class StaffListForCompanyStoreImpl(
                                     id = staff.id,
                                     name = staff.name,
                                     codename = staff.codename,
-                                    icon = staff.icon,
+                                    icon = staff.role,
                                 )
                             }
                         )

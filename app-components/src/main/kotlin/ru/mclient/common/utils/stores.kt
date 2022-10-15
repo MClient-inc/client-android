@@ -1,9 +1,15 @@
 package ru.mclient.common.utils
 
+import androidx.compose.runtime.mutableStateOf
+import com.arkivanov.essenty.lifecycle.LifecycleOwner
+import com.arkivanov.essenty.lifecycle.subscribe
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.statekeeper.consume
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.Store
+import com.arkivanov.mvikotlin.rx.Disposable
+import com.arkivanov.mvikotlin.rx.Observer
+import com.arkivanov.mvikotlin.rx.observer
 import org.koin.core.component.get
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
@@ -24,6 +30,10 @@ internal inline fun <reified Param : Any, reified T : ParametrizedStore<*, *, *,
 ): T {
     return instanceKeeper.getStore { get { parametersOf(param()) } }
 }
+
+internal inline fun <reified Param : Any, reified T : ParametrizedStore<*, *, *, Param>> DIComponentContext.getParameterizedStore(
+    param: Param
+): T = getParameterizedStore { param }
 
 internal inline fun <reified SavedState : Parcelable, reified State : Any, reified T : Store<*, State, *>> DIComponentContext.getStoreSavedState(
     key: String,
@@ -50,6 +60,61 @@ internal inline fun <reified State : Parcelable, reified T : Store<*, State, *>>
         restore = { it }
     )
 }
+
+fun <State : Any> Store<*, State, *>.states(lifecycleOwner: LifecycleOwner): androidx.compose.runtime.State<State> {
+    return toState(lifecycleOwner, state, Store<*, State, *>::states)
+}
+
+fun <State : Any, T : Any> Store<*, State, *>.states(
+    lifecycleOwner: LifecycleOwner,
+    mapper: (State) -> T
+): androidx.compose.runtime.State<T> {
+    return toState(
+        lifecycleOwner,
+        currentState = state,
+        mapper = mapper,
+        Store<*, State, *>::states
+    )
+}
+
+
+private inline fun <T, R> T.toState(
+    lifecycleOwner: LifecycleOwner,
+    currentState: R,
+    crossinline subscribe: T.(Observer<R>) -> Disposable
+): androidx.compose.runtime.State<R> {
+    val state = mutableStateOf(currentState)
+    var disposable: Disposable? = null
+    lifecycleOwner.lifecycle.subscribe(
+        onCreate = {
+            disposable = subscribe(observer(onNext = { state.value = it }))
+        },
+        onDestroy = {
+            disposable?.dispose()
+        }
+    )
+    return state
+}
+
+private inline fun <T, R, C> T.toState(
+    lifecycleOwner: LifecycleOwner,
+    currentState: R,
+    crossinline mapper: (R) -> C,
+    crossinline subscribe: T.(Observer<R>) -> Disposable
+): androidx.compose.runtime.State<C> {
+    val state = mutableStateOf(mapper(currentState))
+    var disposable: Disposable? = null
+    lifecycleOwner.lifecycle.subscribe(
+        onCreate = {
+            disposable = subscribe(observer(onNext = { state.value = mapper(it) }))
+        },
+        onDestroy = {
+            disposable?.dispose()
+        }
+    )
+    return state
+}
+
 
 //private operator fun ParametersHolder?.plus(parameters: ParametersHolder?): ParametersHolder {
 //    if (this == null && parameters == null) return parametersOf()

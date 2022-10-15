@@ -9,6 +9,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.company.profile.CompanyProfileHostComponent
 import ru.mclient.common.diChildStack
+import ru.mclient.common.staff.StaffProfileHostComponent
 import ru.mclient.common.staff.list.StaffListForCompanyHostComponent
 
 class CompanyComponent(
@@ -30,6 +31,10 @@ class CompanyComponent(
         navigation.push(Config.StaffFromCompany(companyId))
     }
 
+    private fun onStaff(staffId: Long) {
+        navigation.push(Config.StaffProfile(staffId))
+    }
+
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
         return when (config) {
             is Config.CompanyProfile -> Company.Child.CompanyProfile(
@@ -43,8 +48,15 @@ class CompanyComponent(
             is Config.StaffFromCompany -> Company.Child.StaffList(
                 StaffListForCompanyHostComponent(
                     componentContext = componentContext,
-                    companyId =  config.companyId,
-                    onSelect = {},
+                    companyId = config.companyId,
+                    onSelect = ::onStaff,
+                )
+            )
+
+            is Config.StaffProfile -> Company.Child.StaffProfile(
+                StaffProfileHostComponent(
+                    componentContext = componentContext,
+                    staffId = config.staffId,
                 )
             )
         }
@@ -57,6 +69,9 @@ class CompanyComponent(
 
         @Parcelize
         data class StaffFromCompany(val companyId: Long) : Config()
+
+        @Parcelize
+        data class StaffProfile(val staffId: Long) : Config()
 
     }
 

@@ -22,11 +22,23 @@ class KtorStaffNetworkSource(
                     id = it.id,
                     name = it.name,
                     codename = it.codename,
-                    icon = it.role
+                    role = it.role
                 )
             }
         )
     }
+
+    override suspend fun getStaffById(input: GetStaffByIdInput): GetStaffByIdOutput {
+        val response = client.get("/staff/${input.staffId}")
+        val body = response.body<GetStaffResponse>()
+        return GetStaffByIdOutput(
+            id = body.id,
+            name = body.name,
+            codename = body.codename,
+            role = body.role,
+        )
+    }
+
 }
 
 
@@ -42,3 +54,12 @@ class GetStaffForCompanyResponse(
         val role: String,
     )
 }
+
+
+@Serializable
+class GetStaffResponse(
+    val id: Long,
+    val name: String,
+    val codename: String,
+    val role: String,
+)

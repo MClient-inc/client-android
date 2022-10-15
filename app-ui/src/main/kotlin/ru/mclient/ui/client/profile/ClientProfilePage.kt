@@ -60,9 +60,9 @@ fun ClientProfilePage(
                 profile = state.profile,
                 onEdit = onEdit,
                 modifier = Modifier
+                    .padding(10.dp)
                     .fillMaxWidth()
                     .outlined()
-                    .padding(10.dp)
             )
     }
 }
@@ -143,6 +143,5 @@ fun ClientProfilePagePreview() {
         onEdit = {},
         modifier = Modifier
             .fillMaxSize()
-            .padding(10.dp)
     )
 }

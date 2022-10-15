@@ -1,6 +1,5 @@
 package ru.mclient.mvi.company.profile
 
-import android.util.Log
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
@@ -78,7 +77,6 @@ class CompanyProfileStoreImpl(
         }
 
         private fun loadCompany(companyId: Long) {
-            Log.d("AcceptTester", "load")
             dispatch(Message.Loading)
             scope.launch {
                 try {

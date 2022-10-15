@@ -43,6 +43,8 @@ dependencies {
     implementation(Dependencies.Android.core)
     implementation(Dependencies.Coroutines.core)
     implementation(Dependencies.Decompose.core)
+    implementation(Dependencies.MVI.rx)
+    implementation(Dependencies.Compose.runtime)
     implementation(Dependencies.MVI.coroutines)
     implementation(Dependencies.MVI.core)
     implementation(Dependencies.Koin.core)
