@@ -3,7 +3,6 @@ package ru.mclient.network.auth
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.forms.submitForm
-import io.ktor.client.request.header
 import io.ktor.http.Parameters
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -39,15 +38,13 @@ class KtorAuthNetworkSource(
 
     override suspend fun refreshToken(input: RefreshTokenInput): RefreshTokenOutput {
         val response =
-            client.submitForm(BuildConfig.REFRESH_URI, formParameters = Parameters.build {
+            client.submitForm(BuildConfig.TOKEN_URI, formParameters = Parameters.build {
                 append("grant_type", "refresh_token")
-                append("token", input.refreshToken)
-                append("token_type_hint ", "refresh_token ")
+                append("refresh_token", input.refreshToken)
                 append("client_id", BuildConfig.CLIENT_ID)
                 append("client_secret", BuildConfig.CLIENT_SECRET)
-            }) {
-                header("Issuer", BuildConfig.AUTH_URI)
-            }
+                append("scope", BuildConfig.SCOPE)
+            })
         val body = response.body<GetTokenRefreshResponse>()
         return RefreshTokenOutput(
             accessToken = body.accessToken,

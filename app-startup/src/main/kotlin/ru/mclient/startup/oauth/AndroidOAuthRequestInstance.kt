@@ -30,7 +30,6 @@ class AndroidOAuthRequestInstance(private val authService: AuthorizationService)
 
     override fun getOpenPageIntent(): Intent {
         val tabIntent = CustomTabsIntent.Builder()
-
             .setShareState(SHARE_STATE_OFF)
             .build()
         val request = buildTokenRequest()

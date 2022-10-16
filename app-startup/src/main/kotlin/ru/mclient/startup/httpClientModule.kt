@@ -43,9 +43,6 @@ fun AuthorizedHttpClient(
                 }
                 refreshTokens {
                     val tokens = localSource.getTokens() ?: return@refreshTokens null
-                    if (tokens.toBearer() != oldTokens) {
-                        return@refreshTokens tokens.toBearer()
-                    }
                     try {
                         networkSource.refreshToken(RefreshTokenInput(tokens.refreshToken))
                             .let {
@@ -96,6 +93,7 @@ fun UnauthorizedHttpClient(): HttpClient {
                 MessageLengthLimitingLogger(delegate = AndroidLogger())
             this.level = LogLevel.ALL
         }
+        followRedirects = false
     }
 }
 
