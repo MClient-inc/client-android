@@ -104,6 +104,6 @@ val httpClientModule = module {
 
 class AndroidLogger() : Logger {
     override fun log(message: String) {
-        Log.d("NetowrkHttpClient", message)
+        Log.d("NetworkHttpClient", message)
     }
 }

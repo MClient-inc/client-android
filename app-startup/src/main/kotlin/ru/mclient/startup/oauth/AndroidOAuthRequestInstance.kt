@@ -33,7 +33,6 @@ class AndroidOAuthRequestInstance(private val authService: AuthorizationService)
             .setShareState(SHARE_STATE_OFF)
             .build()
         val request = buildTokenRequest()
-        Log.d("NetworkAuthDebug", "create request with code verifier ${request.codeVerifier}")
         return authService.getAuthorizationRequestIntent(request, tabIntent)
     }
 

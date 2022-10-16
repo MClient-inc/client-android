@@ -1,6 +1,5 @@
 package ru.mclient.mvi.auth
 
-import android.util.Log
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
@@ -68,10 +67,6 @@ class OAuthStoreImpl(
                 is OAuthLoginStore.Intent.OAuthPageCompleted -> {
                     dispatch(Message.LoginAccount)
                     scope.launch {
-                        Log.d(
-                            "NetworkAuthDebug",
-                            "Get token from code with verifier ${intent.codeVerifier}"
-                        )
                         val tokens =
                             try {
                                 authNetworkSource.getTokensFromCode(

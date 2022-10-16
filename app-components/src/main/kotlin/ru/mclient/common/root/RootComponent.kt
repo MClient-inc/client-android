@@ -25,7 +25,7 @@ class RootComponent(
         childFactory = this::createChild
     )
 
-    override val isSplashShown: Boolean = childStack.active.instance is Root.Child.Splash
+    override val isSplashShown: Boolean get() = childStack.active.instance is Root.Child.Splash
 
     private fun onAuthenticated(accountId: Long) {
         navigator.navigate { listOf(Config.ApplicationScope(accountId = accountId)) }

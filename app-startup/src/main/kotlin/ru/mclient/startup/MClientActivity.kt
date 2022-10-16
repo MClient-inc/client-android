@@ -52,7 +52,7 @@ fun AppCompatActivity.setContent(component: Root) {
 
 fun AppCompatActivity.setupSplash(component: Root) {
     installSplashScreen().setKeepOnScreenCondition {
-        !component.isSplashShown
+        component.isSplashShown
     }
 }
 

@@ -1,6 +1,5 @@
 package ru.mclient.common.company.profile
 
-import android.util.Log
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -41,7 +40,6 @@ class CompanyProfileComponent(
 
     override fun onRefresh() {
         store.accept(CompanyProfileStore.Intent.Refresh)
-        Log.d("AcceptTester", "end")
     }
 
     override fun onEdit() {

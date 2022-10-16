@@ -1,6 +1,5 @@
 package ru.mclient.mvi.splash
 
-import android.util.Log
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
@@ -24,7 +23,6 @@ class SplashStoreImpl(
         name = "SplashStoreImpl",
         initialState = state ?: SplashStore.State.Loading,
         bootstrapper = coroutineBootstrapper {
-
             if (state == null || state is SplashStore.State.Loading) {
                 dispatch(Action.LoadAccount)
             }
@@ -58,7 +56,6 @@ class SplashStoreImpl(
                 is Action.LoadAccount -> {
                     scope.launch {
                         val tokens = authLocalSource.getTokens()
-                        Log.d("DataStoreAuthLocalSource", "token $tokens")
                         if (tokens == null) {
                             syncDispatch(Message.Unauthenticated)
                             return@launch
