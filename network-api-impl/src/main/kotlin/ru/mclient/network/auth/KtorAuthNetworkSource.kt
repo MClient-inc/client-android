@@ -28,8 +28,6 @@ class GetTokenRefreshResponse(
     val refreshToken: String,
 )
 
-//grant_type=authorization_code&code=55mujVN68nBsRnJKflGlHxMBuj7T0_TR9Eiod3dsrgmSNpAIq35ic8GMeKsbBPC9_-4oafcGHH8c9JDQXRV0hZrk3-8-R-pAeIeP9n9hIfXt3ZM55ujsd52TXesDPbux&redirect_uri=https%3A%2F%2Foauthdebugger.com%2Fdebug&state=openid&code_verifier=MeBnSjK0NR-Wy6Kc9mFxG1VMviCcuYWe_EhkQG8llTE&client_id=messaging-client&client_secret=secret
-
 @Single
 class KtorAuthNetworkSource(
     @Named("unauthorized")
