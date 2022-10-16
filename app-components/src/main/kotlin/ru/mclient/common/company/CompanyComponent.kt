@@ -10,6 +10,7 @@ import ru.mclient.common.DIComponentContext
 import ru.mclient.common.company.profile.CompanyProfileHostComponent
 import ru.mclient.common.diChildStack
 import ru.mclient.common.staff.StaffProfileHostComponent
+import ru.mclient.common.staff.create.StaffCreateHostComponent
 import ru.mclient.common.staff.list.StaffListForCompanyHostComponent
 
 class CompanyComponent(
@@ -35,6 +36,10 @@ class CompanyComponent(
         navigation.push(Config.StaffProfile(staffId))
     }
 
+    private fun onCreateStaff(companyId: Long) {
+        navigation.push(Config.CreateStaff(companyId))
+    }
+
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
         return when (config) {
             is Config.CompanyProfile -> Company.Child.CompanyProfile(
@@ -50,6 +55,7 @@ class CompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
                     onSelect = ::onStaff,
+                    onCreate = { onCreateStaff(config.companyId) }
                 )
             )
 
@@ -57,6 +63,13 @@ class CompanyComponent(
                 StaffProfileHostComponent(
                     componentContext = componentContext,
                     staffId = config.staffId,
+                )
+            )
+
+            is Config.CreateStaff -> Company.Child.StaffCreate(
+                StaffCreateHostComponent(
+                    componentContext = componentContext,
+                    companyId = config.companyId,
                 )
             )
         }
@@ -72,6 +85,9 @@ class CompanyComponent(
 
         @Parcelize
         data class StaffProfile(val staffId: Long) : Config()
+
+        @Parcelize
+        data class CreateStaff(val companyId: Long) : Config()
 
     }
 

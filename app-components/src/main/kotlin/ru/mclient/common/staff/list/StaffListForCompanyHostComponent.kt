@@ -10,6 +10,7 @@ class StaffListForCompanyHostComponent(
     componentContext: DIComponentContext,
     companyId: Long,
     onSelect: (Long) -> Unit,
+    onCreate: () -> Unit,
 ) : StaffListHost, DIComponentContext by componentContext {
 
     override val bar: TopBar = ImmutableTopBar(state = TopBarState("Работники"))
@@ -18,7 +19,8 @@ class StaffListForCompanyHostComponent(
         StaffListForCompanyComponent(
             componentContext = childDIContext(key = "staff_list"),
             companyId = companyId,
-            onSelect = onSelect
+            onSelect = onSelect,
+            onCreate = onCreate,
         )
 
 }

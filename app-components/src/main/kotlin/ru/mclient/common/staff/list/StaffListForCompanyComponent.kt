@@ -13,6 +13,7 @@ class StaffListForCompanyComponent(
     componentContext: DIComponentContext,
     companyId: Long,
     private val onSelect: (Long) -> Unit,
+    private val onCreate: () -> Unit,
 ) : StaffList, DIComponentContext by componentContext {
 
     private val store: StaffListForCompanyStore =
@@ -44,4 +45,9 @@ class StaffListForCompanyComponent(
     override fun onSelect(staffId: Long) {
         onSelect.invoke(staffId)
     }
+
+    override fun onCreateStaff() {
+        onCreate.invoke()
+    }
+
 }

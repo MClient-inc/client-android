@@ -1,18 +1,20 @@
 package ru.mclient.common.staff.create
 
-import kotlinx.coroutines.flow.StateFlow
+import androidx.compose.runtime.State
 
 data class StaffCreateState(
-    val username: String,
+    val name: String,
     val codename: String,
     val isLoading: Boolean,
     val isError: Boolean
 )
 
 interface StaffCreate {
-    val state : StateFlow<StaffCreateState>
+
+    val state : State<StaffCreateState>
 
     fun onUpdate(username: String, codename: String)
 
     fun onCreate(username: String, codename: String)
+
 }

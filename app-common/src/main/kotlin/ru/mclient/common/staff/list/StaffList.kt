@@ -22,4 +22,5 @@ interface StaffList {
 
     fun onSelect(staffId: Long)
 
+    fun onCreateStaff()
 }

@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import ru.mclient.common.company.Company
 import ru.mclient.ui.company.profile.CompanyProfileHostUI
+import ru.mclient.ui.staff.create.StaffCreateHostUI
 import ru.mclient.ui.staff.list.StaffListHostUI
 import ru.mclient.ui.staff.profile.StaffProfileHostUI
 
@@ -33,6 +34,12 @@ fun CompanyNavHost(child: Company.Child, modifier: Modifier) {
 
         is Company.Child.StaffProfile ->
             StaffProfileHostUI(
+                component = child.component,
+                modifier = modifier,
+            )
+
+        is Company.Child.StaffCreate ->
+            StaffCreateHostUI(
                 component = child.component,
                 modifier = modifier,
             )

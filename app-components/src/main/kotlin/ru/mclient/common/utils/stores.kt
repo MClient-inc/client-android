@@ -62,7 +62,7 @@ internal inline fun <reified State : Parcelable, reified T : Store<*, State, *>>
 }
 
 fun <State : Any> Store<*, State, *>.states(lifecycleOwner: LifecycleOwner): androidx.compose.runtime.State<State> {
-    return toState(lifecycleOwner, state, Store<*, State, *>::states)
+    return states(lifecycleOwner, mapper = { it })
 }
 
 fun <State : Any, T : Any> Store<*, State, *>.states(
@@ -77,24 +77,6 @@ fun <State : Any, T : Any> Store<*, State, *>.states(
     )
 }
 
-
-private inline fun <T, R> T.toState(
-    lifecycleOwner: LifecycleOwner,
-    currentState: R,
-    crossinline subscribe: T.(Observer<R>) -> Disposable
-): androidx.compose.runtime.State<R> {
-    val state = mutableStateOf(currentState)
-    var disposable: Disposable? = null
-    lifecycleOwner.lifecycle.subscribe(
-        onCreate = {
-            disposable = subscribe(observer(onNext = { state.value = it }))
-        },
-        onDestroy = {
-            disposable?.dispose()
-        }
-    )
-    return state
-}
 
 private inline fun <T, R, C> T.toState(
     lifecycleOwner: LifecycleOwner,

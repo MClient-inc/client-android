@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
-import ru.mclient.mvi.staff.list.StaffProfileStore
+import ru.mclient.mvi.staff.profile.StaffProfileStore
 
 class StaffProfileComponent(
     componentContext: DIComponentContext,
