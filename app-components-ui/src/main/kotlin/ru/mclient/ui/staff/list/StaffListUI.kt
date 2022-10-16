@@ -30,6 +30,7 @@ fun StaffListUI(component: StaffList, modifier: Modifier) {
         state = state.toUI(),
         onRefresh = component::onRefresh,
         onSelect = { component.onSelect(it.id) },
+        onCreate = component::onCreateStaff,
         modifier = modifier
     )
 }

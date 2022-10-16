@@ -4,20 +4,23 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.mvi.ParametrizedStore
 
-interface StaffProfileStore :
-    ParametrizedStore<StaffProfileStore.Intent, StaffProfileStore.State, StaffProfileStore.Label, StaffProfileStore.Params> {
+interface StaffListForCompanyStore :
+    ParametrizedStore<StaffListForCompanyStore.Intent, StaffListForCompanyStore.State, StaffListForCompanyStore.Label, StaffListForCompanyStore.Params> {
 
-    data class Params(
-        val staffId: Long,
+    @JvmInline
+    value class Params(
+        val companyId: Long,
     )
 
     sealed class Intent {
+
         object Refresh : Intent()
+
     }
 
     @Parcelize
     data class State(
-        val staff: Staff?,
+        val staff: List<Staff>,
         val isFailure: Boolean,
         val isLoading: Boolean,
     ) : Parcelable {
@@ -26,6 +29,7 @@ interface StaffProfileStore :
             val id: Long,
             val name: String,
             val codename: String,
+            val icon: String?
         ) : Parcelable
     }
 

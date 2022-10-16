@@ -7,7 +7,6 @@ import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 import ru.mclient.mvi.SyncCoroutineExecutor
-import ru.mclient.mvi.staff.list.StaffProfileStore
 import ru.mclient.network.staff.GetStaffByIdInput
 import ru.mclient.network.staff.StaffNetworkSource
 

@@ -1,13 +1,18 @@
 package ru.mclient.ui.staff.list
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -34,35 +39,52 @@ data class StaffListPageState(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StaffListPage(
     state: StaffListPageState,
     onRefresh: () -> Unit,
     onSelect: (StaffListPageState.Staff) -> Unit,
+    onCreate: () -> Unit,
     modifier: Modifier,
 ) {
-    DesignedLazyColumn(
-        refreshing = state.isRefreshing,
-        enabled = state.staff.isNotEmpty(),
-        onRefresh = onRefresh,
-        loading = state.isLoading,
-        empty = state.staff.isEmpty(),
+    Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = {
+                    DesignedText("Добавить".toDesignedString())
+                },
+                icon = { DesignedIcon(icon = Icons.Outlined.Add.toDesignedDrawable()) },
+                onClick = onCreate
+            )
+        },
         modifier = modifier,
-        loadingContent = {
-            items(6) {
-                StaffItemPlaceholder(
+    ) {
+        DesignedLazyColumn(
+            refreshing = state.isRefreshing,
+            enabled = state.staff.isNotEmpty(),
+            onRefresh = onRefresh,
+            loading = state.isLoading,
+            empty = state.staff.isEmpty(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it),
+            loadingContent = {
+                items(6) {
+                    StaffItemPlaceholder(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
+            },
+        ) {
+            items(state.staff) { staff ->
+                StaffItem(staff = staff,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .clickable { onSelect(staff) }
                 )
             }
-        },
-    ) {
-        items(state.staff) { staff ->
-            StaffItem(staff = staff,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onSelect(staff) }
-            )
         }
     }
 }

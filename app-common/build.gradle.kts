@@ -43,4 +43,5 @@ dependencies {
     implementation(Dependencies.Android.core)
     implementation(Dependencies.Coroutines.core)
     implementation(Dependencies.Decompose.core)
+    implementation(Dependencies.Compose.runtime)
 }
