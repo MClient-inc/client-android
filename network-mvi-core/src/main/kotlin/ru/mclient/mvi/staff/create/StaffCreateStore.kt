@@ -17,13 +17,13 @@ interface StaffCreateStore :
         class Update(
             val name: String,
             val codename: String,
-            val description: String,
+            val role: String,
         ) : Intent()
 
         class Create(
             val name: String,
             val codename: String,
-            val description: String,
+            val role: String,
         ) : Intent()
 
     }
@@ -32,11 +32,19 @@ interface StaffCreateStore :
     data class State(
         val name: String,
         val codename: String,
-        val description: String,
+        val role: String,
         val isLoading: Boolean,
         val isError: Boolean,
-        val isSuccess: Boolean,
-    ) : Parcelable
+        val createdStaff: Staff?
+    ) : Parcelable {
+        @Parcelize
+        data class Staff(
+            val id: Long,
+            val name: String,
+            val codename: String,
+            val role: String,
+        ): Parcelable
+    }
 
     sealed class Label
 

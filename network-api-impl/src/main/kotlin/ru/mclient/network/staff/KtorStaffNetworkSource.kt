@@ -3,6 +3,10 @@ package ru.mclient.network.staff
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.serialization.Serializable
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
@@ -39,8 +43,41 @@ class KtorStaffNetworkSource(
         )
     }
 
+    override suspend fun createStaff(input: CreateStaffInput): CreateStaffOutput {
+        val response = client.post("/companies/${input.companyId}/staff") {
+            setBody(
+                CreateStaffRequest(
+                    name = input.name,
+                    codename = input.codename,
+                    role = input.role,
+                ),
+            )
+            contentType(ContentType.Application.Json)
+        }
+        val body = response.body<CreateStaffResponse>()
+        return CreateStaffOutput(
+            id = body.id,
+            name = body.name,
+            codename = body.codename,
+            role = body.role,
+        )
+    }
 }
 
+@Serializable
+class CreateStaffRequest(
+    val name: String,
+    val codename: String,
+    val role: String,
+)
+
+@Serializable
+class CreateStaffResponse(
+    val id: Long,
+    val name: String,
+    val codename: String,
+    val role: String,
+)
 
 @Serializable
 class GetStaffForCompanyResponse(

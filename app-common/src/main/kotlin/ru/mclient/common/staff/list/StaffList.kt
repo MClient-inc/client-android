@@ -1,6 +1,6 @@
 package ru.mclient.common.staff.list
 
-import kotlinx.coroutines.flow.StateFlow
+import androidx.compose.runtime.State
 
 data class StaffListState(
     val staff: List<Staff>,
@@ -16,7 +16,7 @@ data class StaffListState(
 
 interface StaffList {
 
-    val state: StateFlow<StaffListState>
+    val state: State<StaffListState>
 
     fun onRefresh()
 

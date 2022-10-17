@@ -3,6 +3,7 @@ package ru.mclient.common.company
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
@@ -32,8 +33,12 @@ class CompanyComponent(
         navigation.push(Config.StaffFromCompany(companyId))
     }
 
-    private fun onStaff(staffId: Long) {
-        navigation.push(Config.StaffProfile(staffId))
+    private fun onStaff(staffId: Long, replaceCurrent: Boolean = false) {
+        if (replaceCurrent) {
+            navigation.replaceCurrent(Config.StaffProfile(staffId))
+        } else {
+            navigation.push(Config.StaffProfile(staffId))
+        }
     }
 
     private fun onCreateStaff(companyId: Long) {
@@ -70,6 +75,7 @@ class CompanyComponent(
                 StaffCreateHostComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
+                    onSuccess = { onStaff(it, true) }
                 )
             )
         }

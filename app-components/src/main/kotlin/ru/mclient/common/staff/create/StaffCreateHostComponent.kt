@@ -9,12 +9,14 @@ import ru.mclient.common.childDIContext
 class StaffCreateHostComponent(
     componentContext: DIComponentContext,
     companyId: Long,
+    onSuccess: (Long) -> Unit,
 ) : StaffCreateHost, DIComponentContext by componentContext {
 
 
     override val bar: TopBar = ImmutableTopBar(TopBarState(title = "Создать работника"))
     override val staffCreate: StaffCreate = StaffCreateComponent(
         componentContext = childDIContext("staff_create"),
-        companyId = companyId
+        companyId = companyId,
+        onSuccess = onSuccess,
     )
 }

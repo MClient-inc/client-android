@@ -6,5 +6,6 @@ interface StaffNetworkSource {
 
     suspend fun getStaffById(input: GetStaffByIdInput): GetStaffByIdOutput
 
+    suspend fun createStaff(input: CreateStaffInput): CreateStaffOutput
 
 }

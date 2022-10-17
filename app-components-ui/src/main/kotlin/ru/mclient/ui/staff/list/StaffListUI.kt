@@ -1,7 +1,6 @@
 package ru.mclient.ui.staff.list
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import ru.mclient.common.staff.list.StaffList
@@ -25,7 +24,7 @@ fun StaffListState.toUI(): StaffListPageState {
 
 @Composable
 fun StaffListUI(component: StaffList, modifier: Modifier) {
-    val state by component.state.collectAsState()
+    val state by component.state
     StaffListPage(
         state = state.toUI(),
         onRefresh = component::onRefresh,

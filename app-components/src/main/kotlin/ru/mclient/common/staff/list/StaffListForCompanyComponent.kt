@@ -1,12 +1,9 @@
 package ru.mclient.common.staff.list
 
-import com.arkivanov.mvikotlin.extensions.coroutines.states
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import androidx.compose.runtime.State
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
+import ru.mclient.common.utils.states
 import ru.mclient.mvi.staff.list.StaffListForCompanyStore
 
 class StaffListForCompanyComponent(
@@ -33,9 +30,7 @@ class StaffListForCompanyComponent(
         )
     }
 
-    override val state: StateFlow<StaffListState>
-        get() = store.states.map { it.toState() }
-            .stateIn(componentScope, SharingStarted.Eagerly, store.state.toState())
+    override val state: State<StaffListState> = store.states(this) { it.toState() }
 
 
     override fun onRefresh() {

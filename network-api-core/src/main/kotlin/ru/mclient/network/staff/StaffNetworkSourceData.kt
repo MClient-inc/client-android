@@ -25,3 +25,17 @@ data class GetStaffByIdOutput(
     val codename: String,
     val role: String,
 )
+
+data class CreateStaffInput(
+    val companyId: Long,
+    val name: String,
+    val codename: String,
+    val role: String,
+)
+
+data class CreateStaffOutput(
+    val id: Long,
+    val name: String,
+    val codename: String,
+    val role: String,
+)
