@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,22 +23,27 @@ import ru.shafran.ui.R
 data class StaffCreatePageState(
     val username: String,
     val codename: String,
+    val role: String,
     val isLoading: Boolean,
-    val error: String?
+    val error: String?,
+    val isButtonsEnabled: Boolean
 )
 
 class StaffCreatePageInput(
     val username: String,
-    val codename: String
+    val codename: String,
+    val role: String
 )
 
 fun StaffCreatePageState.toInput(
     username: String = this.username,
-    codename: String = this.codename
+    codename: String = this.codename,
+    role: String = this.role
 ): StaffCreatePageInput {
     return StaffCreatePageInput(
         username = username,
-        codename = codename
+        codename = codename,
+        role = role
     )
 }
 
@@ -50,7 +56,7 @@ fun StaffCreatePage(
     onCreate: (StaffCreatePageInput) -> Unit
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -77,9 +83,23 @@ fun StaffCreatePage(
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth()
         )
+
+//        role
+        DesignedTextField(
+            value = state.role,
+            onValueChange = {
+                onUpdate(state.toInput(role = it))
+            },
+            label = stringResource(R.string.company_staff_role),
+            maxLines = 1,
+            enabled = !state.isLoading,
+            modifier = Modifier.fillMaxWidth()
+        )
+
 //        create Staff
         DesignedButton(
             text = stringResource(R.string.company_staff_register_new).toDesignedString(),
+            enabled = state.isButtonsEnabled,
             onClick = { onCreate(state.toInput()) }
         )
 
@@ -94,8 +114,10 @@ fun StaffCreatePagePreview() {
             StaffCreatePageState(
                 username = "",
                 codename = "",
+                role = "",
                 isLoading = false,
                 error = null,
+                isButtonsEnabled = true
             )
         )
     }
@@ -104,7 +126,7 @@ fun StaffCreatePagePreview() {
         modifier = Modifier.fillMaxSize(),
         state = state,
         onUpdate = {
-            state = state.copy(username = it.username, codename = it.codename)
+            state = state.copy(username = it.username, codename = it.codename, role = it.role)
         },
         onCreate = {
 

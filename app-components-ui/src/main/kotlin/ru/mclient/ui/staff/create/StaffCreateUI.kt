@@ -11,8 +11,10 @@ fun StaffCreateState.toUI(): StaffCreatePageState {
     return StaffCreatePageState(
         username = name,
         codename = codename,
+        role = role,
         isLoading = false,
-        error = if (isError) "Непредвиденная ошибка" else null
+        error = if (isError) "Непредвиденная ошибка" else null,
+        isButtonsEnabled = true
     )
 }
 
@@ -27,13 +29,15 @@ fun StaffCreateUI(component : StaffCreate, modifier: Modifier) {
             onUpdate = {
                 component.onUpdate(
                     username = it.username,
-                    codename = it.codename
+                    codename = it.codename,
+                    role = it.role
                 )
             },
             onCreate = {
                 component.onCreate(
                     username = it.username,
-                    codename = it.codename
+                    codename = it.codename,
+                    role = it.role
                 )
             }
         )

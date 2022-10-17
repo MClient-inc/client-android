@@ -25,6 +25,7 @@ class StaffCreateComponent(
         return StaffCreateState(
             name = name,
             codename = codename,
+            role = role,
             isLoading = isLoading,
             isError = isError
         )
@@ -34,11 +35,11 @@ class StaffCreateComponent(
         onSuccess.invoke(staffId)
     }
 
-    override fun onUpdate(username: String, codename: String) {
-        store.accept(StaffCreateStore.Intent.Update(username, codename, ""))
+    override fun onUpdate(username: String, codename: String, role: String) {
+        store.accept(StaffCreateStore.Intent.Update(username, codename, role))
     }
 
-    override fun onCreate(username: String, codename: String) {
+    override fun onCreate(username: String, codename: String, role: String) {
         store.accept(StaffCreateStore.Intent.Create(username, codename, ""))
     }
 

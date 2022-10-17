@@ -134,7 +134,7 @@ fun ClientProfilePagePreview() {
             profile = ClientProfilePageState.Profile(
                 username = "Александр Сергеевич Пушкин".toDesignedString(),
                 codename = "client_007".toDesignedString(),
-                phoneNumber = "79133781440".toDesignedString()
+                phoneNumber = "78005553535".toDesignedString()
             ),
             isLoading = false,
             isRefreshing = false

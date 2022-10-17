@@ -156,6 +156,7 @@ class StaffCreateStoreImpl(
                     val name = if (intent.name.length >= 64) state.name else intent.name
                     val role =
                         if (intent.role.length >= 100) state.role else intent.role
+
                     dispatch(
                         Message.Changed(
                             name = name,

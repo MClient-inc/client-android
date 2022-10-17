@@ -20,5 +20,6 @@
     <string name="company_service_create_description">Описание услуги</string>
     <string name="company_service_cost">Цена услуги</string>
     <string name="company_service_add">Добавить услугу</string>
+    <string name="company_staff_role">Роль работника</string>
 
 </resources>

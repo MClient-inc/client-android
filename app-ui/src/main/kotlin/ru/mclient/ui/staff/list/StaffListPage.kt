@@ -35,6 +35,7 @@ data class StaffListPageState(
         val id: Long,
         val name: DesignedString,
         val codename: DesignedString,
+        val role: DesignedString,
         val icon: DesignedDrawable?,
     )
 }
@@ -97,7 +98,7 @@ fun StaffItem(
 ) {
     ListItem(
         headlineText = { DesignedText(staff.name) },
-        supportingText = { DesignedText(staff.codename) },
+        supportingText = { DesignedText(staff.role) },
         modifier = modifier,
         leadingContent = {
             DesignedIcon(
@@ -123,7 +124,7 @@ fun StaffItemPlaceholder(
         },
         supportingText = {
             DesignedText(
-                "Кодовое имя".toDesignedString(),
+                "Роль работника".toDesignedString(),
                 modifier = Modifier.defaultPlaceholder()
             )
         },

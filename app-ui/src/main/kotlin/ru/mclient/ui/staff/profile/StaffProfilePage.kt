@@ -35,6 +35,7 @@ data class StaffProfilePageState(
     data class Staff(
         val name: String,
         val codename: String,
+        val role: String
     )
 }
 
@@ -89,6 +90,11 @@ fun ClientProfileHeaderComponent(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
+                text = staff.role,
+                style = MaterialTheme.typography.labelSmall,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
                 text = staff.codename,
                 style = MaterialTheme.typography.labelSmall,
                 overflow = TextOverflow.Ellipsis
@@ -110,7 +116,8 @@ fun StaffProfilePagePreview() {
         state = StaffProfilePageState(
             staff = StaffProfilePageState.Staff(
                 name = "user user user",
-                codename = "user_4234234",
+                role = "Менеджер",
+                codename = "user_4234234"
             ),
             isLoading = false,
             isRefreshing = false,
