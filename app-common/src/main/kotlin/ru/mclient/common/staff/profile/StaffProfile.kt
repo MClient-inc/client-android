@@ -9,6 +9,7 @@ data class StaffProfileState(
     data class Staff(
         val name: String,
         val codename: String,
+        val role: String,
     )
 }
 

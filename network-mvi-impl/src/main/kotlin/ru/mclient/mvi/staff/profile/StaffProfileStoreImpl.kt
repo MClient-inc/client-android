@@ -40,6 +40,7 @@ class CompanyProfileStoreImpl(
                         id = message.staff.id,
                         name = message.staff.name,
                         codename = message.staff.codename,
+                        role = message.staff.role,
                     ),
                     isFailure = false,
                     isLoading = false,
@@ -85,6 +86,7 @@ class CompanyProfileStoreImpl(
                                 id = response.id,
                                 name = response.name,
                                 codename = response.codename,
+                                role = response.role,
                             )
                         )
                     )
@@ -109,6 +111,7 @@ class CompanyProfileStoreImpl(
                 val id: Long,
                 val name: String,
                 val codename: String,
+                val role: String,
             )
         }
 

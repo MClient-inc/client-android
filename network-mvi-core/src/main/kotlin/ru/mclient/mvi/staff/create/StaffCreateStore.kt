@@ -35,7 +35,8 @@ interface StaffCreateStore :
         val role: String,
         val isLoading: Boolean,
         val isError: Boolean,
-        val createdStaff: Staff?
+        val createdStaff: Staff?,
+        val isButtonEnabled: Boolean,
     ) : Parcelable {
         @Parcelize
         data class Staff(

@@ -38,7 +38,7 @@ class StaffCreatePageInput(
 fun StaffCreatePageState.toInput(
     username: String = this.username,
     codename: String = this.codename,
-    role: String = this.role
+    role: String = this.role,
 ): StaffCreatePageInput {
     return StaffCreatePageInput(
         username = username,
@@ -98,7 +98,7 @@ fun StaffCreatePage(
 
 //        create Staff
         DesignedButton(
-            text = stringResource(R.string.company_staff_register_new).toDesignedString(),
+            text = R.string.company_staff_register_new.toDesignedString(),
             enabled = state.isButtonsEnabled,
             onClick = { onCreate(state.toInput()) }
         )

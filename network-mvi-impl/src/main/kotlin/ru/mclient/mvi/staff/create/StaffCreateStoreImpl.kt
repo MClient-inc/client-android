@@ -1,7 +1,5 @@
 package ru.mclient.mvi.staff.create
 
-import android.os.Parcel
-import android.os.Parcelable
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
@@ -29,7 +27,8 @@ class StaffCreateStoreImpl(
             role = "",
             isLoading = false,
             isError = false,
-            null
+            createdStaff = null,
+            isButtonEnabled = false,
         ),
         bootstrapper = coroutineBootstrapper {
             if (savedState != null && savedState.isLoading) {
@@ -55,14 +54,17 @@ class StaffCreateStoreImpl(
                     name = message.name,
                     codename = message.codename,
                     role = message.role,
-                    isError = true, isLoading = false
+                    isError = true,
+                    isLoading = false
                 )
 
                 is Message.Changed -> copy(
                     name = message.name,
                     codename = message.codename,
                     role = message.role,
-                    isError = false, isLoading = false
+                    isError = false,
+                    isLoading = false,
+                    isButtonEnabled = message.isButtonEnabled,
                 )
 
                 is Message.Loading ->
@@ -75,6 +77,7 @@ class StaffCreateStoreImpl(
                         role = message.role,
                         isLoading = false,
                         isError = false,
+                        isButtonEnabled = false,
                         createdStaff = StaffCreateStore.State.Staff(
                             id = message.staffId,
                             name = message.name,
@@ -84,16 +87,7 @@ class StaffCreateStoreImpl(
                     )
             }
         }
-    ), Parcelable {
-
-    constructor(parcel: Parcel) : this(
-        TODO("storeFactory"),
-        TODO("savedState"),
-        TODO("params"),
-        TODO("staffNetworkSource"),
-        TODO("coroutineDispatcher")
     ) {
-    }
 
     class Executor(
         private val params: StaffCreateStore.Param,
@@ -156,12 +150,13 @@ class StaffCreateStoreImpl(
                     val name = if (intent.name.length >= 64) state.name else intent.name
                     val role =
                         if (intent.role.length >= 100) state.role else intent.role
-
+                    val isButtonEnabled = name.length >= 2 && codename.length >= 6
                     dispatch(
                         Message.Changed(
                             name = name,
                             codename = codename,
                             role = role,
+                            isButtonEnabled = isButtonEnabled,
                         )
                     )
                 }
@@ -181,7 +176,12 @@ class StaffCreateStoreImpl(
 
         class Failed(val name: String, val codename: String, val role: String) : Message()
 
-        class Changed(val name: String, val codename: String, val role: String) : Message()
+        class Changed(
+            val name: String,
+            val codename: String,
+            val role: String,
+            val isButtonEnabled: Boolean,
+        ) : Message()
 
         class Success(
             val staffId: Long,
@@ -192,24 +192,6 @@ class StaffCreateStoreImpl(
 
         class Loading : Message()
 
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<StaffCreateStoreImpl> {
-        override fun createFromParcel(parcel: Parcel): StaffCreateStoreImpl {
-            return StaffCreateStoreImpl(parcel)
-        }
-
-        override fun newArray(size: Int): Array<StaffCreateStoreImpl?> {
-            return arrayOfNulls(size)
-        }
     }
 
 }

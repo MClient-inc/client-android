@@ -30,7 +30,7 @@ class StaffProfileComponent(
 
     private fun StaffProfileStore.State.Staff.toState(): StaffProfileState.Staff {
         return StaffProfileState.Staff(
-            name = name, codename = codename
+            name = name, codename = codename, role = role
         )
     }
 

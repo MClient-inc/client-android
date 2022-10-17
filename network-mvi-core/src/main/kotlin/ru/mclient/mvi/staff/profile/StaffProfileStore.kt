@@ -27,6 +27,7 @@ interface StaffProfileStore :
             val id: Long,
             val name: String,
             val codename: String,
+            val role: String,
         ) : Parcelable
     }
 

@@ -29,7 +29,8 @@ interface StaffListForCompanyStore :
             val id: Long,
             val name: String,
             val codename: String,
-            val icon: String?
+            val icon: String?,
+            val role: String,
         ) : Parcelable
     }
 

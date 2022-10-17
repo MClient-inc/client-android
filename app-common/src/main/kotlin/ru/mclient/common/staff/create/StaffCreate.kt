@@ -7,7 +7,8 @@ data class StaffCreateState(
     val codename: String,
     val role: String,
     val isLoading: Boolean,
-    val isError: Boolean
+    val isError: Boolean,
+    val isButtonsEnabled: Boolean
 )
 
 interface StaffCreate {

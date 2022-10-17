@@ -10,6 +10,7 @@ data class StaffListState(
         val id: Long,
         val name: String,
         val codename: String,
+        val role: String,
         val icon: String?,
     )
 }

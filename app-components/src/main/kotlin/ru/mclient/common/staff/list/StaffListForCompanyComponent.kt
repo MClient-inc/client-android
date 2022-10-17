@@ -24,6 +24,7 @@ class StaffListForCompanyComponent(
                     name = it.name,
                     codename = it.codename,
                     icon = it.icon,
+                    role = it.role,
                 )
             },
             isLoading = isLoading,

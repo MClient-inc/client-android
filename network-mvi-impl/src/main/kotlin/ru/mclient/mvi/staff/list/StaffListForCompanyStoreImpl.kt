@@ -30,18 +30,19 @@ class StaffListForCompanyStoreImpl(
         executorFactory = { Executor(params, staffSource) },
         reducer = { message ->
             when (message) {
-                Message.Failed -> copy(
+                is Message.Failed -> copy(
                     isFailure = true,
                     isLoading = false,
                 )
 
                 is Message.Loaded -> copy(
-                    message.networks.map { company ->
+                    message.staff.map { company ->
                         StaffListForCompanyStore.State.Staff(
-                            company.id,
-                            company.name,
-                            company.codename,
-                            company.icon,
+                            id = company.id,
+                            name = company.name,
+                            codename = company.codename,
+                            icon = company.icon,
+                            role = company.role,
                         )
                     },
                     isLoading = false,
@@ -98,6 +99,7 @@ class StaffListForCompanyStoreImpl(
                                     name = staff.name,
                                     codename = staff.codename,
                                     icon = staff.role,
+                                    role = staff.role,
                                 )
                             }
                         )
@@ -119,13 +121,14 @@ class StaffListForCompanyStoreImpl(
         object Failed : Message()
         object Loading : Message()
         class Loaded(
-            val networks: List<Staff>,
+            val staff: List<Staff>,
         ) : Message() {
             class Staff(
                 val id: Long,
                 val name: String,
                 val codename: String,
                 val icon: String?,
+                val role: String,
             )
         }
 

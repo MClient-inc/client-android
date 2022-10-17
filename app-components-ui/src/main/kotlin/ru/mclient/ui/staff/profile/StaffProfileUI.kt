@@ -32,5 +32,5 @@ fun StaffProfileState.toUI(): StaffProfilePageState {
 
 
 fun StaffProfileState.Staff.toUI(): StaffProfilePageState.Staff {
-    return StaffProfilePageState.Staff(name, codename)
+    return StaffProfilePageState.Staff(name, codename, role)
 }

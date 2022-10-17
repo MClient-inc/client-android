@@ -24,6 +24,7 @@ import ru.mclient.ui.view.DesignedString
 import ru.mclient.ui.view.DesignedText
 import ru.mclient.ui.view.toDesignedDrawable
 import ru.mclient.ui.view.toDesignedString
+import ru.mclient.ui.view.toStringComposable
 import ru.shafran.ui.R
 
 data class StaffListPageState(
@@ -98,7 +99,10 @@ fun StaffItem(
 ) {
     ListItem(
         headlineText = { DesignedText(staff.name) },
-        supportingText = { DesignedText(staff.role) },
+        supportingText = {
+            if (staff.role.toStringComposable().isNotBlank())
+                DesignedText(staff.role)
+        },
         modifier = modifier,
         leadingContent = {
             DesignedIcon(

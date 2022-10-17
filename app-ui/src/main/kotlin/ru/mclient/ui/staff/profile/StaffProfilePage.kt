@@ -90,7 +90,7 @@ fun ClientProfileHeaderComponent(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = staff.role,
+                text = staff.role.ifBlank { staff.codename },
                 style = MaterialTheme.typography.labelSmall,
                 overflow = TextOverflow.Ellipsis
             )

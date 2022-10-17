@@ -27,7 +27,8 @@ class StaffCreateComponent(
             codename = codename,
             role = role,
             isLoading = isLoading,
-            isError = isError
+            isError = isError,
+            isButtonsEnabled = isButtonEnabled,
         )
     }
 
@@ -40,7 +41,7 @@ class StaffCreateComponent(
     }
 
     override fun onCreate(username: String, codename: String, role: String) {
-        store.accept(StaffCreateStore.Intent.Create(username, codename, ""))
+        store.accept(StaffCreateStore.Intent.Create(username, codename, role))
     }
 
 }

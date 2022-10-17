@@ -15,6 +15,7 @@ fun StaffListState.toUI(): StaffListPageState {
                 name = it.name.toDesignedString(),
                 codename = it.codename.toDesignedString(),
                 icon = null,
+                role = it.role.toDesignedString()
             )
         },
         isLoading = isLoading,
