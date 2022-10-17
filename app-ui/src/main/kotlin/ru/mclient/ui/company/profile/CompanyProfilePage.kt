@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.mclient.ui.utils.defaultPlaceholder
 import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.DesignedDrawable
 import ru.mclient.ui.view.DesignedIcon
@@ -63,16 +66,16 @@ fun CompanyProfilePage(
         modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        if (state.profile != null)
-            CompanyProfileHeaderComponent(
-                profile = state.profile,
-                onEdit = onEdit,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .outlined()
-                    .padding(10.dp)
-            )
-        CompanyProfileBodyComponent(
+        CompanyProfileHeader(
+            profile = state.profile,
+            onEdit = onEdit,
+            modifier = Modifier
+                .fillMaxWidth()
+                .outlined()
+                .padding(10.dp),
+        )
+        CompanyProfileBody(
+            isLoading = state.isLoading,
             onClients = onClients,
             onServices = onServices,
             onStaff = onStaff,
@@ -91,6 +94,25 @@ class MenuItem(
     val onClick: () -> Unit,
 )
 
+
+@Composable
+fun CompanyProfileHeader(
+    profile: CompanyProfilePageState.Profile?,
+    onEdit: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    if (profile != null) {
+        CompanyProfileHeaderComponent(
+            profile = profile,
+            onEdit = onEdit,
+            modifier = modifier
+        )
+    } else {
+        CompanyProfileHeaderPlaceholder(
+            modifier = modifier,
+        )
+    }
+}
 
 @Composable
 fun CompanyProfileHeaderComponent(
@@ -132,6 +154,77 @@ fun CompanyProfileHeaderComponent(
     }
 }
 
+@Composable
+fun CompanyProfileHeaderPlaceholder(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        DesignedIcon(
+            icon = painterResource(id = R.drawable.company).toDesignedDrawable(),
+            modifier = Modifier
+                .size(125.dp)
+                .defaultPlaceholder()
+        )
+        Column {
+            DesignedText(
+                text = "Название компании".toDesignedString(),
+                style = MaterialTheme.typography.headlineSmall,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                modifier = Modifier
+                    .defaultPlaceholder()
+            )
+            DesignedText(
+                text = "Кодовое имя компании".toDesignedString(),
+                style = MaterialTheme.typography.labelSmall,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            DesignedButton(
+                text = "Редактировать".toDesignedString(),
+                onClick = {},
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultPlaceholder()
+            )
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CompanyProfileBody(
+    isLoading: Boolean,
+    onClients: () -> Unit,
+    onServices: () -> Unit,
+    onStaff: () -> Unit,
+    onNetwork: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (isLoading) {
+        CompanyProfileBodyPlaceholder(count = 4, modifier = modifier)
+    } else {
+        CompanyProfileBodyItems(
+            menu = listOf(
+                MenuItem(title = "Клиенты".toDesignedString(), onClick = onClients),
+                MenuItem(title = "Услуги".toDesignedString(), onClick = onServices),
+                MenuItem(title = "Работники".toDesignedString(), onClick = onStaff),
+                MenuItem(title = "Сеть".toDesignedString(), onClick = onNetwork),
+            ),
+            modifier = modifier,
+        )
+    }
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompanyProfileBodyComponent(
@@ -154,6 +247,19 @@ fun CompanyProfileBodyComponent(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun CompanyProfileBodyPlaceholder(
+    count: Int,
+    modifier: Modifier = Modifier,
+) {
+    CompanyProfileBodyItemsPlaceholder(
+        count = count,
+        modifier = modifier,
+    )
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun CompanyProfileBodyItems(menu: List<MenuItem>, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
@@ -169,6 +275,33 @@ fun CompanyProfileBodyItems(menu: List<MenuItem>, modifier: Modifier = Modifier)
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable(onClick = it.onClick)
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CompanyProfileBodyItemsPlaceholder(count: Int, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+    ) {
+        repeat(count) {
+            ListItem(
+                headlineText = {
+                    DesignedText(
+                        text = "Пункт меню".toDesignedString(),
+                        modifier = Modifier.defaultPlaceholder()
+                    )
+                },
+                leadingContent = {
+                    DesignedIcon(
+                        icon = Icons.Outlined.Menu.toDesignedDrawable(),
+                        modifier = Modifier.defaultPlaceholder()
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
             )
         }
     }
