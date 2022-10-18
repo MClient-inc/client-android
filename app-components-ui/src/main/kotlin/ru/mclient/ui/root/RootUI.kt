@@ -28,7 +28,7 @@ fun RootNavHost(instance: Root.Child, modifier: Modifier) {
         is Root.Child.ApplicationScope ->
             ApplicationCompanyScopeSelectorHostUI(
                 component = instance.component,
-                modifier = modifier
+                modifier = modifier,
             )
     }
 }
