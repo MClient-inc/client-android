@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Menu
@@ -14,7 +15,13 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.utils.defaultPlaceholder
 import ru.mclient.ui.view.DesignedDrawable
@@ -50,15 +57,24 @@ fun StaffListPage(
     onCreate: () -> Unit,
     modifier: Modifier,
 ) {
+    val listState = rememberLazyListState()
     Scaffold(
         floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = {
-                    DesignedText("Добавить".toDesignedString())
-                },
-                icon = { DesignedIcon(icon = Icons.Outlined.Add.toDesignedDrawable()) },
-                onClick = onCreate
-            )
+            if (!state.isLoading || state.isRefreshing) {
+                var isExpanded by rememberSaveable { mutableStateOf(false) }
+                LaunchedEffect(key1 = Unit) {
+                    isExpanded = true
+                }
+                ExtendedFloatingActionButton(
+                    text = {
+                        DesignedText("Добавить".toDesignedString())
+                    },
+                    icon = { DesignedIcon(icon = Icons.Outlined.Add.toDesignedDrawable()) },
+                    onClick = onCreate,
+                    expanded = isExpanded && !listState.isScrollInProgress,
+//                modifier = Modifier.animateContentPlacement()
+                )
+            }
         },
         modifier = modifier,
     ) {
@@ -67,6 +83,7 @@ fun StaffListPage(
             enabled = state.staff.isNotEmpty(),
             onRefresh = onRefresh,
             loading = state.isLoading,
+            state = listState,
             empty = state.staff.isEmpty(),
             modifier = Modifier
                 .fillMaxSize()
@@ -80,7 +97,7 @@ fun StaffListPage(
                 }
             },
         ) {
-            items(state.staff) { staff ->
+            items(state.staff, key = StaffListPageState.Staff::id) { staff ->
                 StaffItem(staff = staff,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -145,3 +162,26 @@ fun StaffItemPlaceholder(
 }
 
 
+@Composable
+@Preview
+fun StaffListPagePreview() {
+    StaffListPage(
+        state = StaffListPageState(
+            staff = List(6) {
+                StaffListPageState.Staff(
+                    it.toLong(),
+                    "name".toDesignedString(),
+                    "codename".toDesignedString(),
+                    "role".toDesignedString(),
+                    null
+                )
+            },
+            isLoading = false,
+            isRefreshing = false,
+        ),
+        onCreate = {},
+        onRefresh = {},
+        onSelect = {},
+        modifier = Modifier.fillMaxSize(),
+    )
+}
