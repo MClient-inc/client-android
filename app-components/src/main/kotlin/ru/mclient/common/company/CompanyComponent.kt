@@ -9,6 +9,7 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.company.profile.CompanyProfileHostComponent
+import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileByIdHostComponent
 import ru.mclient.common.diChildStack
 import ru.mclient.common.staff.StaffProfileHostComponent
 import ru.mclient.common.staff.create.StaffCreateHostComponent
@@ -45,13 +46,18 @@ class CompanyComponent(
         navigation.push(Config.CreateStaff(companyId))
     }
 
+    private fun onNetwork(networkId: Long) {
+        navigation.push(Config.CompanyNetwork(networkId))
+    }
+
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
         return when (config) {
             is Config.CompanyProfile -> Company.Child.CompanyProfile(
                 CompanyProfileHostComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
-                    onStaff = { onStaffFromCompany(config.companyId) }
+                    onStaff = { onStaffFromCompany(config.companyId) },
+                    onNetwork = { onNetwork(it) }
                 )
             )
 
@@ -78,6 +84,13 @@ class CompanyComponent(
                     onSuccess = { onStaff(it, true) }
                 )
             )
+
+            is Config.CompanyNetwork -> Company.Child.CompanyNetwork(
+                CompanyNetworkProfileByIdHostComponent(
+                    componentContext = componentContext,
+                    networkId = config.networkId,
+                )
+            )
         }
     }
 
@@ -94,6 +107,9 @@ class CompanyComponent(
 
         @Parcelize
         data class CreateStaff(val companyId: Long) : Config()
+
+        @Parcelize
+        data class CompanyNetwork(val networkId: Long) : Config()
 
     }
 

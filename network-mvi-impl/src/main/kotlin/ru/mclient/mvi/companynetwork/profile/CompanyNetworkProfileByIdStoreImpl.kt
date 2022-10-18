@@ -1,4 +1,4 @@
-package ru.mclient.mvi.company.profile
+package ru.mclient.mvi.companynetwork.profile
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
@@ -8,18 +8,18 @@ import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 import ru.mclient.mvi.SyncCoroutineExecutor
 import ru.mclient.network.company.CompanyNetworkSource
-import ru.mclient.network.company.GetCompanyInput
+import ru.mclient.network.company.GetNetworkInput
 
 @OptIn(ExperimentalMviKotlinApi::class)
 @Factory
-class CompanyProfileStoreImpl(
+class CompanyNetworkProfileByIdStoreImpl(
     storeFactory: StoreFactory,
-    params: CompanyProfileStore.Params,
+    params: CompanyNetworkProfileStore.Params,
     companiesSource: CompanyNetworkSource,
-) : CompanyProfileStore,
-    Store<CompanyProfileStore.Intent, CompanyProfileStore.State, CompanyProfileStore.Label> by storeFactory.create(
-        name = "CompanyProfileStoreImpl",
-        initialState = CompanyProfileStore.State(
+) : CompanyNetworkProfileStore,
+    Store<CompanyNetworkProfileStore.Intent, CompanyNetworkProfileStore.State, CompanyNetworkProfileStore.Label> by storeFactory.create(
+        name = "CompanyNetworkProfileByIdStoreImpl",
+        initialState = CompanyNetworkProfileStore.State(
             null,
             isFailure = false,
             isLoading = true
@@ -36,12 +36,11 @@ class CompanyProfileStoreImpl(
                 )
 
                 is Message.Loaded -> copy(
-                    CompanyProfileStore.State.Company(
+                    CompanyNetworkProfileStore.State.CompanyNetwork(
                         id = message.company.id,
                         title = message.company.title,
                         codename = message.company.codename,
                         description = message.company.description,
-                        networkId = message.company.networkId,
                         icon = message.company.icon,
                     ),
                     isFailure = false,
@@ -57,40 +56,39 @@ class CompanyProfileStoreImpl(
     ) {
 
     class Executor(
-        private val params: CompanyProfileStore.Params,
+        private val params: CompanyNetworkProfileStore.Params,
         private val companiesSource: CompanyNetworkSource,
     ) :
-        SyncCoroutineExecutor<CompanyProfileStore.Intent, Action, CompanyProfileStore.State, Message, CompanyProfileStore.Label>() {
+        SyncCoroutineExecutor<CompanyNetworkProfileStore.Intent, Action, CompanyNetworkProfileStore.State, Message, CompanyNetworkProfileStore.Label>() {
 
-        override fun executeAction(action: Action, getState: () -> CompanyProfileStore.State) {
+        override fun executeAction(action: Action, getState: () -> CompanyNetworkProfileStore.State) {
             when (action) {
-                Action.FirstLoad -> loadCompany(params.companyId)
+                Action.FirstLoad -> loadCompany(params.networkId)
             }
         }
 
         override fun executeIntent(
-            intent: CompanyProfileStore.Intent,
-            getState: () -> CompanyProfileStore.State
+            intent: CompanyNetworkProfileStore.Intent,
+            getState: () -> CompanyNetworkProfileStore.State
         ) {
             when (intent) {
-                CompanyProfileStore.Intent.Refresh -> loadCompany(params.companyId)
+                CompanyNetworkProfileStore.Intent.Refresh -> loadCompany(params.networkId)
             }
         }
 
-        private fun loadCompany(companyId: Long) {
+        private fun loadCompany(networkId: Long) {
             dispatch(Message.Loading)
             scope.launch {
                 try {
-                    val company = companiesSource.getCompany(GetCompanyInput(companyId))
+                    val company = companiesSource.getNetwork(GetNetworkInput(networkId))
                     syncDispatch(
                         Message.Loaded(
                             Message.Loaded.Company(
-                                id = company.company.id,
-                                title = company.company.title,
-                                codename = company.company.codename,
-                                description = company.company.description,
-                                icon = company.company.icon,
-                                networkId = company.company.networkId,
+                                id = company.network.id,
+                                title = company.network.title,
+                                codename = company.network.codename,
+                                description = company.network.description,
+                                icon = company.network.icon,
                             )
                         )
                     )
@@ -117,7 +115,6 @@ class CompanyProfileStoreImpl(
                 val codename: String,
                 val description: String,
                 val icon: String?,
-                val networkId: Long,
             )
         }
 

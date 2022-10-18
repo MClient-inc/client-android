@@ -13,6 +13,7 @@ class CompanyProfileComponent(
     componentContext: DIComponentContext,
     companyId: Long,
     private val onStaff: () -> Unit,
+    private val onNetwork: (Long) -> Unit,
 ) : CompanyProfile, DIComponentContext by componentContext {
 
     private val store: CompanyProfileStore =
@@ -59,6 +60,6 @@ class CompanyProfileComponent(
     }
 
     override fun onNetwork() {
-        TODO("Not yet implemented")
+        store.state.company?.networkId?.let(onNetwork)
     }
 }

@@ -1,4 +1,4 @@
-package ru.mclient.ui.company.profile
+package ru.mclient.ui.companynetwork.profile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +36,7 @@ import ru.mclient.ui.view.toDesignedDrawable
 import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
 
-data class CompanyProfilePageState(
+data class CompanyNetworkProfilePageState(
     val profile: Profile?,
     val isLoading: Boolean,
     val isRefreshing: Boolean,
@@ -50,14 +50,15 @@ data class CompanyProfilePageState(
 
 
 @Composable
-fun CompanyProfilePage(
-    state: CompanyProfilePageState,
+fun CompanyNetworkProfilePage(
+    state: CompanyNetworkProfilePageState,
     onRefresh: () -> Unit,
     onEdit: () -> Unit,
     onClients: () -> Unit,
+    onAnalytics: () -> Unit,
     onServices: () -> Unit,
     onStaff: () -> Unit,
-    onNetwork: () -> Unit,
+    onCompany: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DesignedRefreshColumn(
@@ -66,7 +67,7 @@ fun CompanyProfilePage(
         modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        CompanyProfileHeader(
+        CompanyNetworkProfileHeader(
             profile = state.profile,
             onEdit = onEdit,
             modifier = Modifier
@@ -74,12 +75,13 @@ fun CompanyProfilePage(
                 .outlined()
                 .padding(10.dp),
         )
-        CompanyProfileBody(
-            isLoading = state.isLoading && !state.isRefreshing,
+        CompanyNetworkProfileBody(
+            isLoading = state.isLoading  && !state.isRefreshing,
             onClients = onClients,
             onServices = onServices,
             onStaff = onStaff,
-            onNetwork = onNetwork,
+            onNetwork = onCompany,
+            onAnalytics = onAnalytics,
             modifier = Modifier
                 .fillMaxWidth()
                 .outlined()
@@ -96,27 +98,27 @@ class MenuItem(
 
 
 @Composable
-fun CompanyProfileHeader(
-    profile: CompanyProfilePageState.Profile?,
+private fun CompanyNetworkProfileHeader(
+    profile: CompanyNetworkProfilePageState.Profile?,
     onEdit: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (profile != null) {
-        CompanyProfileHeaderComponent(
+        CompanyNetworkProfileHeaderComponent(
             profile = profile,
             onEdit = onEdit,
             modifier = modifier
         )
     } else {
-        CompanyProfileHeaderPlaceholder(
+        CompanyNetworkProfileHeaderPlaceholder(
             modifier = modifier,
         )
     }
 }
 
 @Composable
-fun CompanyProfileHeaderComponent(
-    profile: CompanyProfilePageState.Profile,
+private fun CompanyNetworkProfileHeaderComponent(
+    profile: CompanyNetworkProfilePageState.Profile,
     onEdit: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -155,7 +157,7 @@ fun CompanyProfileHeaderComponent(
 }
 
 @Composable
-fun CompanyProfileHeaderPlaceholder(
+private fun CompanyNetworkProfileHeaderPlaceholder(
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -201,23 +203,25 @@ fun CompanyProfileHeaderPlaceholder(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CompanyProfileBody(
+private fun CompanyNetworkProfileBody(
     isLoading: Boolean,
     onClients: () -> Unit,
     onServices: () -> Unit,
     onStaff: () -> Unit,
     onNetwork: () -> Unit,
+    onAnalytics: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (isLoading) {
-        CompanyProfileBodyPlaceholder(count = 4, modifier = modifier)
+        CompanyNetworkProfileBodyPlaceholder(count = 5, modifier = modifier)
     } else {
-        CompanyProfileBodyItems(
+        CompanyNetworkProfileBodyItems(
             menu = listOf(
                 MenuItem(title = "Клиенты".toDesignedString(), onClick = onClients),
                 MenuItem(title = "Услуги".toDesignedString(), onClick = onServices),
                 MenuItem(title = "Работники".toDesignedString(), onClick = onStaff),
-                MenuItem(title = "Сеть".toDesignedString(), onClick = onNetwork),
+                MenuItem(title = "Компании".toDesignedString(), onClick = onNetwork),
+                MenuItem(title = "Аналитика".toDesignedString(), onClick = onAnalytics),
             ),
             modifier = modifier,
         )
@@ -227,14 +231,14 @@ fun CompanyProfileBody(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CompanyProfileBodyComponent(
+private fun CompanyNetworkProfileBodyComponent(
     onClients: () -> Unit,
     onServices: () -> Unit,
     onStaff: () -> Unit,
     onNetwork: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    CompanyProfileBodyItems(
+    CompanyNetworkProfileBodyItems(
         menu = listOf(
             MenuItem(title = "Клиенты".toDesignedString(), onClick = onClients),
             MenuItem(title = "Услуги".toDesignedString(), onClick = onServices),
@@ -247,11 +251,11 @@ fun CompanyProfileBodyComponent(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CompanyProfileBodyPlaceholder(
+private fun CompanyNetworkProfileBodyPlaceholder(
     count: Int,
     modifier: Modifier = Modifier,
 ) {
-    CompanyProfileBodyItemsPlaceholder(
+    CompanyNetworkProfileBodyItemsPlaceholder(
         count = count,
         modifier = modifier,
     )
@@ -260,7 +264,7 @@ fun CompanyProfileBodyPlaceholder(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CompanyProfileBodyItems(menu: List<MenuItem>, modifier: Modifier = Modifier) {
+private fun CompanyNetworkProfileBodyItems(menu: List<MenuItem>, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
     ) {
@@ -282,7 +286,7 @@ fun CompanyProfileBodyItems(menu: List<MenuItem>, modifier: Modifier = Modifier)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CompanyProfileBodyItemsPlaceholder(count: Int, modifier: Modifier = Modifier) {
+private fun CompanyNetworkProfileBodyItemsPlaceholder(count: Int, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
     ) {
@@ -309,12 +313,12 @@ fun CompanyProfileBodyItemsPlaceholder(count: Int, modifier: Modifier = Modifier
 
 @Preview
 @Composable
-fun CompanyProfilePagePreview() {
-    CompanyProfilePage(
-        state = CompanyProfilePageState(
-            profile = CompanyProfilePageState.Profile(
-                title = "Компания А".toDesignedString(),
-                codename = "mycompany_1234".toDesignedString(),
+private fun CompanyNetworkProfilePagePreview() {
+    CompanyNetworkProfilePage(
+        state = CompanyNetworkProfilePageState(
+            profile = CompanyNetworkProfilePageState.Profile(
+                title = "Сеть А".toDesignedString(),
+                codename = "mynetwork_1234".toDesignedString(),
                 description = "это реп для коллег человек куллер говорит буль буль".toDesignedString()
             ),
             isLoading = false,
@@ -325,7 +329,8 @@ fun CompanyProfilePagePreview() {
         onClients = {},
         onServices = {},
         onStaff = {},
-        onNetwork = {},
+        onCompany = {},
+        onAnalytics = {},
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp)

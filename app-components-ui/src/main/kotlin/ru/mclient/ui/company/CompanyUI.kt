@@ -7,6 +7,7 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackA
 import ru.mclient.common.company.Company
 import ru.mclient.ui.LocalChildrenStackAnimator
 import ru.mclient.ui.company.profile.CompanyProfileHostUI
+import ru.mclient.ui.companynetwork.profile.CompanyNetworkProfileHostUI
 import ru.mclient.ui.staff.create.StaffCreateHostUI
 import ru.mclient.ui.staff.list.StaffListHostUI
 import ru.mclient.ui.staff.profile.StaffProfileHostUI
@@ -47,6 +48,12 @@ fun CompanyNavHost(child: Company.Child, modifier: Modifier) {
             StaffCreateHostUI(
                 component = child.component,
                 modifier = modifier,
+            )
+
+        is Company.Child.CompanyNetwork ->
+            CompanyNetworkProfileHostUI(
+                component = child.component,
+                modifier = modifier
             )
     }
 }

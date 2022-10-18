@@ -43,6 +43,21 @@ class GetCompanyOutput(
         val networkId: Long,
     )
 }
+class GetNetworkInput(
+    val networkId: Long,
+)
+
+class GetNetworkOutput(
+    val network: CompanyNetwork,
+) {
+    class CompanyNetwork(
+        val id: Long,
+        val title: String,
+        val codename: String,
+        val description: String,
+        val icon: String?,
+    )
+}
 
 class GetCompanyNetworksInput(val accountId: Long)
 

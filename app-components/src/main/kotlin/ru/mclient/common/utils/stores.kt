@@ -62,18 +62,21 @@ internal inline fun <reified State : Parcelable, reified T : Store<*, State, *>>
 }
 
 fun <State : Any> Store<*, State, *>.states(lifecycleOwner: LifecycleOwner): androidx.compose.runtime.State<State> {
-    return states(lifecycleOwner, mapper = { it })
+    return states(
+        lifecycleOwner = lifecycleOwner,
+        transform = { it },
+    )
 }
 
 fun <State : Any, T : Any> Store<*, State, *>.states(
     lifecycleOwner: LifecycleOwner,
-    mapper: (State) -> T
+    transform: (State) -> T
 ): androidx.compose.runtime.State<T> {
     return toState(
         lifecycleOwner,
         currentState = state,
-        mapper = mapper,
-        Store<*, State, *>::states
+        mapper = transform,
+        Store<*, State, *>::states,
     )
 }
 

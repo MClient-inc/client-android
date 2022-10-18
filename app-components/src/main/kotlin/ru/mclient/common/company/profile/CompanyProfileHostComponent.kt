@@ -10,6 +10,7 @@ class CompanyProfileHostComponent(
     componentContext: DIComponentContext,
     companyId: Long,
     onStaff: () -> Unit,
+    onNetwork: (Long) -> Unit,
 ) : CompanyProfileHost, DIComponentContext by componentContext {
 
 
@@ -22,5 +23,6 @@ class CompanyProfileHostComponent(
             componentContext = childDIContext(key = "company_profile"),
             companyId = companyId,
             onStaff = onStaff,
+            onNetwork = onNetwork,
         )
 }

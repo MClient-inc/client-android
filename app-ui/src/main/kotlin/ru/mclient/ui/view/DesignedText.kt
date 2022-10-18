@@ -4,6 +4,7 @@ import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -19,16 +20,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
 
+@Stable
 sealed interface DesignedString {
 
     @JvmInline
+    @Stable
     value class SimpleString(val text: String) : DesignedString
 
+    @Stable
     data class AnnotatedString(
         val text: androidx.compose.ui.text.AnnotatedString,
         val inlineContent: Map<String, InlineTextContent> = mapOf()
     ) : DesignedString
 
+    @Stable
     @JvmInline
     value class Resource(val text: Int) : DesignedString
 
