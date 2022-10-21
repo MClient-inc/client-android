@@ -9,10 +9,12 @@ import ru.mclient.common.childDIContext
 class ServiceCategoriesListHostForCompanyComponent(
     componentContext: DIComponentContext,
     companyId: Long,
+    onCategorySelected: (Long) -> Unit,
 ) : ServiceCategoriesListHost, DIComponentContext by componentContext {
     override val list: ServiceCategoriesList = ServiceCategoriesListForCompanyComponent(
         componentContext = childDIContext(key = "service_categories_list"),
-        companyId = companyId
+        companyId = companyId,
+        onCategorySelected = onCategorySelected,
     )
     override val bar: TopBar = ImmutableTopBar(TopBarState("Категории"))
 

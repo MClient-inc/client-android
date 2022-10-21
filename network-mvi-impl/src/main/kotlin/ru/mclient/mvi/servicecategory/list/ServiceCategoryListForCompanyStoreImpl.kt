@@ -18,7 +18,7 @@ class ServiceCategoryListForCompanyStoreImpl(
     categoriesSource: ServiceCategoryNetworkSource,
 ) : ServiceCategoriesListForCompanyStore,
     Store<ServiceCategoriesListForCompanyStore.Intent, ServiceCategoriesListForCompanyStore.State, ServiceCategoriesListForCompanyStore.Label> by storeFactory.create(
-        name = "ServiceCategoryListForCompanyStoreImpl",
+        name = "CompanyNetworksListForAccountStoreImpl",
         initialState = ServiceCategoriesListForCompanyStore.State(
             categories = emptyList(),
             companyId = params.companyId,

@@ -9,6 +9,7 @@ import ru.mclient.mvi.servicecategory.list.ServiceCategoriesListForCompanyStore
 class ServiceCategoriesListForCompanyComponent(
     componentContext: DIComponentContext,
     companyId: Long,
+    private val onCategorySelected: (Long) -> Unit,
 ) : ServiceCategoriesList, DIComponentContext by componentContext {
 
     val store: ServiceCategoriesListForCompanyStore =
@@ -35,7 +36,7 @@ class ServiceCategoriesListForCompanyComponent(
     }
 
     override fun onCategory(categoryId: Long) {
-        TODO("Not yet implemented")
+        onCategorySelected.invoke(categoryId)
     }
 
 }

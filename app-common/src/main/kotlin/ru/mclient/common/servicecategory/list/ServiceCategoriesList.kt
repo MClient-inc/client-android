@@ -19,6 +19,6 @@ interface ServiceCategoriesList {
 
     fun onRefresh()
 
-    fun onCategory(serviceId: Long)
+    fun onCategory(categoryId: Long)
 
 }

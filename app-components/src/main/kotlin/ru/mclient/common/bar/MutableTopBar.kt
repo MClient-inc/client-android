@@ -11,8 +11,8 @@ class MutableTopBar(
     override var state: TopBarState by mutableStateOf(state)
         private set
 
-    fun updateState(state: TopBarState) {
-        this.state = state
+    fun update(function: (TopBarState) -> TopBarState) {
+        this.state = function(state)
     }
 
 }

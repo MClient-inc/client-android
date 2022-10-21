@@ -14,7 +14,6 @@ class KtorServiceCategoryNetworkSource(
 ) : ServiceCategoryNetworkSource {
 
     override suspend fun getServiceCategoriesByCompany(input: GetServiceCategoriesByCompanyInput): GetServiceCategoriesByCompanyOutput {
-
         val response = client.get("/companies/${input.companyId}/categories")
         val body = response.body<GetServiceCategoriesForCompanyResponse>()
         return GetServiceCategoriesByCompanyOutput(
@@ -27,7 +26,21 @@ class KtorServiceCategoryNetworkSource(
         )
     }
 
+    override suspend fun getServiceCategoryById(input: GetServiceCategoryByIdInput): GetServiceCategoryByIdOutput {
+        val response = client.get("/categories/${input.categoryId}")
+        val body = response.body<GetServiceCategoryResponse>()
+        return GetServiceCategoryByIdOutput(
+            id = body.id,
+            title = body.title,
+        )
+    }
 }
+
+@Serializable
+class GetServiceCategoryResponse(
+    val id: Long,
+    val title: String,
+)
 
 
 @Serializable

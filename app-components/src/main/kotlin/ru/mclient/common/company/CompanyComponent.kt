@@ -11,6 +11,7 @@ import ru.mclient.common.DIComponentContext
 import ru.mclient.common.company.profile.CompanyProfileHostComponent
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileByIdHostComponent
 import ru.mclient.common.diChildStack
+import ru.mclient.common.service.list.ServiceListForCategoryAndCompanyHostComponent
 import ru.mclient.common.servicecategory.list.ServiceCategoriesListHostForCompanyComponent
 import ru.mclient.common.staff.StaffProfileHostComponent
 import ru.mclient.common.staff.create.StaffCreateHostComponent
@@ -55,6 +56,10 @@ class CompanyComponent(
         navigation.push(Config.ServiceCategories(companyId))
     }
 
+    private fun onCategorySelected(categoryId: Long, companyId: Long) {
+        navigation.push(Config.ServiceList(companyId = companyId, categoryId = categoryId))
+    }
+
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
         return when (config) {
             is Config.CompanyProfile -> Company.Child.CompanyProfile(
@@ -63,7 +68,7 @@ class CompanyComponent(
                     companyId = config.companyId,
                     onStaff = { onStaffFromCompany(config.companyId) },
                     onNetwork = { onNetwork(it) },
-                    onServices = { onServices(config.companyId) }
+                    onServices = { onServices(config.companyId) },
                 )
             )
 
@@ -72,7 +77,7 @@ class CompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
                     onSelect = ::onStaff,
-                    onCreate = { onCreateStaff(config.companyId) }
+                    onCreate = { onCreateStaff(config.companyId) },
                 )
             )
 
@@ -87,7 +92,7 @@ class CompanyComponent(
                 StaffCreateHostComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
-                    onSuccess = { onStaff(it, true) }
+                    onSuccess = { onStaff(it, true) },
                 )
             )
 
@@ -102,6 +107,20 @@ class CompanyComponent(
                 ServiceCategoriesListHostForCompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
+                    onCategorySelected = {
+                        onCategorySelected(
+                            categoryId = it,
+                            companyId = config.companyId,
+                        )
+                    },
+                )
+            )
+
+            is Config.ServiceList -> Company.Child.ServiceList(
+                ServiceListForCategoryAndCompanyHostComponent(
+                    componentContext = componentContext,
+                    companyId = config.companyId,
+                    categoryId = config.categoryId,
                 )
             )
         }
@@ -126,6 +145,9 @@ class CompanyComponent(
 
         @Parcelize
         data class ServiceCategories(val companyId: Long) : Config()
+
+        @Parcelize
+        data class ServiceList(val companyId: Long, val categoryId: Long) : Config()
 
     }
 

@@ -12,3 +12,12 @@ class GetServiceCategoriesByCompanyOutput(
         val title: String,
     )
 }
+
+data class GetServiceCategoryByIdInput(
+    val categoryId: Long,
+)
+
+data class GetServiceCategoryByIdOutput(
+    val id: Long,
+    val title: String,
+)
