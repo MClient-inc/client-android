@@ -3,6 +3,7 @@ package ru.mclient.network.company
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import kotlinx.serialization.Serializable
 import org.koin.core.annotation.Named
@@ -15,7 +16,7 @@ class KtorCompanyNetworkSource(
 ) : CompanyNetworkSource {
 
     override suspend fun createCompany(input: CompanyCreateInput): CompanyCreateOutput {
-        val response = client.get("/companies") {
+        val response = client.post("/companies") {
             setBody(CompanyCreateRequest(input.title, input.codename, input.description))
         }
         val body = response.body<CompanyCreateResponse>()

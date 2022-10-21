@@ -11,6 +11,7 @@ import ru.mclient.common.DIComponentContext
 import ru.mclient.common.company.profile.CompanyProfileHostComponent
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileByIdHostComponent
 import ru.mclient.common.diChildStack
+import ru.mclient.common.servicecategory.list.ServiceCategoriesListHostForCompanyComponent
 import ru.mclient.common.staff.StaffProfileHostComponent
 import ru.mclient.common.staff.create.StaffCreateHostComponent
 import ru.mclient.common.staff.list.StaffListForCompanyHostComponent
@@ -50,6 +51,10 @@ class CompanyComponent(
         navigation.push(Config.CompanyNetwork(networkId))
     }
 
+    private fun onServices(companyId: Long) {
+        navigation.push(Config.ServiceCategories(companyId))
+    }
+
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
         return when (config) {
             is Config.CompanyProfile -> Company.Child.CompanyProfile(
@@ -57,7 +62,8 @@ class CompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
                     onStaff = { onStaffFromCompany(config.companyId) },
-                    onNetwork = { onNetwork(it) }
+                    onNetwork = { onNetwork(it) },
+                    onServices = { onServices(config.companyId) }
                 )
             )
 
@@ -91,6 +97,13 @@ class CompanyComponent(
                     networkId = config.networkId,
                 )
             )
+
+            is Config.ServiceCategories -> Company.Child.ServiceCategoriesList(
+                ServiceCategoriesListHostForCompanyComponent(
+                    componentContext = componentContext,
+                    companyId = config.companyId,
+                )
+            )
         }
     }
 
@@ -110,6 +123,9 @@ class CompanyComponent(
 
         @Parcelize
         data class CompanyNetwork(val networkId: Long) : Config()
+
+        @Parcelize
+        data class ServiceCategories(val companyId: Long) : Config()
 
     }
 

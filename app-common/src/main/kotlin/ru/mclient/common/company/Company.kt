@@ -4,6 +4,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import ru.mclient.common.company.profile.CompanyProfileHost
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileHost
+import ru.mclient.common.servicecategory.list.ServiceCategoriesListHost
 import ru.mclient.common.staff.create.StaffCreateHost
 import ru.mclient.common.staff.list.StaffListHost
 import ru.mclient.common.staff.profile.StaffProfileHost
@@ -23,6 +24,8 @@ interface Company {
         class StaffCreate(val component: StaffCreateHost) : Child()
 
         class CompanyNetwork(val component: CompanyNetworkProfileHost) : Child()
+
+        class ServiceCategoriesList(val component: ServiceCategoriesListHost) : Child()
 
     }
 
