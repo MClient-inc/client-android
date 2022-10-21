@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import com.google.accompanist.placeholder.placeholder
 
-fun Modifier.defaultPlaceholder(): Modifier {
+fun Modifier.defaultPlaceholder(visible: Boolean = true): Modifier {
     return composed {
-        Modifier.placeholder(true, MaterialTheme.colorScheme.scrim, MaterialTheme.shapes.small)
+        Modifier.placeholder(visible, MaterialTheme.colorScheme.scrim, MaterialTheme.shapes.small)
     }
 }

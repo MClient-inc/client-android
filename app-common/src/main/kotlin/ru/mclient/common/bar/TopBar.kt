@@ -1,13 +1,12 @@
 package ru.mclient.common.bar
 
-import kotlinx.coroutines.flow.StateFlow
-
 data class TopBarState(
     val title: String,
+    val isLoading: Boolean = false,
 )
 
 interface TopBar {
 
-    val state: StateFlow<TopBarState>
+    val state: TopBarState
 
 }

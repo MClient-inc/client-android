@@ -1,12 +1,12 @@
 package ru.mclient.common.bar
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 
-class ImmutableTopBar(
+open class ImmutableTopBar(
     state: TopBarState,
 ) : TopBar {
 
-    override val state: StateFlow<TopBarState> = MutableStateFlow(state)
+    override val state: TopBarState by mutableStateOf(state)
 
 }
