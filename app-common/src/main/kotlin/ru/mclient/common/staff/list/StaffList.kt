@@ -1,7 +1,5 @@
 package ru.mclient.common.staff.list
 
-import androidx.compose.runtime.State
-
 data class StaffListState(
     val staff: List<Staff>,
     val isLoading: Boolean,
@@ -17,7 +15,7 @@ data class StaffListState(
 
 interface StaffList {
 
-    val state: State<StaffListState>
+    val state: StaffListState
 
     fun onRefresh()
 

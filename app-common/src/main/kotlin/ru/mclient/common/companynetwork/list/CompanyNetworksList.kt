@@ -1,7 +1,5 @@
 package ru.mclient.common.companynetwork.list
 
-import kotlinx.coroutines.flow.StateFlow
-
 
 data class CompanyNetworksListState(
     val networks: List<CompanyNetwork>,
@@ -17,7 +15,7 @@ data class CompanyNetworksListState(
 
 interface CompanyNetworksList {
 
-    val state: StateFlow<CompanyNetworksListState>
+    val state: CompanyNetworksListState
 
     fun onRefresh()
 

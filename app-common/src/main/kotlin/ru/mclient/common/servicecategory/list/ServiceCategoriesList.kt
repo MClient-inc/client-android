@@ -1,7 +1,5 @@
 package ru.mclient.common.servicecategory.list
 
-import androidx.compose.runtime.State
-
 class ServiceCategoriesListState(
     val categories: List<ServiceCategory>,
     val isLoading: Boolean,
@@ -15,7 +13,7 @@ class ServiceCategoriesListState(
 
 interface ServiceCategoriesList {
 
-    val categories: State<ServiceCategoriesListState>
+    val state: ServiceCategoriesListState
 
     fun onRefresh()
 

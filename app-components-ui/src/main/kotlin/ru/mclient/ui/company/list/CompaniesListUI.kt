@@ -1,7 +1,6 @@
 package ru.mclient.ui.company.list
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import ru.mclient.common.company.list.CompaniesList
 import ru.mclient.common.company.list.CompaniesListState
@@ -31,7 +30,7 @@ fun CompaniesListUI(
     modifier: Modifier,
 ) {
     CompaniesListPage(
-        state = component.state.collectAsState().value.toUI(),
+        state = component.state.toUI(),
         onRefresh = component::onRefresh,
         onSelect = { component.onSelect(it.id) },
         modifier = modifier

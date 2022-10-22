@@ -1,10 +1,10 @@
 package ru.mclient.common.company
 
+import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceCurrent
-import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
@@ -16,6 +16,7 @@ import ru.mclient.common.servicecategory.list.ServiceCategoriesListHostForCompan
 import ru.mclient.common.staff.StaffProfileHostComponent
 import ru.mclient.common.staff.create.StaffCreateHostComponent
 import ru.mclient.common.staff.list.StaffListForCompanyHostComponent
+import ru.mclient.common.utils.states
 
 class CompanyComponent(
     componentContext: DIComponentContext,
@@ -25,12 +26,12 @@ class CompanyComponent(
 
     private val navigation = StackNavigation<Config>()
 
-    override val childStack: Value<ChildStack<*, Company.Child>> = diChildStack(
+    override val childStack: ChildStack<*, Company.Child> by diChildStack(
         source = navigation,
         initialConfiguration = Config.CompanyProfile(applicationCompanyId),
         handleBackButton = true,
         childFactory = this::createChild,
-    )
+    ).states(this)
 
     private fun onStaffFromCompany(companyId: Long) {
         navigation.push(Config.StaffFromCompany(companyId))

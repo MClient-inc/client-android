@@ -1,11 +1,10 @@
 package ru.mclient.common.main
 
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.value.Value
 
 interface MainHost {
 
-    val childStack: Value<ChildStack<*, Child>>
+    val childStack: ChildStack<*, Child>
 
     fun onHost()
     fun onLoyalty()

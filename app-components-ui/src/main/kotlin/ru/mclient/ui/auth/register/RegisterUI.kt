@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,10 +26,9 @@ fun RegisterState.toUI(): RegisterPageState {
 
 @Composable
 fun RegisterUI(component: Register, modifier: Modifier) {
-    val state = component.state.collectAsState().value.toUI()
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Register(
-            state = state,
+            state = component.state.toUI(),
             onUpdate = {
                 component.onUpdate(
                     email = it.email,

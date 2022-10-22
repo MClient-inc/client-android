@@ -2,6 +2,7 @@ package ru.mclient.ui.company
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import ru.mclient.common.company.Company
@@ -15,6 +16,7 @@ import ru.mclient.ui.staff.list.StaffListHostUI
 import ru.mclient.ui.staff.profile.StaffProfileHostUI
 
 
+@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun CompanyUI(component: Company, modifier: Modifier) {
     Children(

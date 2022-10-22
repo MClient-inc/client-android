@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,10 +23,9 @@ fun LoginState.toUI(): LoginPageState {
 
 @Composable
 fun LoginUI(component: Login, modifier: Modifier) {
-    val state = component.state.collectAsState().value.toUI()
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         LoginPage(
-            state = state,
+            state = component.state.toUI(),
             onUpdate = { component.onUpdate(it.username, it.password) },
             onLogin = { component.onLogin(it.username, it.password) },
             modifier = Modifier

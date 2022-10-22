@@ -1,7 +1,6 @@
 package ru.mclient.ui.staff.create
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import ru.mclient.common.staff.create.StaffCreate
 import ru.mclient.common.staff.create.StaffCreateState
@@ -19,10 +18,9 @@ fun StaffCreateState.toUI(): StaffCreatePageState {
 
 @Composable
 fun StaffCreateUI(component: StaffCreate, modifier: Modifier) {
-    val state by component.state
     StaffCreatePage(
         modifier = modifier,
-        state = state.toUI(),
+        state = component.state.toUI(),
         onUpdate = {
             component.onUpdate(
                 username = it.username,

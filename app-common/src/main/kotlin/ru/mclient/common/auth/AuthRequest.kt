@@ -1,7 +1,5 @@
 package ru.mclient.common.auth
 
-import kotlinx.coroutines.flow.StateFlow
-
 
 class AuthState(
     val isLoginAvailable: Boolean,
@@ -10,7 +8,7 @@ class AuthState(
 
 interface AuthRequest {
 
-    val state: StateFlow<AuthState>
+    val state: AuthState
 
     fun onLogin()
 

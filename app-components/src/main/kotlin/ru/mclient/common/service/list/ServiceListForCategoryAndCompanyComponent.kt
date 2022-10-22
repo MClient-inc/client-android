@@ -21,7 +21,7 @@ class ServiceListForCategoryAndCompanyComponent(
             )
         }
 
-    override val services: ServiceListState by store.states(this) { it.toState() }
+    override val state: ServiceListState by store.states(this) { it.toState() }
 
     private fun ServiceListForCategoryAndCompanyStore.State.toState(): ServiceListState {
         val category = category

@@ -1,6 +1,6 @@
 package ru.mclient.common.companynetwork.profile
 
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
@@ -14,7 +14,7 @@ class CompanyNetworkProfileByIdComponent(
     private val store: CompanyNetworkProfileStore =
         getParameterizedStore { CompanyNetworkProfileStore.Params(networkId) }
 
-    override val state: State<CompanyNetworkProfileState> = store.states(this) { it.toState() }
+    override val state: CompanyNetworkProfileState by store.states(this) { it.toState() }
 
     private fun CompanyNetworkProfileStore.State.toState(): CompanyNetworkProfileState {
         return CompanyNetworkProfileState(

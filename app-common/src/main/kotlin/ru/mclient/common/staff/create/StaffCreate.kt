@@ -1,7 +1,5 @@
 package ru.mclient.common.staff.create
 
-import androidx.compose.runtime.State
-
 data class StaffCreateState(
     val name: String,
     val codename: String,
@@ -13,7 +11,7 @@ data class StaffCreateState(
 
 interface StaffCreate {
 
-    val state: State<StaffCreateState>
+    val state: StaffCreateState
 
     fun onUpdate(username: String, codename: String, role: String)
 

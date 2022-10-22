@@ -2,20 +2,17 @@ package ru.mclient.common.auth.oauth
 
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.getValue
 import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.arkivanov.mvikotlin.extensions.coroutines.states
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import org.koin.core.component.get
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.auth.ExternalLogin
 import ru.mclient.common.auth.ExternalLoginState
 import ru.mclient.common.utils.getStore
+import ru.mclient.common.utils.states
 import ru.mclient.mvi.auth.OAuthLoginStore
 
 class OAuthLogin(
@@ -35,9 +32,7 @@ class OAuthLogin(
 
     private val store: OAuthLoginStore = getStore()
 
-    override val state: StateFlow<ExternalLoginState> = store.states.map {
-        it.toState()
-    }.stateIn(componentScope, SharingStarted.Eagerly, store.state.toState())
+    override val state: ExternalLoginState by store.states(this) { it.toState() }
 
     init {
         lifecycle.doOnCreate {
@@ -118,14 +113,14 @@ class OAuthLogin(
 
 
     override fun onRetry() {
-        if (!state.value.isRetryAvailable)
+        if (!state.isRetryAvailable)
             return
         openPage()
         store.accept(OAuthLoginStore.Intent.StartOAuthPage)
     }
 
     override fun onAuthenticated() {
-        val id = state.value.account?.id ?: return
+        val id = state.account?.id ?: return
         onAuthorized.invoke(id)
     }
 }

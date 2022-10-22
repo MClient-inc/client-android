@@ -1,7 +1,7 @@
 package ru.mclient.common.auth.request
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import ru.mclient.common.auth.AuthRequest
 import ru.mclient.common.auth.AuthState
 
@@ -11,7 +11,7 @@ class DelegatingAuthRequestComponent(
     state: AuthState,
 ) : AuthRequest {
 
-    override val state: StateFlow<AuthState> = MutableStateFlow(state)
+    override val state: AuthState by mutableStateOf(state)
 
     override fun onLogin() {
         onLogin.invoke()

@@ -8,12 +8,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
-import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import ru.mclient.common.main.MainHost
 import ru.mclient.ui.company.CompanyUI
@@ -22,10 +21,10 @@ import ru.mclient.ui.loyalty.LoyaltyUI
 import ru.mclient.ui.storage.StorageUI
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalDecomposeApi::class)
 @Composable
 fun MainUI(component: MainHost, modifier: Modifier) {
-    val childStack by component.childStack.subscribeAsState()
+    val childStack = component.childStack
     Scaffold(
         bottomBar = {
             MainPageNavBar(

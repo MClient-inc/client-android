@@ -1,8 +1,6 @@
 package ru.mclient.ui.staff.profile
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import ru.mclient.common.staff.profile.StaffProfile
 import ru.mclient.common.staff.profile.StaffProfileState
@@ -12,9 +10,8 @@ fun StaffProfileUI(
     component: StaffProfile,
     modifier: Modifier,
 ) {
-    val state by component.state.collectAsState()
     StaffProfilePage(
-        state = state.toUI(),
+        state = component.state.toUI(),
         onEdit = component::onEdit,
         onRefresh = component::onRefresh,
         modifier = modifier,

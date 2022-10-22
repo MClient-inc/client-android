@@ -1,7 +1,6 @@
 package ru.mclient.ui.auth.oauth
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import ru.mclient.common.auth.ExternalLogin
 import ru.mclient.common.auth.ExternalLoginState
@@ -29,9 +28,8 @@ fun ExternalLoginUI(
     component: ExternalLogin,
     modifier: Modifier
 ) {
-    val state = component.state.collectAsState().value.toUI()
     ExternalLoginPage(
-        state = state,
+        state = component.state.toUI(),
         onRetry = component::onRetry,
         onAuthenticated = component::onAuthenticated,
         modifier = modifier

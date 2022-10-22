@@ -1,8 +1,6 @@
 package ru.mclient.ui.company.profile
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import ru.mclient.common.company.profile.CompanyProfile
 import ru.mclient.common.company.profile.CompanyProfileState
@@ -29,9 +27,8 @@ fun CompanyProfileUI(
     component: CompanyProfile,
     modifier: Modifier
 ) {
-    val state by component.state.collectAsState()
     CompanyProfilePage(
-        state = state.toUI(),
+        state = component.state.toUI(),
         onRefresh = component::onRefresh,
         onEdit = component::onEdit,
         onClients = component::onClients,

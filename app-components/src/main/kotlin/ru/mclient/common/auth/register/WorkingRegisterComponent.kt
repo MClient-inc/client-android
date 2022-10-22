@@ -1,16 +1,14 @@
 package ru.mclient.common.auth.register
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import ru.mclient.common.auth.Register
 import ru.mclient.common.auth.RegisterState
 
-class WorkingRegisterComponent(
-) : Register {
+class WorkingRegisterComponent : Register {
 
 
-
-    override val state: StateFlow<RegisterState> = MutableStateFlow(
+    override val state: RegisterState by mutableStateOf(
         RegisterState(
             email = "",
             isEmailValid = false,

@@ -1,6 +1,6 @@
 package ru.mclient.common.staff.list
 
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
@@ -31,7 +31,7 @@ class StaffListForCompanyComponent(
         )
     }
 
-    override val state: State<StaffListState> = store.states(this) { it.toState() }
+    override val state: StaffListState by store.states(this) { it.toState() }
 
 
     override fun onRefresh() {

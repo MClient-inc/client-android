@@ -23,9 +23,8 @@ fun ServiceListState.Service.toUI(): ServicesListPageState.Service {
 
 @Composable
 fun ServiceListUI(component: ServiceList, modifier: Modifier) {
-    val state = component.services
     ServicesListPage(
-        state = state.toUI(),
+        state = component.state.toUI(),
         onRefresh = component::onRefresh,
         onSelect = remember(component) { { component.onService(it.id) } },
         modifier = modifier,

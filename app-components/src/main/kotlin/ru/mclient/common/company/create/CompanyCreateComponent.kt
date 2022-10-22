@@ -1,12 +1,9 @@
 package ru.mclient.common.company.create
 
-import com.arkivanov.mvikotlin.extensions.coroutines.states
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getStore
+import ru.mclient.common.utils.states
 import ru.mclient.mvi.company.create.CompanyCreateStore
 
 class CompanyCreateComponent(
@@ -25,9 +22,7 @@ class CompanyCreateComponent(
         )
     }
 
-    override val state: StateFlow<CompanyCreateState> = store.states.map {
-        it.toState()
-    }.stateIn(componentScope, SharingStarted.Eagerly, store.state.toState())
+    override val state: CompanyCreateState by store.states(this) { it.toState() }
 
     override fun onUpdate(title: String, codename: String, description: String) {
         store.accept(CompanyCreateStore.Intent.Update(title, codename, description))

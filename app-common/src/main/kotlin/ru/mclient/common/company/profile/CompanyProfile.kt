@@ -1,7 +1,5 @@
 package ru.mclient.common.company.profile
 
-import kotlinx.coroutines.flow.StateFlow
-
 data class CompanyProfileState(
     val profile: Profile?,
     val isLoading: Boolean,
@@ -16,7 +14,7 @@ data class CompanyProfileState(
 
 interface CompanyProfile {
 
-    val state: StateFlow<CompanyProfileState>
+    val state: CompanyProfileState
 
     fun onRefresh()
 

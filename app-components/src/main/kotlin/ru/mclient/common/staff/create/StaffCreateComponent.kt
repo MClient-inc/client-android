@@ -1,6 +1,6 @@
 package ru.mclient.common.staff.create
 
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
@@ -14,8 +14,7 @@ class StaffCreateComponent(
 
     val store: StaffCreateStore = getParameterizedStore { StaffCreateStore.Param(companyId) }
 
-    override val state: State<StaffCreateState> =
-        store.states(this) { it.toState() }
+    override val state: StaffCreateState by store.states(this) { it.toState() }
 
     private fun StaffCreateStore.State.toState(): StaffCreateState {
         val staff = createdStaff

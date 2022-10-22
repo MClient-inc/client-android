@@ -1,7 +1,6 @@
 package ru.mclient.ui.companynetwork.list
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import ru.mclient.common.companynetwork.list.CompanyNetworksList
 import ru.mclient.common.companynetwork.list.CompanyNetworksListState
@@ -39,7 +38,7 @@ fun CompanyNetworksListUI(
     modifier: Modifier,
 ) {
     CompanyNetworksListPage(
-        state = component.state.collectAsState().value.toUI(),
+        state = component.state.toUI(),
         onRefresh = component::onRefresh,
         onSelect = { component.onSelect(it.toDomain()) },
         modifier = modifier

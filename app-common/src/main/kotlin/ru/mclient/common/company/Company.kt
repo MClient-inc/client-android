@@ -1,7 +1,6 @@
 package ru.mclient.common.company
 
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.value.Value
 import ru.mclient.common.company.profile.CompanyProfileHost
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileHost
 import ru.mclient.common.service.list.ServiceListHost
@@ -12,7 +11,7 @@ import ru.mclient.common.staff.profile.StaffProfileHost
 
 interface Company {
 
-    val childStack: Value<ChildStack<*, Child>>
+    val childStack: ChildStack<*, Child>
 
     sealed class Child {
 

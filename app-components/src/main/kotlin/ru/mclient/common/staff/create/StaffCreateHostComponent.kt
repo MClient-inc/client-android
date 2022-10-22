@@ -14,9 +14,11 @@ class StaffCreateHostComponent(
 
 
     override val bar: TopBar = ImmutableTopBar(TopBarState(title = "Создать работника"))
+
     override val staffCreate: StaffCreate = StaffCreateComponent(
         componentContext = childDIContext("staff_create"),
         companyId = companyId,
         onSuccess = onSuccess,
     )
+
 }

@@ -1,7 +1,5 @@
 package ru.mclient.common.companynetwork.profile
 
-import androidx.compose.runtime.State
-
 data class CompanyNetworkProfileState(
     val network: CompanyNetwork?,
     val isLoading: Boolean,
@@ -16,7 +14,7 @@ data class CompanyNetworkProfileState(
 
 interface CompanyNetworkProfile {
 
-    val state: State<CompanyNetworkProfileState>
+    val state: CompanyNetworkProfileState
 
     fun onRefresh()
 

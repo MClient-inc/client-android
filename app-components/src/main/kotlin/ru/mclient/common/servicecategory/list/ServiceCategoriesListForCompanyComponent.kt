@@ -1,6 +1,6 @@
 package ru.mclient.common.servicecategory.list
 
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
@@ -15,7 +15,7 @@ class ServiceCategoriesListForCompanyComponent(
     val store: ServiceCategoriesListForCompanyStore =
         getParameterizedStore { ServiceCategoriesListForCompanyStore.Params(companyId) }
 
-    override val categories: State<ServiceCategoriesListState> = store.states(this) { it.toState() }
+    override val state: ServiceCategoriesListState by store.states(this) { it.toState() }
 
     fun ServiceCategoriesListForCompanyStore.State.toState(): ServiceCategoriesListState {
         return ServiceCategoriesListState(

@@ -1,15 +1,16 @@
 package ru.mclient.common.root
 
+import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
-import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.company.list.CompaniesSelectorComponent
 import ru.mclient.common.companynetwork.list.CompanyNetworksSelectorComponent
 import ru.mclient.common.diChildStack
+import ru.mclient.common.utils.states
 
 class ApplicationCompanyScopeSelectorHostComponent(
     componentContext: DIComponentContext,
@@ -42,13 +43,12 @@ class ApplicationCompanyScopeSelectorHostComponent(
 
     private val navigation = StackNavigation<Config>()
 
-    override val childStack: Value<ChildStack<*, ApplicationCompanyScopeSelectorHost.Child>> =
-        diChildStack(
-            source = navigation,
-            initialConfiguration = Config.CompanyNetwork(accountId),
-            handleBackButton = true,
-            childFactory = this::createChild,
-        )
+    override val childStack: ChildStack<*, ApplicationCompanyScopeSelectorHost.Child> by diChildStack(
+        source = navigation,
+        initialConfiguration = Config.CompanyNetwork(accountId),
+        handleBackButton = true,
+        childFactory = this::createChild,
+    ).states(this)
 
     sealed class Config : Parcelable {
 

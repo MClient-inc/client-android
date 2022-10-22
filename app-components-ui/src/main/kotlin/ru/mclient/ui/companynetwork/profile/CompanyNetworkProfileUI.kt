@@ -1,7 +1,6 @@
 package ru.mclient.ui.companynetwork.profile
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfile
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileState
@@ -28,9 +27,8 @@ fun CompanyNetworkProfileUI(
     component: CompanyNetworkProfile,
     modifier: Modifier
 ) {
-    val state by component.state
     CompanyNetworkProfilePage(
-        state = state.toUI(),
+        state = component.state.toUI(),
         onRefresh = component::onRefresh,
         onEdit = component::onEdit,
         onClients = component::onClients,

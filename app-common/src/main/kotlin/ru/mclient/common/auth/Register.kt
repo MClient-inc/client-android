@@ -1,7 +1,5 @@
 package ru.mclient.common.auth
 
-import kotlinx.coroutines.flow.StateFlow
-
 data class RegisterState(
     val email: String,
     val isEmailValid: Boolean,
@@ -14,7 +12,7 @@ data class RegisterState(
 
 interface Register {
 
-    val state: StateFlow<RegisterState>
+    val state: RegisterState
 
     fun onUpdate(email: String, username: String, password: String, repeatedPassword: String)
 

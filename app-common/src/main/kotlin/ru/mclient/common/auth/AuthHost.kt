@@ -1,11 +1,10 @@
 package ru.mclient.common.auth
 
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.value.Value
 
 interface AuthHost {
 
-    val childStack: Value<ChildStack<*, Child>>
+    val childStack: ChildStack<*, Child>
 
     sealed class Child {
 

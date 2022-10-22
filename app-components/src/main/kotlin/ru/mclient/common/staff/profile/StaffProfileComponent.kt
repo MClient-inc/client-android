@@ -1,12 +1,9 @@
 package ru.mclient.common.staff.profile
 
-import com.arkivanov.mvikotlin.extensions.coroutines.states
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
+import ru.mclient.common.utils.states
 import ru.mclient.mvi.staff.profile.StaffProfileStore
 
 class StaffProfileComponent(
@@ -18,8 +15,7 @@ class StaffProfileComponent(
     private val store: StaffProfileStore =
         getParameterizedStore { StaffProfileStore.Params(staffId) }
 
-    override val state: StateFlow<StaffProfileState> = store.states.map { it.toState() }
-        .stateIn(componentScope, SharingStarted.Eagerly, store.state.toState())
+    override val state: StaffProfileState by store.states(this) { it.toState() }
 
     private fun StaffProfileStore.State.toState(): StaffProfileState {
         return StaffProfileState(

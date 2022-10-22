@@ -2,11 +2,13 @@ package ru.mclient.ui.root
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import ru.mclient.common.root.Root
 import ru.mclient.ui.auth.host.AuthHostUI
 import ru.mclient.ui.main.MainUI
 
+@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun RootUI(component: Root, modifier: Modifier) {
     Children(stack = component.childStack) {

@@ -1,10 +1,10 @@
 package ru.mclient.common.auth.host
 
 import android.os.Parcelable
+import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
-import com.arkivanov.decompose.value.Value
 import kotlinx.parcelize.Parcelize
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.auth.AuthHost
@@ -13,10 +13,11 @@ import ru.mclient.common.auth.oauth.OAuthLogin
 import ru.mclient.common.auth.register.WorkingRegisterComponent
 import ru.mclient.common.auth.request.DelegatingAuthRequestComponent
 import ru.mclient.common.diChildStack
+import ru.mclient.common.utils.states
 
 class AuthHostComponent(
     componentContext: DIComponentContext,
-   private val onAuthorized: (Long) -> Unit,
+    private val onAuthorized: (Long) -> Unit,
 ) : AuthHost, DIComponentContext by componentContext {
 
     private val navigator = StackNavigation<Config>()
@@ -59,12 +60,12 @@ class AuthHostComponent(
         navigator.bringToFront(Config.Register)
     }
 
-    override val childStack: Value<ChildStack<*, AuthHost.Child>> = diChildStack(
+    override val childStack: ChildStack<*, AuthHost.Child> by diChildStack(
         source = navigator,
         initialConfiguration = Config.Request,
         handleBackButton = true,
         childFactory = ::createChild
-    )
+    ).states(this)
 
 
     sealed class Config : Parcelable {

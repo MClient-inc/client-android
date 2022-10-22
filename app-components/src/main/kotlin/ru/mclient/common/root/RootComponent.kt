@@ -1,10 +1,9 @@
 package ru.mclient.common.root
 
+import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.active
 import com.arkivanov.decompose.router.stack.navigate
-import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
@@ -12,6 +11,7 @@ import ru.mclient.common.auth.host.AuthHostComponent
 import ru.mclient.common.diChildStack
 import ru.mclient.common.main.MainHostComponent
 import ru.mclient.common.splash.SplashComponent
+import ru.mclient.common.utils.states
 
 class RootComponent(
     componentContext: DIComponentContext,
@@ -19,11 +19,11 @@ class RootComponent(
 
     private val navigator = StackNavigation<Config>()
 
-    override val childStack: Value<ChildStack<*, Root.Child>> = diChildStack(
+    override val childStack: ChildStack<*, Root.Child> by diChildStack(
         source = navigator,
         initialConfiguration = Config.Splash,
         childFactory = this::createChild
-    )
+    ).states(this)
 
     override val isSplashShown: Boolean get() = childStack.active.instance is Root.Child.Splash
 

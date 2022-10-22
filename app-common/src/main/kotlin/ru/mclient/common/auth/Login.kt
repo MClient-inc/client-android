@@ -1,7 +1,5 @@
 package ru.mclient.common.auth
 
-import kotlinx.coroutines.flow.StateFlow
-
 data class LoginState(
     val username: String,
     val password: String,
@@ -12,7 +10,7 @@ data class LoginState(
 
 interface Login {
 
-    val state: StateFlow<LoginState>
+    val state: LoginState
 
     fun onUpdate(username: String, password: String)
 

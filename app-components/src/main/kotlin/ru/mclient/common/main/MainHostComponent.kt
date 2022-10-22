@@ -1,9 +1,9 @@
 package ru.mclient.common.main
 
+import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
-import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
@@ -12,6 +12,7 @@ import ru.mclient.common.diChildStack
 import ru.mclient.common.home.HomeComponent
 import ru.mclient.common.loyalty.LoyaltyComponent
 import ru.mclient.common.storage.StorageComponent
+import ru.mclient.common.utils.states
 
 class MainHostComponent(
     componentContext: DIComponentContext,
@@ -20,11 +21,11 @@ class MainHostComponent(
 
     private val navigation = StackNavigation<Config>()
 
-    override val childStack: Value<ChildStack<*, MainHost.Child>> = diChildStack(
+    override val childStack: ChildStack<*, MainHost.Child> by diChildStack(
         source = navigation,
         initialConfiguration = Config.Home,
         childFactory = this::createChild,
-    )
+    ).states(this)
 
     override fun onHost() {
         navigation.bringToFront(Config.Home)
@@ -44,7 +45,13 @@ class MainHostComponent(
 
     private fun createChild(config: Config, componentContext: DIComponentContext): MainHost.Child {
         return when (config) {
-            is Config.Company -> MainHost.Child.Company(CompanyComponent(componentContext, applicationCompanyId))
+            is Config.Company -> MainHost.Child.Company(
+                CompanyComponent(
+                    componentContext,
+                    applicationCompanyId
+                )
+            )
+
             is Config.Loyalty -> MainHost.Child.Loyalty(LoyaltyComponent())
             is Config.Home -> MainHost.Child.Home(HomeComponent())
             is Config.Storage -> MainHost.Child.Storage(StorageComponent())

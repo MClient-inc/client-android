@@ -13,7 +13,7 @@ class ServiceListState(
 
 interface ServiceList {
 
-    val services: ServiceListState
+    val state: ServiceListState
 
     fun onRefresh()
 

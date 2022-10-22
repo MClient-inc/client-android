@@ -1,7 +1,5 @@
 package ru.mclient.common.company.list
 
-import kotlinx.coroutines.flow.StateFlow
-
 data class CompaniesListState(
     val companies: List<Company>,
     val isLoading: Boolean,
@@ -16,7 +14,7 @@ data class CompaniesListState(
 
 interface CompaniesList {
 
-    val state: StateFlow<CompaniesListState>
+    val state: CompaniesListState
 
     fun onRefresh()
 

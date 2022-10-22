@@ -1,12 +1,9 @@
 package ru.mclient.common.company.list
 
-import com.arkivanov.mvikotlin.extensions.coroutines.states
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
+import ru.mclient.common.utils.states
 import ru.mclient.mvi.company.list.CompaniesListForNetworkStore
 
 class CompaniesListForNetworkComponent(
@@ -18,8 +15,7 @@ class CompaniesListForNetworkComponent(
     private val store: CompaniesListForNetworkStore =
         getParameterizedStore { CompaniesListForNetworkStore.Params(networkId) }
 
-    override val state: StateFlow<CompaniesListState> = store.states.map { it.toState() }
-        .stateIn(componentScope, SharingStarted.Eagerly, store.state.toState())
+    override val state: CompaniesListState by store.states(this) { it.toState() }
 
     private fun CompaniesListForNetworkStore.State.toState(): CompaniesListState {
         return CompaniesListState(
@@ -40,7 +36,7 @@ class CompaniesListForNetworkComponent(
     }
 
     override fun onSelect(companyId: Long) {
-        state.value.companies.find { it.id == companyId }?.let { onSelect.invoke(it) }
+        state.companies.find { it.id == companyId }?.let { onSelect.invoke(it) }
     }
 
 }

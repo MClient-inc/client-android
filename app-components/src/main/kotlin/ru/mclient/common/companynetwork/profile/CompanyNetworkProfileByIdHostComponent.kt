@@ -9,10 +9,13 @@ class CompanyNetworkProfileByIdHostComponent(
     componentContext: DIComponentContext,
     networkId: Long,
 ) : CompanyNetworkProfileHost, DIComponentContext by componentContext {
+
     override val bar: TopBar = ImmutableTopBar(TopBarState("Сеть компаний"))
+
     override val profile: CompanyNetworkProfile =
         CompanyNetworkProfileByIdComponent(
             componentContext = componentContext,
             networkId = networkId,
         )
+
 }

@@ -1,12 +1,9 @@
 package ru.mclient.common.companynetwork.list
 
-import com.arkivanov.mvikotlin.extensions.coroutines.states
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
+import ru.mclient.common.utils.states
 import ru.mclient.mvi.companynetwork.list.CompanyNetworksListForAccountStore
 
 class CompanyNetworksForAccountComponent(
@@ -18,8 +15,7 @@ class CompanyNetworksForAccountComponent(
     private val store: CompanyNetworksListForAccountStore =
         getParameterizedStore { CompanyNetworksListForAccountStore.Params(accountId) }
 
-    override val state: StateFlow<CompanyNetworksListState> = store.states.map { it.toState() }
-        .stateIn(componentScope, SharingStarted.Eagerly, store.state.toState())
+    override val state: CompanyNetworksListState by store.states(this) { it.toState() }
 
     private fun CompanyNetworksListForAccountStore.State.toState(): CompanyNetworksListState {
         return CompanyNetworksListState(
