@@ -12,6 +12,10 @@ fun ServiceCategoriesListHostUI(
     modifier: Modifier,
 ) {
     TopBarHostUI(component = component, modifier = modifier) {
-        ServiceCategoriesListUI(component = component.list, modifier = Modifier.fillMaxSize())
+        ServiceCategoriesListUI(
+            component = component.list,
+            modifier = Modifier
+                .fillMaxSize(),
+        )
     }
 }

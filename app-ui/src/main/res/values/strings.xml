@@ -11,7 +11,8 @@
     <string name="storage_navitem">Склад</string>
     <string name="loyalty_navitem">Лояльность</string>
     <string name="company_title">Название компании</string>
-    <string name="company_description">Описание компании</string><string name="company_codename">Кодовое имя компании (mycompany_001)</string>
+    <string name="company_description">Описание компании</string>
+    <string name="company_codename">Кодовое имя компании (mycompany_001)</string>
     <string name="company_registerButtonName">Зарегистрировать компанию</string>
     <string name="company_staff_name">Имя работника</string>
     <string name="company_staff_codename">Кодовое имя работника (mystaff_01)</string>
@@ -20,6 +21,8 @@
     <string name="company_service_create_description">Описание услуги</string>
     <string name="company_service_cost">Цена услуги</string>
     <string name="company_service_add">Добавить услугу</string>
+    <string name="company_service_category_create_name">Название</string>
+    <string name="company_service_category_add">Добавить категорию</string>
     <string name="company_staff_role">Роль работника</string>
 
 </resources>

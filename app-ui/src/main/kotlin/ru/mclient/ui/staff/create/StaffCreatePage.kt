@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,7 +55,7 @@ fun StaffCreatePage(
     onCreate: (StaffCreatePageInput) -> Unit
 ) {
     Column(
-        modifier = modifier.padding(12.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -109,7 +108,7 @@ fun StaffCreatePage(
 @Preview
 @Composable
 fun StaffCreatePagePreview() {
-    var state by remember{
+    var state by remember {
         mutableStateOf(
             StaffCreatePageState(
                 username = "",

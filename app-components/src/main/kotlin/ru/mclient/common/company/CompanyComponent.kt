@@ -3,6 +3,7 @@ package ru.mclient.common.company
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -12,6 +13,7 @@ import ru.mclient.common.company.profile.CompanyProfileHostComponent
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileByIdHostComponent
 import ru.mclient.common.diChildStack
 import ru.mclient.common.service.list.ServiceListForCategoryAndCompanyHostComponent
+import ru.mclient.common.servicecategory.create.ServiceCategoryCreateHostComponent
 import ru.mclient.common.servicecategory.list.ServiceCategoriesListHostForCompanyComponent
 import ru.mclient.common.staff.StaffProfileHostComponent
 import ru.mclient.common.staff.create.StaffCreateHostComponent
@@ -59,6 +61,14 @@ class CompanyComponent(
 
     private fun onCategorySelected(categoryId: Long, companyId: Long) {
         navigation.push(Config.ServiceList(companyId = companyId, categoryId = categoryId))
+    }
+
+    private fun onCreateServiceCategory(companyId: Long) {
+        navigation.push(Config.ServiceCategoryCreate(companyId))
+    }
+
+    private fun onServiceCategoryCreated(categoryId: Long) {
+        navigation.pop()
     }
 
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
@@ -114,6 +124,7 @@ class CompanyComponent(
                             companyId = config.companyId,
                         )
                     },
+                    onCreate = { onCreateServiceCategory(config.companyId) }
                 )
             )
 
@@ -122,6 +133,14 @@ class CompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
                     categoryId = config.categoryId,
+                )
+            )
+
+            is Config.ServiceCategoryCreate -> Company.Child.ServiceCategoryCreate(
+                ServiceCategoryCreateHostComponent(
+                    componentContext = componentContext,
+                    companyId = config.companyId,
+                    onCreated = { onServiceCategoryCreated(it.id) },
                 )
             )
         }
@@ -149,6 +168,9 @@ class CompanyComponent(
 
         @Parcelize
         data class ServiceList(val companyId: Long, val categoryId: Long) : Config()
+
+        @Parcelize
+        data class ServiceCategoryCreate(val companyId: Long) : Config()
 
     }
 

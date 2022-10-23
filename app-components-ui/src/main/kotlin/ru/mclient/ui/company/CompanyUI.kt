@@ -10,6 +10,7 @@ import ru.mclient.ui.LocalChildrenStackAnimator
 import ru.mclient.ui.company.profile.CompanyProfileHostUI
 import ru.mclient.ui.companynetwork.profile.CompanyNetworkProfileHostUI
 import ru.mclient.ui.service.list.ServiceListHostUI
+import ru.mclient.ui.servicecategory.create.ServiceCategoryCreateHostUI
 import ru.mclient.ui.servicecategory.list.ServiceCategoriesListHostUI
 import ru.mclient.ui.staff.create.StaffCreateHostUI
 import ru.mclient.ui.staff.list.StaffListHostUI
@@ -68,6 +69,12 @@ fun CompanyNavHost(child: Company.Child, modifier: Modifier) {
 
         is Company.Child.ServiceList ->
             ServiceListHostUI(
+                component = child.component,
+                modifier = modifier,
+            )
+
+        is Company.Child.ServiceCategoryCreate ->
+            ServiceCategoryCreateHostUI(
                 component = child.component,
                 modifier = modifier,
             )

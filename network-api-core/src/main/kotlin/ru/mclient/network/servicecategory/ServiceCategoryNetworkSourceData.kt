@@ -21,3 +21,13 @@ data class GetServiceCategoryByIdOutput(
     val id: Long,
     val title: String,
 )
+
+data class CreateServiceCategoryInput(
+    val title: String,
+    val companyId: Long,
+)
+
+data class CreateServiceCategoryOutput(
+    val id: Long,
+    val title: String,
+)

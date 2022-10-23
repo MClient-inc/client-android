@@ -1,24 +1,24 @@
-package ru.mclient.ui.staff.create
+package ru.mclient.ui.servicecategory.create
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ru.mclient.common.staff.create.StaffCreateHost
+import ru.mclient.common.servicecategory.create.ServiceCategoryCreateHost
 import ru.mclient.ui.bar.TopBarHostUI
 
 @Composable
-fun StaffCreateHostUI(
-    component: StaffCreateHost,
-    modifier: Modifier,
+fun ServiceCategoryCreateHostUI(
+    component: ServiceCategoryCreateHost,
+    modifier: Modifier
 ) {
     TopBarHostUI(
         component = component,
         modifier = modifier,
     ) {
-        StaffCreateUI(
-            component = component.staffCreate,
+        ServiceCategoryCreateUI(
+            component = component.categoryCreate,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 15.dp),

@@ -10,11 +10,13 @@ class ServiceCategoriesListHostForCompanyComponent(
     componentContext: DIComponentContext,
     companyId: Long,
     onCategorySelected: (Long) -> Unit,
+    onCreate: () -> Unit,
 ) : ServiceCategoriesListHost, DIComponentContext by componentContext {
     override val list: ServiceCategoriesList = ServiceCategoriesListForCompanyComponent(
         componentContext = childDIContext(key = "service_categories_list"),
         companyId = companyId,
         onCategorySelected = onCategorySelected,
+        onCreate = onCreate,
     )
     override val bar: TopBar = ImmutableTopBar(TopBarState("Категории"))
 

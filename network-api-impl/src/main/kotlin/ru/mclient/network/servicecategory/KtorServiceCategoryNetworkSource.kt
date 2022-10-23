@@ -3,6 +3,10 @@ package ru.mclient.network.servicecategory
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.serialization.Serializable
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
@@ -34,6 +38,18 @@ class KtorServiceCategoryNetworkSource(
             title = body.title,
         )
     }
+
+    override suspend fun createServiceCategory(input: CreateServiceCategoryInput): CreateServiceCategoryOutput {
+        val response = client.post("/companies/${input.companyId}/categories") {
+            setBody(CreateServiceCategoryRequest(input.title))
+            contentType(ContentType.Application.Json)
+        }
+        val body = response.body<CreateServiceCategoryResponse>()
+        return CreateServiceCategoryOutput(
+            id = body.id,
+            title = body.title,
+        )
+    }
 }
 
 @Serializable
@@ -53,3 +69,15 @@ class GetServiceCategoriesForCompanyResponse(
         val title: String,
     )
 }
+
+
+@Serializable
+class CreateServiceCategoryRequest(
+    val title: String,
+)
+
+@Serializable
+data class CreateServiceCategoryResponse(
+    val id: Long,
+    val title: String,
+)

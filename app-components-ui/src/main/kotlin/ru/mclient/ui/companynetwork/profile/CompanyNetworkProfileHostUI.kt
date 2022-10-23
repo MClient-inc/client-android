@@ -1,5 +1,6 @@
 package ru.mclient.ui.companynetwork.profile
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,10 +15,13 @@ fun CompanyNetworkProfileHostUI(
 ) {
     TopBarHostUI(
         component = component,
+        modifier = modifier,
     ) {
         CompanyNetworkProfileUI(
             component = component.profile,
-            modifier = modifier.padding(10.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 15.dp),
         )
     }
 }

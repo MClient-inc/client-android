@@ -1,6 +1,5 @@
 package ru.mclient.mvi.company.create
 
-import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import kotlinx.coroutines.launch
@@ -24,7 +23,7 @@ class CompanyCreateStoreImpl(
         executorFactory = {
             Executor()
         },
-        reducer = Reducer<CompanyCreateStore.State, Message> { message ->
+        reducer = { message ->
             when (message) {
                 is Message.Failed -> copy(
                     title = message.title,
