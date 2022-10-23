@@ -27,6 +27,7 @@ fun ServiceListUI(component: ServiceList, modifier: Modifier) {
         state = component.state.toUI(),
         onRefresh = component::onRefresh,
         onSelect = remember(component) { { component.onService(it.id) } },
+        onCreate = component::onCreate,
         modifier = modifier,
     )
 }

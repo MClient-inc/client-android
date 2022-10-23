@@ -16,3 +16,19 @@ class GetServicesForCategoryAndCompanyOutput(
     )
 
 }
+
+class CreateServiceInput(
+    val title: String,
+    val cost: String,
+    val description: String,
+    val categoryId: Long,
+    val companyId: Long,
+)
+
+class CreateServiceOutput(
+    val id: Long,
+    val title: String,
+    val cost: String,
+    val description: String,
+    val categoryId: Long,
+)

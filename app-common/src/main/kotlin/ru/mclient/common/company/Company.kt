@@ -3,6 +3,7 @@ package ru.mclient.common.company
 import com.arkivanov.decompose.router.stack.ChildStack
 import ru.mclient.common.company.profile.CompanyProfileHost
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileHost
+import ru.mclient.common.service.create.ServiceCreateHost
 import ru.mclient.common.service.list.ServiceListHost
 import ru.mclient.common.servicecategory.create.ServiceCategoryCreateHost
 import ru.mclient.common.servicecategory.list.ServiceCategoriesListHost
@@ -31,6 +32,9 @@ interface Company {
         class ServiceCategoryCreate(val component: ServiceCategoryCreateHost) : Child()
 
         class ServiceList(val component: ServiceListHost) : Child()
+
+        class ServiceCreate(val component: ServiceCreateHost) : Child()
+
 
     }
 

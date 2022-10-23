@@ -7,7 +7,7 @@ import ru.mclient.common.service.create.ServiceCreateState
 
 fun ServiceCreateState.toUI(): ServiceCreatePageState {
     return ServiceCreatePageState(
-        serviceName = serviceName,
+        title = title,
         description = description,
         cost = cost,
         isLoading = false,
@@ -22,14 +22,14 @@ fun ServiceCreateUI(component: ServiceCreate, modifier: Modifier) {
         state = component.state.toUI(),
         onUpdate = {
             component.onUpdate(
-                serviceName = it.serviceName,
+                title = it.serviceName,
                 description = it.description,
                 cost = it.cost
             )
         },
         onCreate = {
             component.onCreate(
-                serviceName = it.serviceName,
+                title = it.serviceName,
                 description = it.description,
                 cost = it.cost
             )

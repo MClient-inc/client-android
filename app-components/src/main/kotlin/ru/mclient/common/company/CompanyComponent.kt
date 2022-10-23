@@ -12,6 +12,7 @@ import ru.mclient.common.DIComponentContext
 import ru.mclient.common.company.profile.CompanyProfileHostComponent
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileByIdHostComponent
 import ru.mclient.common.diChildStack
+import ru.mclient.common.service.create.ServiceCreateHostComponent
 import ru.mclient.common.service.list.ServiceListForCategoryAndCompanyHostComponent
 import ru.mclient.common.servicecategory.create.ServiceCategoryCreateHostComponent
 import ru.mclient.common.servicecategory.list.ServiceCategoriesListHostForCompanyComponent
@@ -68,6 +69,14 @@ class CompanyComponent(
     }
 
     private fun onServiceCategoryCreated(categoryId: Long) {
+        navigation.pop()
+    }
+
+    private fun onCreateService(companyId: Long, categoryId: Long) {
+        navigation.push(Config.ServiceCreate(companyId = companyId, categoryId = categoryId))
+    }
+
+    private fun onServiceCreated(serviceId: Long) {
         navigation.pop()
     }
 
@@ -133,6 +142,7 @@ class CompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
                     categoryId = config.categoryId,
+                    onCreate = { onCreateService(config.companyId, config.categoryId) }
                 )
             )
 
@@ -141,6 +151,15 @@ class CompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
                     onCreated = { onServiceCategoryCreated(it.id) },
+                )
+            )
+
+            is Config.ServiceCreate -> Company.Child.ServiceCreate(
+                ServiceCreateHostComponent(
+                    componentContext = componentContext,
+                    companyId = config.companyId,
+                    categoryId = config.categoryId,
+                    onCreated = { onServiceCreated(it.id) }
                 )
             )
         }
@@ -168,6 +187,9 @@ class CompanyComponent(
 
         @Parcelize
         data class ServiceList(val companyId: Long, val categoryId: Long) : Config()
+
+        @Parcelize
+        data class ServiceCreate(val companyId: Long, val categoryId: Long) : Config()
 
         @Parcelize
         data class ServiceCategoryCreate(val companyId: Long) : Config()

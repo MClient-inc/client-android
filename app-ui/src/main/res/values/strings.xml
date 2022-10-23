@@ -17,9 +17,9 @@
     <string name="company_staff_name">Имя работника</string>
     <string name="company_staff_codename">Кодовое имя работника (mystaff_01)</string>
     <string name="company_staff_register_new">Зарегистрировать нового работника</string>
-    <string name="company_service_create_name">Название услуги</string>
-    <string name="company_service_create_description">Описание услуги</string>
-    <string name="company_service_cost">Цена услуги</string>
+    <string name="company_service_create_name">Название</string>
+    <string name="company_service_create_description">Описание</string>
+    <string name="company_service_cost">Цена</string>
     <string name="company_service_add">Добавить услугу</string>
     <string name="company_service_category_create_name">Название</string>
     <string name="company_service_category_add">Добавить категорию</string>

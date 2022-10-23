@@ -19,4 +19,6 @@ interface ServiceList {
 
     fun onService(serviceId: Long)
 
+    fun onCreate()
+
 }

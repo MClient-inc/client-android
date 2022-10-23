@@ -82,12 +82,12 @@ fun ServiceCategoriesListPage(
             items(
                 items = state.companies,
                 key = ServiceCategoriesListPageState.ServiceCategory::id,
-            ) {
+            ) { company ->
                 ServiceCategoryItem(
-                    company = it,
+                    company = company,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onSelect(it) },
+                        .clickable { onSelect(company) },
                 )
             }
         }

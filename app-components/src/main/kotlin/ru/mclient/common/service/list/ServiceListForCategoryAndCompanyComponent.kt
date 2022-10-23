@@ -11,6 +11,7 @@ class ServiceListForCategoryAndCompanyComponent(
     categoryId: Long,
     companyId: Long,
     private val onCategoryTitle: (String?) -> Unit,
+    private val onCreate: () -> Unit,
 ) : ServiceList, DIComponentContext by componentContext {
 
     private val store: ServiceListForCategoryAndCompanyStore =
@@ -47,5 +48,9 @@ class ServiceListForCategoryAndCompanyComponent(
 
     override fun onService(serviceId: Long) {
         TODO("Not yet implemented")
+    }
+
+    override fun onCreate() {
+        onCreate.invoke()
     }
 }

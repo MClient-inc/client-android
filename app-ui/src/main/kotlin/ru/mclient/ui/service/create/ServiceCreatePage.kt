@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +24,7 @@ import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
 
 data class ServiceCreatePageState(
-    val serviceName: String,
+    val title: String,
     val description: String,
     val cost: String,
     val isLoading: Boolean,
@@ -36,12 +38,12 @@ class ServiceCreatePageInput(
 )
 
 fun ServiceCreatePageState.toInput(
-    serviceName: String = this.serviceName,
+    title: String = this.title,
     description: String = this.description,
     cost: String = this.cost
 ): ServiceCreatePageInput {
     return ServiceCreatePageInput(
-        serviceName = serviceName,
+        serviceName = title,
         description = description,
         cost = cost
     )
@@ -55,27 +57,17 @@ fun ServiceCreatePage(
     onCreate: (ServiceCreatePageInput) -> Unit
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         DesignedTextField(
-            value = state.serviceName,
+            value = state.title,
             onValueChange = {
-                onUpdate(state.toInput(serviceName = it))
+                onUpdate(state.toInput(title = it))
             },
             label = stringResource(R.string.company_service_create_name),
-            maxLines = 1,
-            enabled = !state.isLoading,
-            modifier = Modifier.fillMaxWidth()
-        )
-        DesignedTextField(
-            value = state.description,
-            onValueChange = {
-                onUpdate(state.toInput(description = it))
-            },
-            label = stringResource(R.string.company_service_create_description),
-            maxLines = 3,
+            singleLine = true,
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth()
         )
@@ -85,10 +77,20 @@ fun ServiceCreatePage(
                 onUpdate(state.toInput(cost = it))
             },
             label = stringResource(R.string.company_service_cost),
-            maxLines = 1,
+            singleLine = true,
             enabled = !state.isLoading,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        DesignedTextField(
+            value = state.description,
+            onValueChange = {
+                onUpdate(state.toInput(description = it))
+            },
+            label = stringResource(R.string.company_service_create_description),
+            maxLines = 5,
+            enabled = !state.isLoading,
+            modifier = Modifier.fillMaxWidth()
         )
         DesignedButton(
             text = stringResource(R.string.company_service_add).toDesignedString(),
@@ -104,7 +106,7 @@ fun ServiceCreatePreview(
     var state by remember {
         mutableStateOf(
             ServiceCreatePageState(
-                serviceName = "",
+                title = "",
                 description = "",
                 cost = "0",
                 isLoading = false,
@@ -118,7 +120,7 @@ fun ServiceCreatePreview(
         state = state,
         onUpdate = {
             state = state.copy(
-                serviceName = it.serviceName,
+                title = it.serviceName,
                 description = it.description,
                 cost = it.cost.filter(Char::isDigit)
             )

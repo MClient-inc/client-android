@@ -1,7 +1,7 @@
 package ru.mclient.common.service.create
 
 data class ServiceCreateState(
-    val serviceName: String,
+    val title: String,
     val description: String,
     val cost: String,
     val isLoading: Boolean,
@@ -12,8 +12,8 @@ interface ServiceCreate {
 
     val state: ServiceCreateState
 
-    fun onUpdate(serviceName: String, description: String, cost: String)
+    fun onUpdate(title: String, description: String, cost: String)
 
-    fun onCreate(serviceName: String, description: String, cost: String)
+    fun onCreate(title: String, description: String, cost: String)
 
 }

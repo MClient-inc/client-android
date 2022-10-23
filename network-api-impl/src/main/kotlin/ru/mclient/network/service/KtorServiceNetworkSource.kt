@@ -4,6 +4,10 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.serialization.Serializable
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
@@ -29,6 +33,28 @@ class KtorServiceNetworkSource(
             }
         )
     }
+
+    override suspend fun createService(input: CreateServiceInput): CreateServiceOutput {
+        val response = client.post("/categories/${input.categoryId}/services") {
+            setBody(
+                CreateServiceRequest(
+                    title = input.title,
+                    cost = input.cost.toLongOrNull() ?: 0,
+                    companyId = input.companyId,
+                )
+            )
+            contentType(ContentType.Application.Json)
+        }
+        val body = response.body<CreateServiceResponse>()
+        return CreateServiceOutput(
+            id = body.id,
+            title = body.title,
+            cost = body.cost.toString(),
+            description = "",
+            categoryId = body.categoryId,
+        )
+    }
+
 }
 
 
@@ -45,3 +71,19 @@ class GetServicesForCategoryResponse(
     )
 
 }
+
+@Serializable
+class CreateServiceRequest(
+    val title: String,
+    val cost: Long,
+    val companyId: Long,
+)
+
+
+@Serializable
+class CreateServiceResponse(
+    val id: Long,
+    val title: String,
+    val cost: Long,
+    val categoryId: Long,
+)

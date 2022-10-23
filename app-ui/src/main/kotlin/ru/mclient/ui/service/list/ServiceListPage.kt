@@ -1,15 +1,20 @@
 package ru.mclient.ui.service.list
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,6 +22,7 @@ import ru.mclient.ui.utils.defaultPlaceholder
 import ru.mclient.ui.view.DesignedIcon
 import ru.mclient.ui.view.DesignedLazyColumn
 import ru.mclient.ui.view.DesignedText
+import ru.mclient.ui.view.ExtendOnShowFloatingActionButton
 import ru.mclient.ui.view.toDesignedDrawable
 import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
@@ -32,39 +38,58 @@ data class ServicesListPageState(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServicesListPage(
     state: ServicesListPageState,
     onRefresh: () -> Unit,
     onSelect: (ServicesListPageState.Service) -> Unit,
+    onCreate: () -> Unit,
     modifier: Modifier,
 ) {
-    DesignedLazyColumn(
-        refreshing = state.isRefreshing,
-        enabled = state.services.isNotEmpty(),
-        loading = state.isLoading,
-        empty = state.services.isEmpty(),
-        onRefresh = onRefresh,
+    val listState = rememberLazyListState()
+    Scaffold(
+        floatingActionButton = {
+            ExtendOnShowFloatingActionButton(
+                text = "Добавить".toDesignedString(),
+                icon = Icons.Outlined.Add.toDesignedDrawable(),
+                isShown = !state.isLoading || state.isRefreshing,
+                onClick = onCreate,
+                isScrollInProgress = listState.isScrollInProgress,
+            )
+        },
         modifier = modifier,
-        loadingContent = {
-            items(6) {
-                ServiceCategoryItemPlaceholder(
+    ) {
+        DesignedLazyColumn(
+            state = listState,
+            refreshing = state.isRefreshing,
+            enabled = state.services.isNotEmpty(),
+            loading = state.isLoading,
+            empty = state.services.isEmpty(),
+            onRefresh = onRefresh,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it),
+            loadingContent = {
+                items(6) {
+                    ServiceCategoryItemPlaceholder(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
+            },
+        ) {
+            items(
+                items = state.services,
+                key = ServicesListPageState.Service::id,
+            ) { service ->
+                ServiceCategoryItem(
+                    company = service,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .clickable { onSelect(service) },
                 )
             }
-        },
-    ) {
-        items(
-            items = state.services,
-            key = ServicesListPageState.Service::id,
-        ) {
-            ServiceCategoryItem(
-                company = it,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onSelect(it) },
-            )
         }
     }
 }
