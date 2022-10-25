@@ -9,6 +9,7 @@ import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
+import ru.mclient.common.client.list.ClientsListForCompanyHostComponent
 import ru.mclient.common.company.profile.CompanyProfileHostComponent
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileByIdHostComponent
 import ru.mclient.common.diChildStack
@@ -80,6 +81,10 @@ class CompanyComponent(
         navigation.pop()
     }
 
+    private fun onClients(companyId: Long) {
+        navigation.push(Config.ClientsList(companyId))
+    }
+
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
         return when (config) {
             is Config.CompanyProfile -> Company.Child.CompanyProfile(
@@ -89,6 +94,7 @@ class CompanyComponent(
                     onStaff = { onStaffFromCompany(config.companyId) },
                     onNetwork = { onNetwork(it) },
                     onServices = { onServices(config.companyId) },
+                    onClients = { onClients(config.companyId) }
                 )
             )
 
@@ -162,6 +168,15 @@ class CompanyComponent(
                     onCreated = { onServiceCreated(it.id) }
                 )
             )
+
+            is Config.ClientsList -> Company.Child.ClientsList(
+                ClientsListForCompanyHostComponent(
+                    componentContext = componentContext,
+                    companyId = config.companyId,
+                    onCreate = {},
+                    onClient = {}
+                )
+            )
         }
     }
 
@@ -193,6 +208,10 @@ class CompanyComponent(
 
         @Parcelize
         data class ServiceCategoryCreate(val companyId: Long) : Config()
+
+
+        @Parcelize
+        data class ClientsList(val companyId: Long) : Config()
 
     }
 

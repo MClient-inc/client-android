@@ -12,6 +12,7 @@ class CompanyProfileHostComponent(
     onStaff: () -> Unit,
     onNetwork: (Long) -> Unit,
     onServices: () -> Unit,
+    onClients: () -> Unit,
 ) : CompanyProfileHost, DIComponentContext by componentContext {
 
 
@@ -26,5 +27,6 @@ class CompanyProfileHostComponent(
             onStaff = onStaff,
             onNetwork = onNetwork,
             onServices = onServices,
+            onClients = onClients,
         )
 }

@@ -1,4 +1,4 @@
-package ru.mclient.ui.service.list
+package ru.mclient.ui.client.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
@@ -27,23 +27,24 @@ import ru.mclient.ui.view.toDesignedDrawable
 import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
 
-data class ServicesListPageState(
-    val services: List<Service>,
+data class ClientListPageState(
+    val clients: List<Client>,
     val isLoading: Boolean,
     val isRefreshing: Boolean,
 ) {
-    class Service(
+    class Client(
         val id: Long,
         val title: String,
+        val phone: String,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ServicesListPage(
-    state: ServicesListPageState,
+fun ClientsListPage(
+    state: ClientListPageState,
     onRefresh: () -> Unit,
-    onSelect: (ServicesListPageState.Service) -> Unit,
+    onSelect: (ClientListPageState.Client) -> Unit,
     onCreate: () -> Unit,
     modifier: Modifier,
 ) {
@@ -63,16 +64,16 @@ fun ServicesListPage(
         DesignedLazyColumn(
             state = listState,
             refreshing = state.isRefreshing,
-            enabled = state.services.isNotEmpty(),
+            enabled = state.clients.isNotEmpty(),
             loading = state.isLoading,
-            empty = state.services.isEmpty(),
+            empty = state.clients.isEmpty(),
             onRefresh = onRefresh,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it),
             loadingContent = {
                 items(6) {
-                    ServicesListItemPlaceholder(
+                    ClientListItemPlaceholder(
                         modifier = Modifier
                             .fillMaxWidth()
                     )
@@ -80,14 +81,14 @@ fun ServicesListPage(
             },
         ) {
             items(
-                items = state.services,
-                key = ServicesListPageState.Service::id,
-            ) { service ->
-                ServicesListItem(
-                    category = service,
+                items = state.clients,
+                key = ClientListPageState.Client::id,
+            ) { client ->
+                ClientListItem(
+                    client = client,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onSelect(service) },
+                        .clickable { onSelect(client) },
                 )
             }
         }
@@ -96,15 +97,26 @@ fun ServicesListPage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ServicesListItem(
-    category: ServicesListPageState.Service,
+private fun ClientListItem(
+    client: ClientListPageState.Client,
     modifier: Modifier,
 ) {
     ListItem(
-        headlineText = { Text(category.title) },
+        headlineText = {
+            if (client.title.isBlank())
+                Text(client.phone)
+            else
+                Text(client.title)
+        },
+        supportingText = {
+            if (client.phone.isBlank())
+                Text(client.title)
+            else
+                Text(client.phone)
+        },
         modifier = modifier,
         leadingContent = {
-            Icon(Icons.Outlined.Menu, contentDescription = null, modifier = Modifier.size(35.dp))
+            Icon(Icons.Outlined.Person, contentDescription = null, modifier = Modifier.size(35.dp))
         },
     )
 }
@@ -112,13 +124,19 @@ fun ServicesListItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ServicesListItemPlaceholder(
+private fun ClientListItemPlaceholder(
     modifier: Modifier,
 ) {
     ListItem(
         headlineText = {
             DesignedText(
                 "Название сети".toDesignedString(),
+                modifier = Modifier.defaultPlaceholder()
+            )
+        },
+        supportingText = {
+            DesignedText(
+                "Кодовое имя".toDesignedString(),
                 modifier = Modifier.defaultPlaceholder()
             )
         },

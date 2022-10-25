@@ -12,6 +12,7 @@ class CompanyProfileComponent(
     private val onStaff: () -> Unit,
     private val onNetwork: (Long) -> Unit,
     private val onServices: () -> Unit,
+    private val onClients: () -> Unit,
 ) : CompanyProfile, DIComponentContext by componentContext {
 
     private val store: CompanyProfileStore =
@@ -45,7 +46,7 @@ class CompanyProfileComponent(
     }
 
     override fun onClients() {
-        TODO("Not yet implemented")
+        onClients.invoke()
     }
 
     override fun onServices() {

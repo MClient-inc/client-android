@@ -6,6 +6,7 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
+import org.koin.core.annotation.InjectedParam
 import ru.mclient.mvi.SyncCoroutineExecutor
 import ru.mclient.network.service.GetServicesForCategoryAndCompanyInput
 import ru.mclient.network.service.ServiceNetworkSource
@@ -16,6 +17,7 @@ import ru.mclient.network.servicecategory.ServiceCategoryNetworkSource
 @Factory
 class ServiceListForCategoryAndCompanyStoreImpl(
     storeFactory: StoreFactory,
+    @InjectedParam
     params: ServiceListForCategoryAndCompanyStore.Params,
     serviceSource: ServiceNetworkSource,
     categoriesSource: ServiceCategoryNetworkSource,

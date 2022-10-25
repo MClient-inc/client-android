@@ -22,16 +22,16 @@ internal inline fun <reified T : Store<*, *, *>> DIComponentContext.getStore(
     if (T::class.java.isAssignableFrom(ParametrizedStore::class.java)) {
         throw IllegalArgumentException("Store with ${T::class} is parametrized and you should use DIComponentContext.getParameterizedStore(param")
     }
-    return instanceKeeper.getStore(this::get)
+    return instanceKeeper.getStore { get(parameters = params) }
 }
 
-internal inline fun <reified Param : Any, reified T : ParametrizedStore<*, *, *, Param>> DIComponentContext.getParameterizedStore(
+internal inline fun <Param : Any, reified T : ParametrizedStore<*, *, *, Param>> DIComponentContext.getParameterizedStore(
     crossinline param: () -> Param
 ): T {
     return instanceKeeper.getStore { get { parametersOf(param()) } }
 }
 
-internal inline fun <reified Param : Any, reified T : ParametrizedStore<*, *, *, Param>> DIComponentContext.getParameterizedStore(
+internal inline fun <Param : Any, reified T : ParametrizedStore<*, *, *, Param>> DIComponentContext.getParameterizedStore(
     param: Param
 ): T = getParameterizedStore { param }
 

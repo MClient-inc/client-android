@@ -1,6 +1,7 @@
 package ru.mclient.common.company
 
 import com.arkivanov.decompose.router.stack.ChildStack
+import ru.mclient.common.client.list.ClientsListHost
 import ru.mclient.common.company.profile.CompanyProfileHost
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileHost
 import ru.mclient.common.service.create.ServiceCreateHost
@@ -35,6 +36,7 @@ interface Company {
 
         class ServiceCreate(val component: ServiceCreateHost) : Child()
 
+        class ClientsList(val component: ClientsListHost) : Child()
 
     }
 
