@@ -5,6 +5,7 @@ import ru.mclient.common.company.profile.CompanyProfileHost
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileHost
 import ru.mclient.common.service.create.ServiceCreateHost
 import ru.mclient.common.service.list.ServiceListHost
+import ru.mclient.common.service.profile.ServiceProfileHost
 import ru.mclient.common.servicecategory.create.ServiceCategoryCreateHost
 import ru.mclient.common.servicecategory.list.ServiceCategoriesListHost
 import ru.mclient.common.staff.create.StaffCreateHost
@@ -35,6 +36,7 @@ interface Company {
 
         class ServiceCreate(val component: ServiceCreateHost) : Child()
 
+        class ServiceProfile(val component: ServiceProfileHost): Child()
 
     }
 

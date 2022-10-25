@@ -14,6 +14,7 @@ import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileByIdHostCom
 import ru.mclient.common.diChildStack
 import ru.mclient.common.service.create.ServiceCreateHostComponent
 import ru.mclient.common.service.list.ServiceListForCategoryAndCompanyHostComponent
+import ru.mclient.common.service.profile.ServiceProfileHostComponent
 import ru.mclient.common.servicecategory.create.ServiceCategoryCreateHostComponent
 import ru.mclient.common.servicecategory.list.ServiceCategoriesListHostForCompanyComponent
 import ru.mclient.common.staff.StaffProfileHostComponent
@@ -162,6 +163,13 @@ class CompanyComponent(
                     onCreated = { onServiceCreated(it.id) }
                 )
             )
+
+            is Config.ServiceProfile -> Company.Child.ServiceProfile(
+                ServiceProfileHostComponent(
+                    componentContext = componentContext,
+                    serviceId = config.serviceId
+                )
+            )
         }
     }
 
@@ -193,6 +201,9 @@ class CompanyComponent(
 
         @Parcelize
         data class ServiceCategoryCreate(val companyId: Long) : Config()
+
+        @Parcelize
+        data class ServiceProfile(val serviceId: Long): Config()
 
     }
 
