@@ -7,20 +7,21 @@ import org.koin.core.KoinApplication
 import org.koin.core.logger.Level
 import org.koin.ksp.generated.module
 import ru.mclient.local.LocalModule
-import ru.mclient.mvi.mviModule
+import ru.mclient.mvi.NetworkMVIModule
 import ru.mclient.network.ApiNetworkModule
-import ru.mclient.startup.httpClientModule
-import ru.mclient.startup.oauth.androidOAuthModule
+import ru.mclient.startup.HttpClientModule
+import ru.mclient.startup.oauth.AndroidOAuthModule
 
 fun Context.initializeKoin(): KoinApplication {
     return org.koin.core.context.startKoin {
         androidContext(this@initializeKoin)
         androidLogger(Level.DEBUG)
         modules(
-            androidxActivityModule, httpClientModule,
-            androidOAuthModule,
-            baseMviModule,
-            mviModule,
+            AndroidxActivityModule().module,
+            AndroidOAuthModule().module,
+            NetworkMVIModule().module,
+            BaseMviModule().module,
+            HttpClientModule().module,
             ApiNetworkModule().module,
             LocalModule().module
         )

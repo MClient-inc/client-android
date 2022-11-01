@@ -10,6 +10,7 @@ class ServiceListForCategoryAndCompanyHostComponent(
     categoryId: Long,
     companyId: Long,
     onCreate: () -> Unit,
+    onSelect: (Long) -> Unit,
 ) : ServiceListHost, DIComponentContext by componentContext {
 
     override val bar = MutableTopBar(
@@ -25,6 +26,7 @@ class ServiceListForCategoryAndCompanyHostComponent(
         companyId = companyId,
         onCategoryTitle = this::onCategoryTitle,
         onCreate = onCreate,
+        onSelect = onSelect,
     )
 
     private fun onCategoryTitle(title: String?) {

@@ -58,7 +58,6 @@ fun ServiceProfilePage(
                 service = state.service,
                 onEdit = onEdit,
                 modifier = Modifier
-                    .padding(10.dp)
                     .fillMaxWidth()
                     .outlined()
                     .padding(10.dp)

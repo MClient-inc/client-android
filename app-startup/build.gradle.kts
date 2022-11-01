@@ -2,6 +2,7 @@ plugins {
     id("com.android.library") version Dependencies.Android.agpVersion
     kotlin("plugin.parcelize") version Dependencies.Kotlin.version
     kotlin("android") version Dependencies.Kotlin.version
+    id(Dependencies.Ksp.plugin) version Dependencies.Ksp.version
 }
 
 android {
@@ -47,7 +48,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Dependencies.Compose.compilerVersion
     }
-
+    androidComponents.onVariants { variant ->
+        kotlin.sourceSets.findByName(variant.name)?.kotlin?.srcDirs(
+            file("$buildDir/generated/ksp/${variant.name}/kotlin")
+        )
+    }
 }
 
 dependencies {
@@ -57,6 +62,8 @@ dependencies {
     implementation(Dependencies.Android.splash)
     implementation(Dependencies.Koin.android)
     implementation(Dependencies.Koin.core)
+    implementation(Dependencies.Koin.annotations)
+    ksp(Dependencies.Koin.compiler)
     implementation(Dependencies.Coroutines.android)
     implementation(Dependencies.OAuth.android)
     implementation(Dependencies.Decompose.core)

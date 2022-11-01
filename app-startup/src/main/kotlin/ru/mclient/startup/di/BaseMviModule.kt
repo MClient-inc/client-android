@@ -9,12 +9,23 @@ import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import org.koin.dsl.bind
-import org.koin.dsl.module
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 
-val baseMviModule = module {
-    single { Dispatchers.Main } bind CoroutineDispatcher::class
-    single { StrictStoreFactory(LoggingStoreFactory(DefaultStoreFactory())) } bind StoreFactory::class
+
+@Module()
+class BaseMviModule {
+
+    @Single
+    fun bindDispatcher(): CoroutineDispatcher {
+        return Dispatchers.Main
+    }
+
+    @Single
+    fun bindStoreFactory(): StoreFactory {
+        return StrictStoreFactory(LoggingStoreFactory(DefaultStoreFactory()))
+    }
+
 }
 
 

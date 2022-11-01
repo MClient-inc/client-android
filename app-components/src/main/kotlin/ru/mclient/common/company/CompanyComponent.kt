@@ -86,6 +86,10 @@ class CompanyComponent(
         navigation.push(Config.ClientsList(companyId))
     }
 
+    private fun onServiceSelect(serviceId: Long) {
+        navigation.push(Config.ServiceProfile(serviceId))
+    }
+
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
         return when (config) {
             is Config.CompanyProfile -> Company.Child.CompanyProfile(
@@ -149,7 +153,8 @@ class CompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
                     categoryId = config.categoryId,
-                    onCreate = { onCreateService(config.companyId, config.categoryId) }
+                    onCreate = { onCreateService(config.companyId, config.categoryId) },
+                    onSelect = this::onServiceSelect
                 )
             )
 
@@ -219,7 +224,6 @@ class CompanyComponent(
 
         @Parcelize
         data class ServiceProfile(val serviceId: Long) : Config()
-
 
         @Parcelize
         data class ClientsList(val companyId: Long) : Config()

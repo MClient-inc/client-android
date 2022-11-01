@@ -23,12 +23,12 @@ class MainHostComponent(
 
     override val childStack: ChildStack<*, MainHost.Child> by diChildStack(
         source = navigation,
-        initialConfiguration = Config.Home,
+        initialConfiguration = Config.Home(applicationCompanyId),
         childFactory = this::createChild,
     ).states(this)
 
     override fun onHost() {
-        navigation.bringToFront(Config.Home)
+        navigation.bringToFront(Config.Home(applicationCompanyId))
     }
 
     override fun onLoyalty() {
@@ -53,24 +53,25 @@ class MainHostComponent(
             )
 
             is Config.Loyalty -> MainHost.Child.Loyalty(LoyaltyComponent())
-            is Config.Home -> MainHost.Child.Home(HomeComponent())
+            is Config.Home -> MainHost.Child.Home(HomeComponent(componentContext, config.companyId))
             is Config.Storage -> MainHost.Child.Storage(StorageComponent())
         }
     }
 
-    sealed class Config : Parcelable {
+    sealed interface Config : Parcelable {
 
         @Parcelize
-        object Home : Config()
+        @JvmInline
+        value class Home(val companyId: Long) : Config
 
         @Parcelize
-        object Loyalty : Config()
+        object Loyalty : Config
 
         @Parcelize
-        object Storage : Config()
+        object Storage : Config
 
         @Parcelize
-        object Company : Config()
+        object Company : Config
 
     }
 

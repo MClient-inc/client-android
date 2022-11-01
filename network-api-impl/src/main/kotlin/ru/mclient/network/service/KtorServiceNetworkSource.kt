@@ -59,10 +59,10 @@ class KtorServiceNetworkSource(
         val response = client.get("/services/${input.serviceId}")
         val body = response.body<GetServiceResponse>()
         return GetServiceByIdOutput(
-            id = body.id,
-            title = body.title,
-            description = body.description,
-            cost = body.cost
+            id = body.service.id,
+            title = body.service.title,
+            description = "",
+            cost = body.service.cost.toString(),
         )
     }
 
@@ -101,8 +101,19 @@ class CreateServiceResponse(
 
 @Serializable
 class GetServiceResponse(
-    val id: Long,
-    val title: String,
-    val description: String,
-    val cost: String
-)
+    val service: Service,
+    val category: ServiceCategory,
+) {
+    @Serializable
+    data class Service(
+        val id: Long,
+        val title: String,
+        val cost: Long,
+    )
+
+    @Serializable
+    data class ServiceCategory(
+        val id: Long,
+        val title: String,
+    )
+}

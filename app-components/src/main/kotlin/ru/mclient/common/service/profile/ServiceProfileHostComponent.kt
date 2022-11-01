@@ -11,7 +11,7 @@ class ServiceProfileHostComponent(
     serviceId: Long
 ) : ServiceProfileHost, DIComponentContext by componentContext {
 
-    override val bar: TopBar = ImmutableTopBar(TopBarState("Услуга"))
+    override val bar: TopBar = ImmutableTopBar(TopBarState("Профиль"))
 
     override val profile: ServiceProfile =
         ServiceProfileComponent(

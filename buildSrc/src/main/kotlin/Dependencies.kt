@@ -76,13 +76,13 @@ interface Dependencies {
     }
 
     object Decompose : Dependencies {
-        const val version = "1.0.0-alpha-06"
+        const val version = "1.0.0-alpha-07"
         const val core = "com.arkivanov.decompose:decompose:$version"
         const val compose = "com.arkivanov.decompose:extensions-compose-jetpack:$version"
     }
 
     object Activity : Dependencies {
-        const val version = "1.6.0"
+        const val version = "1.6.1"
         const val core = "androidx.activity:activity-ktx:$version"
         const val compose = "androidx.activity:activity-compose:$version"
     }
@@ -120,11 +120,11 @@ interface Dependencies {
 
     object Compose : Dependencies {
         const val compilerVersion = "1.3.2"
-        const val version = "1.3.0-rc01"
+        const val version = "1.4.0-alpha01"
         const val ui = "androidx.compose.ui:ui:$version"
         const val runtime = "androidx.compose.runtime:runtime:$version"
         const val material = "androidx.compose.material:material:$version"
-        const val material3 = "androidx.compose.material3:material3:1.0.0-rc01"
+        const val material3 = "androidx.compose.material3:material3:1.1.0-alpha01"
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val tooling = "androidx.compose.ui:ui-tooling:$version"
@@ -147,7 +147,7 @@ interface Dependencies {
     }
 
     object Accompanist : Dependencies {
-        const val version = "0.26.5-rc"
+        const val version = "0.27.0"
         const val swiperefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
         const val permissions = "com.google.accompanist:accompanist-permissions:$version"
         const val placeholder = "com.google.accompanist:accompanist-placeholder:$version"
@@ -201,7 +201,7 @@ interface Dependencies {
     }
 
     object Coil : Dependencies {
-        const val version = "2.1.0"
+        const val version = "2.2.2"
         const val core = "io.coil-kt:coil:$version"
         const val compose = "io.coil-kt:coil-compose:$version"
     }

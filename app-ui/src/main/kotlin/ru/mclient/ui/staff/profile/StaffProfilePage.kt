@@ -58,7 +58,6 @@ fun StaffProfilePage(
                 staff = state.staff,
                 onEdit = onEdit,
                 modifier = Modifier
-                    .padding(10.dp)
                     .fillMaxWidth()
                     .outlined()
                     .padding(10.dp)
