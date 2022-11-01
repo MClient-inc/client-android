@@ -6,4 +6,5 @@ interface ServiceNetworkSource {
 
     suspend fun createService(input: CreateServiceInput): CreateServiceOutput
 
+    suspend fun getServiceById(input: GetServiceByIdInput): GetServiceByIdOutput
 }

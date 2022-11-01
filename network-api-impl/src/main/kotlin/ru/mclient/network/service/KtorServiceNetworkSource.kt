@@ -55,6 +55,17 @@ class KtorServiceNetworkSource(
         )
     }
 
+    override suspend fun getServiceById(input: GetServiceByIdInput): GetServiceByIdOutput {
+        val response = client.get("/services/${input.serviceId}")
+        val body = response.body<GetServiceResponse>()
+        return GetServiceByIdOutput(
+            id = body.id,
+            title = body.title,
+            description = body.description,
+            cost = body.cost
+        )
+    }
+
 }
 
 
@@ -86,4 +97,12 @@ class CreateServiceResponse(
     val title: String,
     val cost: Long,
     val categoryId: Long,
+)
+
+@Serializable
+class GetServiceResponse(
+    val id: Long,
+    val title: String,
+    val description: String,
+    val cost: String
 )

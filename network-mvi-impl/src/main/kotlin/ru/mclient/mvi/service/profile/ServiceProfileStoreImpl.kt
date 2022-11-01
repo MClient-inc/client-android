@@ -1,14 +1,16 @@
 package ru.mclient.mvi.service.profile
 
-import android.app.Service
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 import ru.mclient.mvi.SyncCoroutineExecutor
+import ru.mclient.network.service.GetServiceByIdInput
 import ru.mclient.network.service.ServiceNetworkSource
 
+@OptIn(ExperimentalMviKotlinApi::class)
 @Factory
 class ServiceProfileStoreImpl(
     storeFactory: StoreFactory,
@@ -26,7 +28,26 @@ class ServiceProfileStoreImpl(
             dispatch(Action.FirstLoad)
         },
         executorFactory = { Executor(params, serviceSource) },
-        reducer = { TODO() }
+        reducer = { message ->
+            when (message) {
+                Message.Failed -> copy(isFailure = true, isLoading = false)
+                is Message.Loaded -> copy(
+                    ServiceProfileStore.State.Service(
+                        id = message.service.id,
+                        title = message.service.title,
+                        description = message.service.description,
+                        cost = message.service.cost
+                    ),
+                    isFailure = false,
+                    isLoading = false
+                )
+
+                is Message.Loading -> copy(
+                    isFailure = false,
+                    isLoading = true
+                )
+            }
+        }
     ) {
 
     class Executor(
@@ -36,7 +57,7 @@ class ServiceProfileStoreImpl(
 
         override fun executeAction(action: Action, getState: () -> ServiceProfileStore.State) {
             when (action) {
-                Action.FirstLoad -> TODO()
+                Action.FirstLoad -> loadService(params.serviceId)
             }
         }
 
@@ -44,6 +65,17 @@ class ServiceProfileStoreImpl(
             dispatch(Message.Loading)
             scope.launch {
                 try {
+                    val response = serviceSource.getServiceById(GetServiceByIdInput(serviceId))
+                    dispatch(
+                        Message.Loaded(
+                            Message.Loaded.Service(
+                                id = response.id,
+                                title = response.title,
+                                description = response.description,
+                                cost = response.cost
+                            )
+                        )
+                    )
                 } catch (e: Exception) {
                     syncDispatch(Message.Failed)
                 }

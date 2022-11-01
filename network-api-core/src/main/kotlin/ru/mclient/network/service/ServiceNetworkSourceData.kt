@@ -32,3 +32,14 @@ class CreateServiceOutput(
     val description: String,
     val categoryId: Long,
 )
+
+data class GetServiceByIdInput(
+    val serviceId: Long
+)
+
+data class GetServiceByIdOutput(
+    val id: Long,
+    val title: String,
+    val description: String,
+    val cost: String
+)
