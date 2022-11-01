@@ -100,7 +100,7 @@ fun ServiceProfileHeaderComponent(
             )
             Spacer(modifier = Modifier.height(10.dp))
             DesignedButton(
-                text = "Заказать".toDesignedString(),
+                text = "Редактировать".toDesignedString(),
                 onClick = onEdit,
                 modifier = Modifier.fillMaxWidth()
             )

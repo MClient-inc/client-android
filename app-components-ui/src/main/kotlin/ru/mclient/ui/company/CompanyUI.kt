@@ -12,6 +12,7 @@ import ru.mclient.ui.company.profile.CompanyProfileHostUI
 import ru.mclient.ui.companynetwork.profile.CompanyNetworkProfileHostUI
 import ru.mclient.ui.service.create.ServiceCreateHostUI
 import ru.mclient.ui.service.list.ServiceListHostUI
+import ru.mclient.ui.service.profile.ServiceProfileHostUI
 import ru.mclient.ui.servicecategory.create.ServiceCategoryCreateHostUI
 import ru.mclient.ui.servicecategory.list.ServiceCategoriesListHostUI
 import ru.mclient.ui.staff.create.StaffCreateHostUI
@@ -91,6 +92,12 @@ fun CompanyNavHost(child: Company.Child, modifier: Modifier) {
             ClientsListHostUI(
                 component = child.component,
                 modifier = modifier,
+            )
+
+        is Company.Child.ServiceProfile ->
+            ServiceProfileHostUI(
+                component = child.component,
+                modifier = modifier
             )
     }
 }
