@@ -6,6 +6,7 @@ import java.time.LocalTime
 class UpcomingRecordsState(
     val records: List<Record>,
     val isLoading: Boolean,
+    val isRefreshing: Boolean,
     val isFailure: Boolean,
 ) {
     class Record(

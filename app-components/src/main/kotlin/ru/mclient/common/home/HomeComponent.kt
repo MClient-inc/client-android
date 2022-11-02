@@ -5,6 +5,7 @@ import ru.mclient.common.bar.MutableTopBar
 import ru.mclient.common.bar.TopBarState
 import ru.mclient.common.record.upcoming.UpcomingRecords
 import ru.mclient.common.record.upcoming.UpcomingRecordsComponent
+import ru.mclient.common.record.upcoming.UpcomingRecordsState
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
 import ru.mclient.mvi.home.HomeStore
@@ -39,6 +40,19 @@ class HomeComponent(
 
     override val upcomingRecords: UpcomingRecords =
         UpcomingRecordsComponent(componentContext, companyId, ::onSelectRecord)
+
+    override val state: HomeState get() = mergeState(upcomingRecords.state)
+
+    private fun mergeState(upcomingRecordsState: UpcomingRecordsState): HomeState {
+        return HomeState(
+            isLoading = upcomingRecordsState.isLoading,
+            isRefreshing = upcomingRecordsState.isRefreshing,
+        )
+    }
+
+    override fun onRefresh() {
+        upcomingRecords.onRefresh()
+    }
 
 
 }

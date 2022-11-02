@@ -22,7 +22,8 @@ class UpcomingRecordsComponent(
         return UpcomingRecordsState(
             records = records.map { it.toState() },
             isLoading = isLoading,
-            isFailure = isFailure
+            isFailure = isFailure,
+            isRefreshing = records.isNotEmpty() && isLoading,
         )
     }
 
