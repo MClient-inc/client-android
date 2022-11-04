@@ -27,7 +27,6 @@ import ru.mclient.ui.view.DesignedText
 import ru.mclient.ui.view.outlined
 import ru.mclient.ui.view.toDesignedDrawable
 import ru.mclient.ui.view.toDesignedString
-import ru.mclient.ui.view.toStringComposable
 import ru.shafran.ui.R
 
 data class ClientProfilePageState(
@@ -38,7 +37,7 @@ data class ClientProfilePageState(
     data class Profile(
         val username: DesignedString,
         val codename: DesignedString,
-        val phoneNumber: DesignedString,
+        val phoneNumber: String,
     )
 }
 
@@ -67,17 +66,17 @@ fun ClientProfilePage(
     }
 }
 
-fun phoneNumberFormatter(phoneNumber: String): DesignedString {
+fun phoneNumberFormatter(phoneNumber: String): String {
     if (phoneNumber.length != 11 && !phoneNumber.startsWith("7"))
-        return phoneNumber.toDesignedString()
+        return phoneNumber
     return buildString {
         append(phoneNumber)
         insert(0, "+")
         insert(2, "(")
-        insert(6, ")")
+        insert(6, ") ")
         insert(10, "-")
         insert(13, "-")
-    }.toDesignedString()
+    }
 }
 
 @Composable
@@ -109,7 +108,7 @@ fun ClientProfileHeaderComponent(
                 maxLines = 1,
             )
             DesignedText(
-                text = phoneNumberFormatter(profile.phoneNumber.toStringComposable()),
+                text = phoneNumberFormatter(profile.phoneNumber).toDesignedString(),
                 style = MaterialTheme.typography.labelSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
@@ -134,7 +133,7 @@ fun ClientProfilePagePreview() {
             profile = ClientProfilePageState.Profile(
                 username = "Александр Сергеевич Пушкин".toDesignedString(),
                 codename = "client_007".toDesignedString(),
-                phoneNumber = "78005553535".toDesignedString()
+                phoneNumber = "78005553535"
             ),
             isLoading = false,
             isRefreshing = false

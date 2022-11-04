@@ -4,6 +4,8 @@ interface StaffNetworkSource {
 
     suspend fun getStaffForCompany(input: GetStaffForCompanyInput): GetStaffForCompanyOutput
 
+    suspend fun getStaffForCompanyAndSchedule(input: GetStaffForCompanyAndScheduleInput): GetStaffForCompanyAndScheduleOutput
+
     suspend fun getStaffById(input: GetStaffByIdInput): GetStaffByIdOutput
 
     suspend fun createStaff(input: CreateStaffInput): CreateStaffOutput

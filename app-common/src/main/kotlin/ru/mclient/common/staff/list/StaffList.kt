@@ -19,7 +19,6 @@ interface StaffList {
 
     fun onRefresh()
 
-    fun onSelect(staffId: Long)
+    fun onSelect(staffId: Long, staffName: String)
 
-    fun onCreateStaff()
 }

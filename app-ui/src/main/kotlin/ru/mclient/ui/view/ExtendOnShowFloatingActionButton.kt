@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 
 @Composable
 fun ExtendOnShowFloatingActionButton(
@@ -15,6 +16,7 @@ fun ExtendOnShowFloatingActionButton(
     isShown: Boolean,
     onClick: () -> Unit,
     isScrollInProgress: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     if (isShown) {
         var isExpanded by rememberSaveable { mutableStateOf(false) }
@@ -28,7 +30,7 @@ fun ExtendOnShowFloatingActionButton(
             icon = { DesignedIcon(icon = icon) },
             onClick = onClick,
             expanded = isExpanded && !isScrollInProgress,
-//                modifier = Modifier.animateContentPlacement()
+            modifier = modifier
         )
     }
 }

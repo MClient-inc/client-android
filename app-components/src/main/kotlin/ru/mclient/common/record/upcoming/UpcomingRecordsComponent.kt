@@ -4,12 +4,13 @@ import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
-import ru.mclient.mvi.company.record.UpcomingRecordsStore
+import ru.mclient.mvi.record.UpcomingRecordsStore
 
 class UpcomingRecordsComponent(
     componentContext: DIComponentContext,
     companyId: Long,
-    onSelect: (Long) -> Unit,
+    private val onSelect: (Long) -> Unit,
+    private val onRecordsList: () -> Unit,
 ) : UpcomingRecords, DIComponentContext by componentContext {
 
 
@@ -52,13 +53,16 @@ class UpcomingRecordsComponent(
         )
     }
 
+    override fun onMoreDetails() {
+        onRecordsList.invoke()
+    }
 
     override fun onRefresh() {
         store.accept(UpcomingRecordsStore.Intent.Refresh)
     }
 
     override fun onSelect(recordId: Long) {
-        TODO("Not yet implemented")
+        onSelect.invoke(recordId)
     }
 
 

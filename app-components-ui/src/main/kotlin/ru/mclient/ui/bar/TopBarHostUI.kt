@@ -1,6 +1,7 @@
 package ru.mclient.ui.bar
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,15 +15,19 @@ import ru.mclient.common.bar.TopBarHost
 fun TopBarHostUI(
     component: TopBarHost,
     modifier: Modifier = Modifier,
+    floatingActionButton: @Composable () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     Scaffold(
         topBar = {
             TopBarUI(component = component.bar, modifier = Modifier.fillMaxWidth())
         },
-        modifier = modifier
+        floatingActionButton = floatingActionButton,
+        modifier = modifier,
     ) {
-        Box(modifier = Modifier.padding(it)) {
+        Box(modifier = Modifier
+            .padding(it)
+            .fillMaxSize()) {
             content()
         }
     }

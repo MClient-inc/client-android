@@ -186,7 +186,7 @@ class CompanyComponent(
                 ClientsListForCompanyHostComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
-                    onCreate = {},
+                    onCreate = { },
                     onClient = {}
                 )
             )

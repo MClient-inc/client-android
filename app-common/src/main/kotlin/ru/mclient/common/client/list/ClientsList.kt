@@ -7,7 +7,7 @@ class ClientsListState(
 ) {
     class Client(
         val id: Long,
-        val title: String,
+        val name: String,
         val phone: String,
     )
 }
@@ -18,8 +18,6 @@ interface ClientsList {
 
     fun onRefresh()
 
-    fun onClient(clientId: Long)
-
-    fun onCreate()
+    fun onClient(clientId: Long, name: String)
 
 }

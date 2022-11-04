@@ -93,11 +93,17 @@ interface Dependencies {
     }
 
     object Android : Dependencies {
-        const val agpVersion = "7.3.0"
+        const val agpVersion = "7.3.1"
         const val version = "1.9.0"
         const val core = "androidx.core:core-ktx:$version"
         const val splash = "androidx.core:core-splashscreen:1.0.0"
         const val startup = "androidx.startup:startup-runtime:1.1.1"
+    }
+
+    object Dialogs: Dependencies {
+        const val version = "0.9.0"
+        const val core = "io.github.vanpra.compose-material-dialogs:core:${version}"
+        const val datetime = "io.github.vanpra.compose-material-dialogs:datetime:${version}"
     }
 
     object Lifecycle : Dependencies {

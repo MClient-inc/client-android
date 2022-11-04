@@ -1,4 +1,4 @@
-package ru.mclient.mvi.company.record
+package ru.mclient.mvi.record
 
 import ru.mclient.mvi.ParametrizedStore
 import java.time.LocalDate

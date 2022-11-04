@@ -1,20 +1,16 @@
 package ru.mclient.ui.client.list
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,7 +18,6 @@ import ru.mclient.ui.utils.defaultPlaceholder
 import ru.mclient.ui.view.DesignedIcon
 import ru.mclient.ui.view.DesignedLazyColumn
 import ru.mclient.ui.view.DesignedText
-import ru.mclient.ui.view.ExtendOnShowFloatingActionButton
 import ru.mclient.ui.view.toDesignedDrawable
 import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
@@ -34,7 +29,7 @@ data class ClientListPageState(
 ) {
     class Client(
         val id: Long,
-        val title: String,
+        val name: String,
         val phone: String,
     )
 }
@@ -45,52 +40,36 @@ fun ClientsListPage(
     state: ClientListPageState,
     onRefresh: () -> Unit,
     onSelect: (ClientListPageState.Client) -> Unit,
-    onCreate: () -> Unit,
     modifier: Modifier,
 ) {
     val listState = rememberLazyListState()
-    Scaffold(
-        floatingActionButton = {
-            ExtendOnShowFloatingActionButton(
-                text = "Добавить".toDesignedString(),
-                icon = Icons.Outlined.Add.toDesignedDrawable(),
-                isShown = !state.isLoading || state.isRefreshing,
-                onClick = onCreate,
-                isScrollInProgress = listState.isScrollInProgress,
-            )
-        },
+    DesignedLazyColumn(
+        state = listState,
+        refreshing = state.isRefreshing,
+        enabled = state.clients.isNotEmpty(),
+        loading = state.isLoading,
+        empty = state.clients.isEmpty(),
+        onRefresh = onRefresh,
         modifier = modifier,
-    ) {
-        DesignedLazyColumn(
-            state = listState,
-            refreshing = state.isRefreshing,
-            enabled = state.clients.isNotEmpty(),
-            loading = state.isLoading,
-            empty = state.clients.isEmpty(),
-            onRefresh = onRefresh,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it),
-            loadingContent = {
-                items(6) {
-                    ClientListItemPlaceholder(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
-            },
-        ) {
-            items(
-                items = state.clients,
-                key = ClientListPageState.Client::id,
-            ) { client ->
-                ClientListItem(
-                    client = client,
+        loadingContent = {
+            items(6) {
+                ClientListItemPlaceholder(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onSelect(client) },
                 )
             }
+        },
+    ) {
+        items(
+            items = state.clients,
+            key = ClientListPageState.Client::id,
+        ) { client ->
+            ClientListItem(
+                client = client,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onSelect(client) },
+            )
         }
     }
 }
@@ -103,14 +82,14 @@ private fun ClientListItem(
 ) {
     ListItem(
         headlineText = {
-            if (client.title.isBlank())
+            if (client.name.isBlank())
                 Text(client.phone)
             else
-                Text(client.title)
+                Text(client.name)
         },
         supportingText = {
             if (client.phone.isBlank())
-                Text(client.title)
+                Text(client.name)
             else
                 Text(client.phone)
         },

@@ -3,8 +3,9 @@ package ru.mclient.startup.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.Colors
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
+import androidx.compose.material3.MaterialTheme as MaterialTheme3
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -43,15 +45,16 @@ fun MClientTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> Theme3.Light.colors
-        else -> Theme3.Light.colors
+
+        darkTheme -> Theme3.Light.material3Colors
+        else -> Theme3.Light.material3Colors
     }
     val view = LocalView.current
 
@@ -63,14 +66,18 @@ fun MClientTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+        colors = Theme3.Light.materialColors,
+    ) {
+        MaterialTheme3(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }
 
 
-internal sealed class Theme3(val colors: ColorScheme) {
+internal sealed class Theme3(val material3Colors: ColorScheme, val materialColors: Colors) {
     object Light : Theme3(
         ColorScheme(
             primary = lightPrimary,
@@ -102,6 +109,21 @@ internal sealed class Theme3(val colors: ColorScheme) {
             outline = lightOutline,
             outlineVariant = lightOutlineVariant,
             scrim = scrim
+        ),
+        Colors(
+            primary = lightPrimary,
+            onPrimary = lightOnPrimary,
+            secondary = lightSecondary,
+            onSecondary = lightOnSecondary,
+            background = lightBackground,
+            onBackground = lightOnBackground,
+            surface = lightSurface,
+            onSurface = lightOnSurface,
+            error = lightError,
+            onError = lightOnError,
+            isLight = true,
+            primaryVariant = lightPrimaryVariant,
+            secondaryVariant = lightSecondaryVariant
         )
     )
 }

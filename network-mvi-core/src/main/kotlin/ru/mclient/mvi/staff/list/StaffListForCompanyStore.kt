@@ -1,7 +1,5 @@
 package ru.mclient.mvi.staff.list
 
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.mvi.ParametrizedStore
 
 interface StaffListForCompanyStore :
@@ -18,20 +16,19 @@ interface StaffListForCompanyStore :
 
     }
 
-    @Parcelize
     data class State(
         val staff: List<Staff>,
         val isFailure: Boolean,
         val isLoading: Boolean,
-    ) : Parcelable {
-        @Parcelize
+    ) {
+
         data class Staff(
             val id: Long,
             val name: String,
             val codename: String,
             val icon: String?,
             val role: String,
-        ) : Parcelable
+        )
     }
 
     sealed class Label

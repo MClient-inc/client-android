@@ -26,9 +26,11 @@ import ru.mclient.local.auth.AuthLocalStorageData
 import ru.mclient.network.auth.AuthNetworkSource
 import ru.mclient.network.auth.RefreshTokenInput
 import ru.mclient.startup.utils.LocalDateSerializer
+import ru.mclient.startup.utils.LocalDateTimeSerializer
 import ru.mclient.startup.utils.LocalTimeSerializer
 import ru.shafran.startup.BuildConfig
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 @Module
@@ -122,6 +124,7 @@ class HttpClientModule {
             serializersModule = SerializersModule {
                 contextual(LocalDate::class, LocalDateSerializer)
                 contextual(LocalTime::class, LocalTimeSerializer)
+                contextual(LocalDateTime::class, LocalDateTimeSerializer)
             }
         }
     }

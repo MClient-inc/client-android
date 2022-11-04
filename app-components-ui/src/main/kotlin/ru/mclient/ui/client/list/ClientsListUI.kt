@@ -9,10 +9,10 @@ import ru.mclient.common.client.list.ClientsListState
 fun ClientsListState.toUI(): ClientListPageState {
     return ClientListPageState(
         clients = clients.map {
-            ClientListPageState.Client(id = it.id, title = it.title, phone = it.phone)
+            ClientListPageState.Client(id = it.id, name = it.name, phone = it.phone)
         },
         isLoading = isLoading,
-        isRefreshing = isRefreshing
+        isRefreshing = isRefreshing,
     )
 }
 
@@ -24,8 +24,7 @@ fun ClientsListUI(
     ClientsListPage(
         state = component.state.toUI(),
         onRefresh = component::onRefresh,
-        onSelect = remember(component) { { component.onClient(it.id) } },
-        onCreate = component::onCreate,
+        onSelect = remember(component) { { component.onClient(it.id, it.name) } },
         modifier = modifier,
     )
 }

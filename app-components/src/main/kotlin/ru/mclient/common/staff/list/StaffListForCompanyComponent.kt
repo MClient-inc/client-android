@@ -10,7 +10,6 @@ class StaffListForCompanyComponent(
     componentContext: DIComponentContext,
     companyId: Long,
     private val onSelect: (Long) -> Unit,
-    private val onCreate: () -> Unit,
 ) : StaffList, DIComponentContext by componentContext {
 
     private val store: StaffListForCompanyStore =
@@ -38,12 +37,9 @@ class StaffListForCompanyComponent(
         store.accept(StaffListForCompanyStore.Intent.Refresh)
     }
 
-    override fun onSelect(staffId: Long) {
+    override fun onSelect(staffId: Long, staffName: String) {
         onSelect.invoke(staffId)
     }
 
-    override fun onCreateStaff() {
-        onCreate.invoke()
-    }
 
 }

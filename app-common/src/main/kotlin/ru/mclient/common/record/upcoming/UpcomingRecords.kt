@@ -52,4 +52,5 @@ interface UpcomingRecords {
 
     fun onSelect(recordId: Long)
 
+    fun onMoreDetails()
 }

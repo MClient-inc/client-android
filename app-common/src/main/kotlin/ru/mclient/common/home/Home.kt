@@ -1,17 +1,24 @@
 package ru.mclient.common.home
 
-import ru.mclient.common.bar.TopBarHost
-import ru.mclient.common.record.upcoming.UpcomingRecords
+import com.arkivanov.decompose.router.stack.ChildStack
+import com.arkivanov.decompose.value.Value
+import ru.mclient.common.home.block.HomeBlockHost
+import ru.mclient.common.record.create.RecordCreateHost
+import ru.mclient.common.record.list.RecordsListHost
 
-class HomeState(
-    val isLoading: Boolean,
-    val isRefreshing: Boolean,
-)
 
-interface Home : TopBarHost {
+interface Home {
 
-    val upcomingRecords: UpcomingRecords
+    val childStack: Value<ChildStack<*, Child>>
 
-    fun onRefresh()
-    val state: HomeState
+    sealed class Child {
+
+        class HomeBlock(val component: HomeBlockHost) : Child()
+
+        class RecordsList(val component: RecordsListHost) : Child()
+
+        class RecordCreate(val component: RecordCreateHost) : Child()
+
+    }
+
 }

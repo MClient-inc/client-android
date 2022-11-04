@@ -43,7 +43,6 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.Material.design)
     implementation(Dependencies.Android.core)
     implementation(Dependencies.Coroutines.core)
     implementation(Dependencies.Decompose.core)
@@ -51,6 +50,9 @@ dependencies {
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.foundation)
     implementation(Dependencies.Compose.material3)
+    implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Dialogs.core)
+    implementation(Dependencies.Dialogs.datetime)
     implementation(projects.appCommon)
     implementation(projects.appUi)
 }

@@ -1,58 +1,90 @@
 package ru.mclient.common.home
 
+import com.arkivanov.decompose.router.stack.ChildStack
+import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
-import ru.mclient.common.bar.MutableTopBar
-import ru.mclient.common.bar.TopBarState
-import ru.mclient.common.record.upcoming.UpcomingRecords
-import ru.mclient.common.record.upcoming.UpcomingRecordsComponent
-import ru.mclient.common.record.upcoming.UpcomingRecordsState
-import ru.mclient.common.utils.getParameterizedStore
-import ru.mclient.common.utils.states
-import ru.mclient.mvi.home.HomeStore
+import ru.mclient.common.diChildStack
+import ru.mclient.common.home.block.HomeBlockComponent
+import ru.mclient.common.record.create.RecordCreateHostComponent
+import ru.mclient.common.record.list.RecordsListHostComponent
 
 class HomeComponent(
     componentContext: DIComponentContext,
     companyId: Long,
 ) : Home, DIComponentContext by componentContext {
 
-    private val store: HomeStore = getParameterizedStore { HomeStore.Params(companyId) }
+    private val navigation = StackNavigation<Config>()
 
-    override val bar: MutableTopBar = MutableTopBar(
-        state = store.state.toTopBarState()
-    )
-
-    private fun onSelectRecord(recordId: Long) {
-
+    private fun onRecordsList(companyId: Long) {
+        navigation.push(Config.RecordsList(companyId))
     }
 
-    init {
-        store.states(this) { state ->
-            bar.update { state.toTopBarState() }
+    private fun onRecordCreate(companyId: Long) {
+        navigation.push(Config.RecordCreate(companyId))
+    }
+
+
+    override val childStack: Value<ChildStack<*, Home.Child>> =
+        diChildStack(
+            source = navigation,
+            initialConfiguration = Config.HomeBlock(companyId),
+            handleBackButton = true,
+            childFactory = this::createChild
+        )
+
+    private fun createChild(
+        config: Config,
+        componentContext: DIComponentContext,
+    ): Home.Child {
+        return when (config) {
+            is Config.HomeBlock ->
+                Home.Child.HomeBlock(
+                    HomeBlockComponent(
+                        componentContext = componentContext,
+                        companyId = config.companyId,
+                        onSelectRecord = { TODO() },
+                        onRecordsList = { onRecordsList(config.companyId) },
+                    )
+                )
+
+            is Config.RecordsList ->
+                Home.Child.RecordsList(
+                    RecordsListHostComponent(
+                        componentContext = componentContext,
+                        companyId = config.companyId,
+                        onRecordCreate = { onRecordCreate(config.companyId) }
+                    )
+                )
+
+            is Config.RecordCreate ->
+                Home.Child.RecordCreate(
+                    RecordCreateHostComponent(
+                        componentContext = componentContext,
+                        companyId = config.companyId,
+                    )
+                )
         }
     }
 
-    private fun HomeStore.State.toTopBarState(): TopBarState {
-        return TopBarState(
-            title = company?.title ?: "**********",
-            isLoading = isFirstLoading,
-        )
+
+    sealed interface Config : Parcelable {
+
+        @Parcelize
+        @JvmInline
+        value class HomeBlock(val companyId: Long) : Config
+
+        @Parcelize
+        @JvmInline
+        value class RecordsList(val companyId: Long) : Config
+
+        @Parcelize
+        @JvmInline
+        value class RecordCreate(val companyId: Long) : Config
+
     }
-
-    override val upcomingRecords: UpcomingRecords =
-        UpcomingRecordsComponent(componentContext, companyId, ::onSelectRecord)
-
-    override val state: HomeState get() = mergeState(upcomingRecords.state)
-
-    private fun mergeState(upcomingRecordsState: UpcomingRecordsState): HomeState {
-        return HomeState(
-            isLoading = upcomingRecordsState.isLoading,
-            isRefreshing = upcomingRecordsState.isRefreshing,
-        )
-    }
-
-    override fun onRefresh() {
-        upcomingRecords.onRefresh()
-    }
-
 
 }

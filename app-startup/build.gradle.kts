@@ -77,6 +77,7 @@ dependencies {
     implementation(Dependencies.Ktor.logging)
     implementation(Dependencies.Ktor.auth)
     implementation(Dependencies.Compose.material3)
+    implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.foundation)
     implementation(projects.appComponents)
     implementation(projects.appComponentsUi)
