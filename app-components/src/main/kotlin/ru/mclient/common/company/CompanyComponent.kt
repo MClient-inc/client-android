@@ -10,6 +10,8 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.client.list.ClientsListForCompanyHostComponent
+import ru.mclient.common.client.profile.ClientProfileComponent
+import ru.mclient.common.client.profile.ClientProfileHostComponent
 import ru.mclient.common.company.profile.CompanyProfileHostComponent
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileByIdHostComponent
 import ru.mclient.common.diChildStack
@@ -84,6 +86,10 @@ class CompanyComponent(
 
     private fun onClients(companyId: Long) {
         navigation.push(Config.ClientsList(companyId))
+    }
+
+    private fun onClient(clientId: Long) {
+        navigation.push(Config.ClientProfile(clientId))
     }
 
     private fun onServiceSelect(serviceId: Long) {
@@ -187,7 +193,14 @@ class CompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
                     onCreate = {},
-                    onClient = {}
+                    onClient = { onClient(it.id) }
+                )
+            )
+
+            is Config.ClientProfile -> Company.Child.ClientProfile(
+                ClientProfileHostComponent(
+                    componentContext = componentContext,
+                    clientId = config.clientId
                 )
             )
         }
@@ -227,6 +240,9 @@ class CompanyComponent(
 
         @Parcelize
         data class ClientsList(val companyId: Long) : Config()
+
+        @Parcelize
+        data class ClientProfile(val clientId: Long) : Config()
 
     }
 

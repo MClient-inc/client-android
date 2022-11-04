@@ -11,7 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,15 +22,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.DesignedIcon
 import ru.mclient.ui.view.DesignedRefreshColumn
-import ru.mclient.ui.view.DesignedString
-import ru.mclient.ui.view.DesignedText
 import ru.mclient.ui.view.outlined
 import ru.mclient.ui.view.toDesignedDrawable
-import ru.mclient.ui.view.toDesignedString
-import ru.mclient.ui.view.toStringComposable
 import ru.shafran.ui.R
 
 data class ClientProfilePageState(
@@ -36,9 +34,8 @@ data class ClientProfilePageState(
     val isRefreshing: Boolean,
 ) {
     data class Profile(
-        val username: DesignedString,
-        val codename: DesignedString,
-        val phoneNumber: DesignedString,
+        val name: String,
+        val phone: String,
     )
 }
 
@@ -67,9 +64,9 @@ fun ClientProfilePage(
     }
 }
 
-fun phoneNumberFormatter(phoneNumber: String): DesignedString {
+fun phoneNumberFormatter(phoneNumber: String): String {
     if (phoneNumber.length != 11 && !phoneNumber.startsWith("7"))
-        return phoneNumber.toDesignedString()
+        return phoneNumber
     return buildString {
         append(phoneNumber)
         insert(0, "+")
@@ -77,7 +74,7 @@ fun phoneNumberFormatter(phoneNumber: String): DesignedString {
         insert(6, ")")
         insert(10, "-")
         insert(13, "-")
-    }.toDesignedString()
+    }
 }
 
 @Composable
@@ -91,37 +88,34 @@ fun ClientProfileHeaderComponent(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        DesignedIcon(
-            icon = painterResource(id = R.drawable.user).toDesignedDrawable(),
-            modifier = Modifier.size(125.dp)
+        Icon(
+            painter = painterResource(id = R.drawable.user),
+            modifier = Modifier.size(125.dp),
+            contentDescription = "иконка"
         )
         Column {
-            DesignedText(
-                text = profile.username,
+            Text(
+                text = profile.name,
                 style = MaterialTheme.typography.headlineSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
-            DesignedText(
-                text = profile.codename,
-                style = MaterialTheme.typography.labelSmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-            )
-            DesignedText(
-                text = phoneNumberFormatter(profile.phoneNumber.toStringComposable()),
+            Text(
+                text = phoneNumberFormatter(profile.phone),
                 style = MaterialTheme.typography.labelSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
             Spacer(modifier = Modifier.height(10.dp))
-            DesignedButton(
-                text = "Редактировать".toDesignedString(),
+            OutlinedButton(
                 onClick = onEdit,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
                 modifier = Modifier.fillMaxWidth()
-            )
+            ) {
+                Text(
+                    "Редактировать", overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            }
         }
     }
 }
@@ -132,9 +126,8 @@ fun ClientProfilePagePreview() {
     ClientProfilePage(
         state = ClientProfilePageState(
             profile = ClientProfilePageState.Profile(
-                username = "Александр Сергеевич Пушкин".toDesignedString(),
-                codename = "client_007".toDesignedString(),
-                phoneNumber = "78005553535".toDesignedString()
+                name = "Александр Сергеевич Пушкин",
+                phone = "78005553535"
             ),
             isLoading = false,
             isRefreshing = false

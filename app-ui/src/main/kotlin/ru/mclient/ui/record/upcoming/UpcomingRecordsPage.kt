@@ -178,7 +178,7 @@ private fun RecordClient(
                 Icons.Outlined.Phone.toDesignedDrawable(),
                 modifier = Modifier.size(15.dp)
             )
-            DesignedText(
+            Text(
                 phoneNumberFormatter(client.phone),
                 style = MaterialTheme.typography.bodyMedium
             )
