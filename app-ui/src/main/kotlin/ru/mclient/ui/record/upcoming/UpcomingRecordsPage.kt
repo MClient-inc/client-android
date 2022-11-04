@@ -5,10 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -28,8 +27,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.client.profile.phoneNumberFormatter
 import ru.mclient.ui.view.DesignedDivider
+import ru.mclient.ui.view.DesignedIcon
 import ru.mclient.ui.view.DesignedListPoint
+import ru.mclient.ui.view.DesignedText
 import ru.mclient.ui.view.outlined
+import ru.mclient.ui.view.toDesignedDrawable
+import ru.mclient.ui.view.toDesignedString
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.Month
@@ -86,29 +89,24 @@ fun UpcomingRecordsPage(
 ) {
     Column(
         modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "Ближайщие записи",
-                style = MaterialTheme.typography.headlineSmall,
+                text = "Ближайщие записи", style = MaterialTheme.typography.headlineSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.75f, fill = true)
+                    .weight(0.75f, fill = true),
             )
-            TextButton(
-                onClick = onMoreDetails,
-                modifier = Modifier
-            ) {
-                Text("Ещё", overflow = TextOverflow.Ellipsis, maxLines = 1)
+            TextButton(onClick = onMoreDetails) {
+                Text("Ещё")
             }
         }
         DesignedDivider(modifier = Modifier.fillMaxWidth())
-        Spacer(modifier = Modifier.height(10.dp))
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Adaptive(180.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -137,8 +135,8 @@ private fun RecordItem(
     Column(
         modifier = modifier
     ) {
-        RecordSchedule(schedule = record.schedule, time = record.time)
         RecordStaff(staff = record.schedule.staff)
+        RecordSchedule(schedule = record.schedule, time = record.time)
         RecordClient(client = record.client)
         RecordServices(services = record.services)
     }
@@ -152,10 +150,19 @@ fun RecordServices(
 ) {
     Column(modifier = modifier) {
         services.forEach { record ->
-            DesignedListPoint(
-                icon = Icons.Outlined.Menu,
-                text = record.title,
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                DesignedIcon(
+                    Icons.Outlined.Menu.toDesignedDrawable(),
+                    modifier = Modifier.size(15.dp)
+                )
+                DesignedText(
+                    record.title.toDesignedString(),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
     }
 }

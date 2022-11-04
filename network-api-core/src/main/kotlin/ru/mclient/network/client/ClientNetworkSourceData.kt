@@ -10,3 +10,13 @@ class GetClientsForCompanyOutput(
         val phone: String,
     )
 }
+
+data class GetClientByIdInput(
+    val clientId: Long,
+)
+
+data class GetClientByIdOutput(
+    val id: Long,
+    val name: String,
+    val phone: String
+)

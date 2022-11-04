@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -82,6 +83,7 @@ fun RecordsListPage(
             columns = StaggeredGridCells.Adaptive(300.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
+            contentPadding = PaddingValues(start = 10.dp, end = 10.dp, bottom = 100.dp),
             modifier = modifier,
             content = {
                 items(state.records, key = RecordsListPageState.Record::id) { record ->

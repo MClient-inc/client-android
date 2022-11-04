@@ -27,6 +27,16 @@ class KtorClientNetworkSource(
         )
     }
 
+    override suspend fun getClientById(input: GetClientByIdInput): GetClientByIdOutput {
+        val response = client.get("/clients/${input.clientId}")
+        val body = response.body<GetClientById>()
+        return GetClientByIdOutput(
+            id = body.id,
+            name = body.name,
+            phone = body.phone.orEmpty()
+        )
+    }
+
 }
 
 
@@ -41,3 +51,10 @@ class GetClientsByCompany(
         val phone: String?,
     )
 }
+
+@Serializable
+class GetClientById(
+    val id: Long,
+    val name: String,
+    val phone: String?,
+)
