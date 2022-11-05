@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.mclient.ui.client.profile.phoneNumberFormatter
+import ru.mclient.ui.record.preview.toPhoneFormat
 import ru.mclient.ui.record.upcoming.format
 import ru.mclient.ui.view.DesignedListPoint
 import ru.mclient.ui.view.DesignedRefreshColumn
@@ -56,7 +56,6 @@ class RecordsListPageState(
 
     class Client(
         val name: String,
-        val phone: String,
         val formattedPhone: String,
     )
 
@@ -66,6 +65,8 @@ class RecordsListPageState(
 
     class Service(
         val title: String,
+        val description: String,
+        val cost: Long
     )
 
 }
@@ -163,16 +164,19 @@ fun RecordsListPagePreview() {
                     id = it.toLong(),
                     client = RecordsListPageState.Client(
                         name = "Владик",
-                        phone = "78000000000",
-                        formattedPhone = phoneNumberFormatter("78000000000")
+                        formattedPhone = "78000000000".toPhoneFormat()
                     ),
                     staff = RecordsListPageState.Staff("Володя"),
                     services = listOf(
                         RecordsListPageState.Service(
-                            title = "Стрижка"
+                            title = "Стрижка",
+                            description = "Здесь будет описание",
+                            cost = 500
                         ),
                         RecordsListPageState.Service(
-                            title = "Стрижка"
+                            title = "Стрижка",
+                            description = "Здесь будет описание",
+                            cost = 500
                         ),
                     ),
                     formattedDate = LocalDate.now().format() + " " + format(
