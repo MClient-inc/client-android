@@ -42,7 +42,7 @@ class CompanyProfileComponent(
     }
 
     override fun onEdit() {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     override fun onClients() {

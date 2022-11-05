@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.mclient.ui.record.preview.toPhoneFormat
 import ru.mclient.ui.view.DesignedRefreshColumn
 import ru.mclient.ui.view.outlined
 import ru.shafran.ui.R
@@ -60,19 +61,6 @@ fun ClientProfilePage(
     }
 }
 
-fun phoneNumberFormatter(phoneNumber: String): String {
-    if (phoneNumber.length != 11 && !phoneNumber.startsWith("7"))
-        return phoneNumber
-    return buildString {
-        append(phoneNumber)
-        insert(0, "+")
-        insert(2, "(")
-        insert(6, ")")
-        insert(10, "-")
-        insert(13, "-")
-    }
-}
-
 @Composable
 fun ClientProfileHeaderComponent(
     profile: ClientProfilePageState.Profile,
@@ -99,7 +87,7 @@ fun ClientProfileHeaderComponent(
                 maxLines = 1,
             )
             Text(
-                text = phoneNumberFormatter(profile.phone),
+                text = profile.phone.toPhoneFormat(),
                 style = MaterialTheme.typography.labelSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
