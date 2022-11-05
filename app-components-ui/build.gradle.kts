@@ -44,15 +44,15 @@ android {
 
 dependencies {
     implementation(Dependencies.Android.core)
+    implementation(Dependencies.Activity.compose)
     implementation(Dependencies.Coroutines.core)
     implementation(Dependencies.Decompose.core)
+    implementation(Dependencies.Material.design)
     implementation(Dependencies.Decompose.compose)
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.foundation)
     implementation(Dependencies.Compose.material3)
     implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Dialogs.core)
-    implementation(Dependencies.Dialogs.datetime)
     implementation(projects.appCommon)
     implementation(projects.appUi)
 }

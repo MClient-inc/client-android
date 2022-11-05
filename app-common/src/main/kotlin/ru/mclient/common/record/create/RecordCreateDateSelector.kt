@@ -12,6 +12,6 @@ interface RecordCreateDateSelector {
 
     val state: RecordCreateDateSelectorState
 
-    fun onDateSelected(date: LocalDate)
+    fun onDateSelected(date: LocalDate?)
 
 }

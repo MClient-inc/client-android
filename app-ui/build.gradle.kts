@@ -46,17 +46,14 @@ android {
 dependencies {
     implementation(Dependencies.Napier.core)
     implementation(Dependencies.Coroutines.core)
-
     implementation(Dependencies.Decompose.core)
     implementation(Dependencies.Decompose.compose)
-
+    implementation(Dependencies.Material.design)
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.foundation)
     implementation(Dependencies.Compose.material3)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Accompanist.placeholder)
-    implementation(Dependencies.Dialogs.datetime)
-    implementation(Dependencies.Dialogs.core)
     implementation(Dependencies.Activity.compose)
     debugImplementation(Dependencies.Compose.tooling)
     implementation(Dependencies.Compose.toolingPreview)

@@ -20,7 +20,7 @@ interface Dependencies {
     }
 
     object Material : Dependencies {
-        const val version = "1.7.0-beta01"
+        const val version = "1.8.0-alpha02"
         const val design = "com.google.android.material:material:$version"
     }
 

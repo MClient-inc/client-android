@@ -51,8 +51,10 @@ android {
 
 dependencies {
     implementation(Dependencies.Android.core)
+    implementation(Dependencies.Android.splash)
     implementation(Dependencies.Appcompat.core)
     implementation(Dependencies.Koin.android)
+    implementation(Dependencies.Material.design)
     implementation(projects.appStartup)
     implementation(Dependencies.Compose.runtime)
 }

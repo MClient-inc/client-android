@@ -16,7 +16,7 @@ fun RecordCreateClientsSelectorUI(
     component: RecordCreateClientSelector,
     modifier: Modifier,
 ) {
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+    Box(modifier = modifier, contentAlignment = Alignment.CenterEnd) {
         RecordCreateItem(
             text = "Клиент: ${component.state.selectedClient?.name ?: "не указано"}",
             isAvailable = component.state.isAvailable,
@@ -27,7 +27,7 @@ fun RecordCreateClientsSelectorUI(
             expanded = component.state.isExpanded,
             onDismissRequest = component::onDismiss,
             modifier = Modifier
-                .fillMaxWidth(0.75f)
+                .fillMaxWidth()
                 .height(350.dp),
         ) {
             ClientsListUI(

@@ -24,7 +24,7 @@ class RecordCreateDateSelectorComponent(
         )
     }
 
-    override fun onDateSelected(date: LocalDate) {
+    override fun onDateSelected(date: LocalDate?) {
         onSelectedDate.invoke(date)
         store.accept(RecordCreateDateSelectorStore.Intent.ChangeDate(date))
     }

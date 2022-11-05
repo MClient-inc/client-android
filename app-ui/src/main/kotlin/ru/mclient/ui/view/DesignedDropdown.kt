@@ -177,7 +177,7 @@ private fun DropdownMenuContent(
             this.alpha = alpha
             transformOrigin = transformOriginState.value
         },
-        shape = MaterialTheme.shapes.extraSmall,
+        shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.surface,
         tonalElevation = 3.dp,
         shadowElevation = 3.dp,
