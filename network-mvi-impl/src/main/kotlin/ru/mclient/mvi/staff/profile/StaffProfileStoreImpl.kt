@@ -8,7 +8,10 @@ import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 import ru.mclient.mvi.SyncCoroutineExecutor
 import ru.mclient.network.staff.GetStaffByIdInput
+import ru.mclient.network.staff.GetStaffScheduleByIdInput
 import ru.mclient.network.staff.StaffNetworkSource
+import java.time.LocalDate
+import java.time.LocalTime
 
 @OptIn(ExperimentalMviKotlinApi::class)
 @Factory
@@ -21,8 +24,10 @@ class CompanyProfileStoreImpl(
         name = "CompanyProfileStoreImpl",
         initialState = StaffProfileStore.State(
             null,
+            emptyList(),
             isFailure = false,
-            isLoading = true
+            isLoading = true,
+            isRefreshing = false,
         ),
         bootstrapper = coroutineBootstrapper {
             dispatch(Action.FirstLoad)
@@ -36,19 +41,28 @@ class CompanyProfileStoreImpl(
                 )
 
                 is Message.Loaded -> copy(
-                    StaffProfileStore.State.Staff(
+                    staff = StaffProfileStore.State.Staff(
                         id = message.staff.id,
                         name = message.staff.name,
                         codename = message.staff.codename,
                         role = message.staff.role,
                     ),
+                    schedule = message.schedule.map {
+                        StaffProfileStore.State.Schedule(
+                            date = it.date,
+                            start = it.start,
+                            end = it.end
+                        )
+                    },
                     isFailure = false,
                     isLoading = false,
+                    isRefreshing = false,
                 )
 
                 is Message.Loading -> copy(
                     isFailure = false,
                     isLoading = true,
+                    isRefreshing = staff != null,
                 )
             }
         }
@@ -68,7 +82,7 @@ class CompanyProfileStoreImpl(
 
         override fun executeIntent(
             intent: StaffProfileStore.Intent,
-            getState: () -> StaffProfileStore.State
+            getState: () -> StaffProfileStore.State,
         ) {
             when (intent) {
                 StaffProfileStore.Intent.Refresh -> loadStaff(params.staffId)
@@ -80,14 +94,22 @@ class CompanyProfileStoreImpl(
             scope.launch {
                 try {
                     val response = staffSource.getStaffById(GetStaffByIdInput(staffId))
+                    val schedule = staffSource.getStaffSchedule(GetStaffScheduleByIdInput(staffId))
                     dispatch(
                         Message.Loaded(
-                            Message.Loaded.Staff(
+                            staff = Message.Loaded.Staff(
                                 id = response.id,
                                 name = response.name,
                                 codename = response.codename,
                                 role = response.role,
-                            )
+                            ),
+                            schedule = schedule.schedule.map {
+                                StaffProfileStore.State.Schedule(
+                                    date = it.date,
+                                    start = it.start,
+                                    end = it.end
+                                )
+                            }
                         )
                     )
                 } catch (e: Exception) {
@@ -102,16 +124,26 @@ class CompanyProfileStoreImpl(
     }
 
     sealed class Message {
+
         object Failed : Message()
+
         object Loading : Message()
+
         class Loaded(
-            val staff: Staff
+            val staff: Staff,
+            val schedule: List<StaffProfileStore.State.Schedule>,
         ) : Message() {
             class Staff(
                 val id: Long,
                 val name: String,
                 val codename: String,
                 val role: String,
+            )
+
+            class Schedule(
+                val date: LocalDate,
+                val start: LocalTime,
+                val end: LocalTime,
             )
         }
 

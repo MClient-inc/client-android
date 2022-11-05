@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun DesignedDivider(modifier: Modifier = Modifier) {
+fun DesignedDivider(modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         Spacer(
             modifier = Modifier

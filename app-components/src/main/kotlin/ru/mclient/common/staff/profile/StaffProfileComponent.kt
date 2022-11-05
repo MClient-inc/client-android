@@ -9,6 +9,7 @@ import ru.mclient.mvi.staff.profile.StaffProfileStore
 class StaffProfileComponent(
     componentContext: DIComponentContext,
     staffId: Long,
+    private val onEditSchedule: () -> Unit,
 ) : StaffProfile, DIComponentContext by componentContext {
 
 
@@ -20,7 +21,15 @@ class StaffProfileComponent(
     private fun StaffProfileStore.State.toState(): StaffProfileState {
         return StaffProfileState(
             staff = staff?.toState(),
+            schedule = schedule.map {
+                StaffProfileState.Schedule(
+                    date = it.date,
+                    start = it.start,
+                    end = it.end
+                )
+            },
             isLoading = isLoading,
+            isRefreshing = isRefreshing,
         )
     }
 
@@ -34,8 +43,11 @@ class StaffProfileComponent(
         store.accept(StaffProfileStore.Intent.Refresh)
     }
 
-    override fun onEdit() {
+    override fun onEditProfile() {
         TODO("Not yet implemented")
     }
 
+    override fun onEditSchedule() {
+        onEditSchedule.invoke()
+    }
 }

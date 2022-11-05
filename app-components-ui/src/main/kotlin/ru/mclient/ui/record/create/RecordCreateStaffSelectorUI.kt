@@ -27,7 +27,7 @@ fun RecordCreateStaffSelectorUI(
             expanded = component.state.isExpanded,
             onDismissRequest = component::onDismiss,
             modifier = Modifier
-                .fillMaxWidth(0.75f)
+                .fillMaxWidth()
                 .height(350.dp),
         ) {
             StaffListUI(

@@ -1,8 +1,8 @@
 package ru.mclient.mvi.staff.profile
 
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.mvi.ParametrizedStore
+import java.time.LocalDate
+import java.time.LocalTime
 
 interface StaffProfileStore :
     ParametrizedStore<StaffProfileStore.Intent, StaffProfileStore.State, StaffProfileStore.Label, StaffProfileStore.Params> {
@@ -16,19 +16,29 @@ interface StaffProfileStore :
         object Refresh : Intent()
     }
 
-    @Parcelize
     data class State(
         val staff: Staff?,
+        val schedule: List<Schedule>,
         val isFailure: Boolean,
         val isLoading: Boolean,
-    ) : Parcelable {
-        @Parcelize
+        val isRefreshing: Boolean,
+    ) {
+
         data class Staff(
             val id: Long,
             val name: String,
             val codename: String,
             val role: String,
-        ) : Parcelable
+        )
+
+
+        class Schedule(
+            val date: LocalDate,
+            val start: LocalTime,
+            val end: LocalTime,
+        )
+
+
     }
 
     sealed class Label

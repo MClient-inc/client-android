@@ -19,6 +19,7 @@ import ru.mclient.ui.servicecategory.list.ServiceCategoriesListHostUI
 import ru.mclient.ui.staff.create.StaffCreateHostUI
 import ru.mclient.ui.staff.list.StaffListHostUI
 import ru.mclient.ui.staff.profile.StaffProfileHostUI
+import ru.mclient.ui.staff.schedule.StaffScheduleHostUI
 
 
 @OptIn(ExperimentalDecomposeApi::class)
@@ -98,13 +99,19 @@ fun CompanyNavHost(child: Company.Child, modifier: Modifier) {
         is Company.Child.ServiceProfile ->
             ServiceProfileHostUI(
                 component = child.component,
-                modifier = modifier
+                modifier = modifier,
             )
 
         is Company.Child.ClientProfile ->
             ClientProfileHostUI(
                 component = child.component,
-                modifier = modifier
+                modifier = modifier,
+            )
+
+        is Company.Child.StaffSchedule ->
+            StaffScheduleHostUI(
+                component = child.component,
+                modifier = modifier,
             )
     }
 }

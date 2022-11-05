@@ -22,6 +22,7 @@ interface Dependencies {
     object Material : Dependencies {
         const val version = "1.8.0-alpha02"
         const val design = "com.google.android.material:material:$version"
+        const val kalendar = "com.himanshoe:kalendar:1.2.0"
     }
 
     object Ksp : Dependencies {

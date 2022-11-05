@@ -12,6 +12,7 @@ import ru.mclient.common.staff.profile.StaffProfileHost
 class StaffProfileHostComponent(
     componentContext: DIComponentContext,
     staffId: Long,
+    onEditSchedule: () -> Unit,
 ) : StaffProfileHost, DIComponentContext by componentContext {
 
     override val bar: TopBar = ImmutableTopBar(TopBarState("Работник"))
@@ -20,6 +21,7 @@ class StaffProfileHostComponent(
         StaffProfileComponent(
             componentContext = childDIContext(key = "staff_profile"),
             staffId = staffId,
+            onEditSchedule = onEditSchedule
         )
 
 }

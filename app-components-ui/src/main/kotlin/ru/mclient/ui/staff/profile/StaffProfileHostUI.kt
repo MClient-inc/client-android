@@ -18,7 +18,7 @@ fun StaffProfileHostUI(
             component = component.profile,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 15.dp),
+                .padding(horizontal = 10.dp),
         )
     }
 }

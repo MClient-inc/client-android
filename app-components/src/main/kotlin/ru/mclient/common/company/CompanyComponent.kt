@@ -22,6 +22,7 @@ import ru.mclient.common.servicecategory.list.ServiceCategoriesListHostForCompan
 import ru.mclient.common.staff.StaffProfileHostComponent
 import ru.mclient.common.staff.create.StaffCreateHostComponent
 import ru.mclient.common.staff.list.StaffListForCompanyHostComponent
+import ru.mclient.common.staff.schedule.StaffScheduleHostComponent
 import ru.mclient.common.utils.states
 
 class CompanyComponent(
@@ -95,6 +96,14 @@ class CompanyComponent(
         navigation.push(Config.ClientProfile(clientId))
     }
 
+    private fun onEditSchedule(staffId: Long) {
+        navigation.push(Config.StaffScheduleEdit(staffId))
+    }
+
+    private fun onEditScheduleSuccess(staffId: Long) {
+        navigation.pop()
+    }
+
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
         return when (config) {
             is Config.CompanyProfile -> Company.Child.CompanyProfile(
@@ -121,6 +130,7 @@ class CompanyComponent(
                 StaffProfileHostComponent(
                     componentContext = componentContext,
                     staffId = config.staffId,
+                    onEditSchedule = { onEditSchedule(config.staffId) },
                 )
             )
 
@@ -202,6 +212,14 @@ class CompanyComponent(
                     clientId = config.clientId,
                 )
             )
+
+            is Config.StaffScheduleEdit -> Company.Child.StaffSchedule(
+                StaffScheduleHostComponent(
+                    componentContext = componentContext,
+                    staffId = config.staffId,
+                    onSuccess = { onEditScheduleSuccess(config.staffId) }
+                )
+            )
         }
     }
 
@@ -218,6 +236,9 @@ class CompanyComponent(
 
         @Parcelize
         data class CreateStaff(val companyId: Long) : Config()
+
+        @Parcelize
+        data class StaffScheduleEdit(val staffId: Long) : Config()
 
         @Parcelize
         data class CompanyNetwork(val networkId: Long) : Config()

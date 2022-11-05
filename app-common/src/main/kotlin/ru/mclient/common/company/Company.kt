@@ -13,6 +13,7 @@ import ru.mclient.common.servicecategory.list.ServiceCategoriesListHost
 import ru.mclient.common.staff.create.StaffCreateHost
 import ru.mclient.common.staff.list.StaffListHost
 import ru.mclient.common.staff.profile.StaffProfileHost
+import ru.mclient.common.staff.schedule.StaffScheduleHost
 
 interface Company {
 
@@ -40,9 +41,11 @@ interface Company {
 
         class ClientsList(val component: ClientsListHost) : Child()
 
-        class ClientProfile(val component: ClientProfileHost): Child()
+        class ClientProfile(val component: ClientProfileHost) : Child()
 
         class ServiceProfile(val component: ServiceProfileHost) : Child()
+
+        class StaffSchedule(val component: StaffScheduleHost) : Child()
 
     }
 

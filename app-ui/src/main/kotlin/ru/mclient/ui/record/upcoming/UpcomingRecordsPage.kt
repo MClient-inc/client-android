@@ -230,13 +230,20 @@ fun LocalTime.format(): String {
     return formatter.format(this)
 }
 
+fun format(date1: LocalDate, date2: LocalDate, capitalize: Boolean = true): String {
+    if (date1 == date2) {
+        return date1.format(capitalize)
+    }
+    return "С ${date1.format(capitalize)} до ${date2.format(capitalize)}"
+}
 
-fun LocalDate.format(): String {
+
+fun LocalDate.format(capitalize: Boolean = true): String {
     val today = LocalDate.now()
     return when {
-        this == today -> "Сегодня"
-        this == today.plusDays(1) -> "Завтра"
-        this == today.minusDays(1) -> "Вчера"
+        this == today -> if (capitalize) "Сегодня" else "сегодня"
+        this == today.plusDays(1) -> if (capitalize) "Завтра" else "завтра"
+        this == today.minusDays(1) -> if (capitalize) "Вчера" else "вчера"
         this.year == today.year && this > today -> "${this.dayOfMonth} ${this.month.formatMonth()}"
         else -> "${this.dayOfMonth} ${this.month.formatMonth()} ${this.year}"
     }

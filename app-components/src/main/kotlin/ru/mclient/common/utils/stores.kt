@@ -17,7 +17,7 @@ import ru.mclient.common.DIComponentContext
 import ru.mclient.mvi.ParametrizedStore
 
 internal inline fun <reified T : Store<*, *, *>> DIComponentContext.getStore(
-    noinline params: ParametersDefinition? = null
+    noinline params: ParametersDefinition? = null,
 ): T {
     if (T::class.java.isAssignableFrom(ParametrizedStore::class.java)) {
         throw IllegalArgumentException("Store with ${T::class} is parametrized and you should use DIComponentContext.getParameterizedStore(param")
@@ -26,13 +26,20 @@ internal inline fun <reified T : Store<*, *, *>> DIComponentContext.getStore(
 }
 
 internal inline fun <Param : Any, reified T : ParametrizedStore<*, *, *, Param>> DIComponentContext.getParameterizedStore(
-    crossinline param: () -> Param
+    crossinline param: () -> Param,
+): T {
+    return instanceKeeper.getStore { get { parametersOf(param()) } }
+}
+
+
+internal inline fun <Param : Any, reified T : ParametrizedStore<*, *, *, Param>> DIComponentContext.getParameterizedSavedStateStore(
+    crossinline param: () -> Param,
 ): T {
     return instanceKeeper.getStore { get { parametersOf(param()) } }
 }
 
 internal inline fun <Param : Any, reified T : ParametrizedStore<*, *, *, Param>> DIComponentContext.getParameterizedStore(
-    param: Param
+    param: Param,
 ): T = getParameterizedStore { param }
 
 internal inline fun <reified SavedState : Parcelable, reified State : Any, reified T : Store<*, State, *>> DIComponentContext.getStoreSavedState(
@@ -70,7 +77,7 @@ fun <State : Any> Store<*, State, *>.states(lifecycleOwner: LifecycleOwner): and
 
 fun <State : Any, T : Any> Store<*, State, *>.states(
     lifecycleOwner: LifecycleOwner,
-    transform: (State) -> T
+    transform: (State) -> T,
 ): androidx.compose.runtime.State<T> {
     return toState(
         lifecycleOwner,
@@ -85,7 +92,7 @@ private inline fun <T, R, C> T.toState(
     lifecycleOwner: LifecycleOwner,
     currentState: R,
     crossinline mapper: (R) -> C,
-    crossinline subscribe: T.(Observer<R>) -> Disposable
+    crossinline subscribe: T.(Observer<R>) -> Disposable,
 ): androidx.compose.runtime.State<C> {
     val state = mutableStateOf(mapper(currentState))
     var disposable: Disposable? = null

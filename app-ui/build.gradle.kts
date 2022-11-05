@@ -49,6 +49,7 @@ dependencies {
     implementation(Dependencies.Decompose.core)
     implementation(Dependencies.Decompose.compose)
     implementation(Dependencies.Material.design)
+    implementation(Dependencies.Material.kalendar)
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.foundation)
     implementation(Dependencies.Compose.material3)
