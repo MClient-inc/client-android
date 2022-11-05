@@ -1,9 +1,11 @@
 package ru.mclient.ui.view
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun DesignedButton(
@@ -22,7 +24,8 @@ fun DesignedButton(
         DesignedText(
             text = text,
             overflow = overflow,
-            maxLines = maxLines
+            maxLines = maxLines,
+            modifier = Modifier.padding(horizontal = 15.dp)
         )
     }
 }

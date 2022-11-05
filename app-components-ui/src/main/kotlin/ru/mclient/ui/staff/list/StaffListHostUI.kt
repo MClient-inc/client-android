@@ -4,14 +4,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ru.mclient.common.staff.list.StaffListHost
-import ru.mclient.ui.bar.TopBarHostUI
+import ru.mclient.ui.bar.MergedHostUI
 
 @Composable
 fun StaffListHostUI(
     component: StaffListHost,
     modifier: Modifier
 ) {
-    TopBarHostUI(
+    MergedHostUI(
         component = component,
         modifier = modifier,
     ) {

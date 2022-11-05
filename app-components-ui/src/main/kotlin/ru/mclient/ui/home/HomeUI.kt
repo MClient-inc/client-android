@@ -1,29 +1,36 @@
 package ru.mclient.ui.home
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
+import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import ru.mclient.common.home.Home
-import ru.mclient.ui.bar.TopBarHostUI
-import ru.mclient.ui.record.upcoming.RecordsUpcomingUI
-import ru.mclient.ui.view.DesignedRefreshColumn
+import ru.mclient.ui.LocalChildrenStackAnimator
+import ru.mclient.ui.record.create.RecordCreateHostUI
+import ru.mclient.ui.record.list.RecordsListHostUI
 
+@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun HomeUI(component: Home, modifier: Modifier) {
-    TopBarHostUI(component = component) {
-        DesignedRefreshColumn(
-            refreshing = component.state.isRefreshing,
-            onRefresh = component::onRefresh,
-            modifier = Modifier
-                .padding(horizontal = 10.dp)
-                .fillMaxSize()
-        ) {
-            RecordsUpcomingUI(
-                component = component.upcomingRecords,
-                modifier = modifier,
-            )
-        }
+    Children(
+        stack = component.childStack,
+        animation = stackAnimation(LocalChildrenStackAnimator.current),
+    ) {
+        HomeNavHost(child = it.instance, modifier = modifier)
+    }
+}
+
+@Composable
+fun HomeNavHost(child: Home.Child, modifier: Modifier) {
+    when (child) {
+        is Home.Child.HomeBlock ->
+            HomeBlockHostUI(component = child.component, modifier = modifier)
+
+        is Home.Child.RecordsList ->
+            RecordsListHostUI(component = child.component, modifier = modifier)
+
+        is Home.Child.RecordCreate ->
+            RecordCreateHostUI(component = child.component, modifier = modifier)
     }
 }

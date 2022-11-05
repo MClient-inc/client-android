@@ -1,8 +1,8 @@
 package ru.mclient.common.client.list
 
-import ru.mclient.common.bar.TopBarHost
+import ru.mclient.common.bar.MergedHost
 
-interface ClientsListHost : TopBarHost {
+interface ClientsListHost : MergedHost {
 
     val list: ClientsList
 

@@ -10,7 +10,6 @@ class ClientsListForCompanyComponent(
     componentContext: DIComponentContext,
     companyId: Long,
     private val onClient: (SelectedClient) -> Unit,
-    private val onCreate: () -> Unit,
 ) : ClientsList, DIComponentContext by componentContext {
 
     private val store: ClientsListForCompanyStore =
@@ -23,7 +22,7 @@ class ClientsListForCompanyComponent(
             clients = clients.map {
                 ClientsListState.Client(
                     id = it.id,
-                    title = it.title,
+                    name = it.title,
                     phone = it.phone
                 )
             },
@@ -36,17 +35,14 @@ class ClientsListForCompanyComponent(
         store.accept(ClientsListForCompanyStore.Intent.Refresh)
     }
 
-    override fun onClient(clientId: Long) {
-        onClient.invoke(SelectedClient(clientId))
+    override fun onClient(clientId: Long, name: String) {
+        onClient.invoke(SelectedClient(clientId, name))
     }
 
-    override fun onCreate() {
-        onCreate.invoke()
-    }
 
-    @JvmInline
-    value class SelectedClient(
-        val id: Long
+    class SelectedClient(
+        val id: Long,
+        val name: String,
     )
 
 }

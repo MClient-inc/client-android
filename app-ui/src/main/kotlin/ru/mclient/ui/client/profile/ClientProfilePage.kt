@@ -22,10 +22,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.mclient.ui.view.DesignedIcon
 import ru.mclient.ui.view.DesignedRefreshColumn
 import ru.mclient.ui.view.outlined
-import ru.mclient.ui.view.toDesignedDrawable
 import ru.shafran.ui.R
 
 data class ClientProfilePageState(
@@ -57,9 +55,7 @@ fun ClientProfilePage(
                 profile = state.profile,
                 onEdit = onEdit,
                 modifier = Modifier
-                    .padding(10.dp)
                     .fillMaxWidth()
-                    .outlined()
             )
     }
 }
@@ -84,7 +80,9 @@ fun ClientProfileHeaderComponent(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .outlined()
+            .padding(10.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

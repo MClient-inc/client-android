@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
-internal fun Modifier.outlined(
+fun Modifier.outlined(
     color: Color? = null,
     shape: Shape? = null,
 ) =

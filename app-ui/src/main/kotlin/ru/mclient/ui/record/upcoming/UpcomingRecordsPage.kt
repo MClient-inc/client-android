@@ -18,20 +18,21 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.client.profile.phoneNumberFormatter
 import ru.mclient.ui.view.DesignedDivider
 import ru.mclient.ui.view.DesignedIcon
+import ru.mclient.ui.view.DesignedListPoint
 import ru.mclient.ui.view.DesignedText
 import ru.mclient.ui.view.outlined
 import ru.mclient.ui.view.toDesignedDrawable
 import ru.mclient.ui.view.toDesignedString
-import ru.shafran.ui.R
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.Month
@@ -83,13 +84,28 @@ class UpcomingRecordsPageState(
 fun UpcomingRecordsPage(
     state: UpcomingRecordsPageState,
     onClick: (UpcomingRecordsPageState.Record) -> Unit,
+    onMoreDetails: () -> Unit,
     modifier: Modifier,
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Text(text = "Ближайщие записи", style = MaterialTheme.typography.headlineSmall)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(
+                text = "Ближайщие записи", style = MaterialTheme.typography.headlineSmall,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.75f, fill = true),
+            )
+            TextButton(onClick = onMoreDetails) {
+                Text("Ещё")
+            }
+        }
         DesignedDivider(modifier = Modifier.fillMaxWidth())
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Adaptive(180.dp),
@@ -157,32 +173,16 @@ private fun RecordClient(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            DesignedIcon(
-                Icons.Outlined.Person.toDesignedDrawable(),
-                modifier = Modifier.size(15.dp)
-            )
-            DesignedText(
-                client.name.toDesignedString(),
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            DesignedIcon(
-                Icons.Outlined.Phone.toDesignedDrawable(),
-                modifier = Modifier.size(15.dp)
-            )
-            Text(
-                phoneNumberFormatter(client.phone),
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
+        DesignedListPoint(
+            icon = Icons.Outlined.Person,
+            text = client.name,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        DesignedListPoint(
+            icon = Icons.Outlined.Phone,
+            text = phoneNumberFormatter(client.phone),
+            style = MaterialTheme.typography.bodyMedium,
+        )
     }
 }
 
@@ -191,20 +191,12 @@ private fun RecordStaff(
     staff: UpcomingRecordsPageState.Staff,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(5.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
-    ) {
-        DesignedIcon(
-            painterResource(id = R.drawable.user).toDesignedDrawable(),
-            modifier = Modifier.size(15.dp)
-        )
-        DesignedText(
-            staff.name.toDesignedString(),
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
+    DesignedListPoint(
+        icon = Icons.Outlined.Person,
+        text = staff.name,
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -227,19 +219,19 @@ private fun RecordSchedule(
 
 private val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
-private fun format(from: LocalTime, to: LocalTime): String {
+fun format(from: LocalTime, to: LocalTime): String {
     if (from == to) {
         return "c ${from.format()}"
     }
     return "c ${from.format()} до ${to.format()}"
 }
 
-private fun LocalTime.format(): String {
+fun LocalTime.format(): String {
     return formatter.format(this)
 }
 
-@Composable
-private fun LocalDate.format(): String {
+
+fun LocalDate.format(): String {
     val today = LocalDate.now()
     return when {
         this == today -> "Сегодня"
@@ -385,6 +377,7 @@ fun UpcomingRecordsPagePreview() {
             isFailure = false,
         ),
         onClick = {},
+        onMoreDetails = {},
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
