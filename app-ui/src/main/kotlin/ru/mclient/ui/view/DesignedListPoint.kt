@@ -60,7 +60,7 @@ fun DesignedListPoint(
         Icon(
             painter = icon,
             contentDescription = null,
-            modifier = Modifier.size(15.dp),
+            modifier = Modifier.size(17.5.dp),
         )
         Text(
             text = text,

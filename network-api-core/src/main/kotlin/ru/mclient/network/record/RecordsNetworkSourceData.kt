@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-class GetRecordsForCompanyInput(val companyId: Long, val limit: Int = 5)
+class GetRecordsForCompanyInput(val companyId: Long, val limit: Int = 6)
 
 class GetRecordsForCompanyOutput(
     val records: List<Record>,

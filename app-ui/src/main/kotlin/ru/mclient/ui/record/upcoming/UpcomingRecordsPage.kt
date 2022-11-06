@@ -14,14 +14,13 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +32,7 @@ import ru.mclient.ui.view.DesignedText
 import ru.mclient.ui.view.outlined
 import ru.mclient.ui.view.toDesignedDrawable
 import ru.mclient.ui.view.toDesignedString
+import ru.shafran.ui.R
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.Month
@@ -136,10 +136,10 @@ private fun RecordItem(
     Column(
         modifier = modifier
     ) {
-        RecordStaff(staff = record.schedule.staff)
         RecordSchedule(schedule = record.schedule, time = record.time)
+        RecordStaff(staff = record.schedule.staff)
         RecordClient(client = record.client)
-        RecordServices(services = record.services)
+//        RecordServices(services = record.services)
     }
 }
 
@@ -175,12 +175,12 @@ private fun RecordClient(
 ) {
     Column(modifier = modifier) {
         DesignedListPoint(
-            icon = Icons.Outlined.Person,
+            icon = painterResource(id = R.drawable.client),
             text = client.name,
             style = MaterialTheme.typography.bodyMedium,
         )
         DesignedListPoint(
-            icon = Icons.Outlined.Phone,
+            icon = painterResource(id = R.drawable.phone),
             text = client.phone.toPhoneFormat(),
             style = MaterialTheme.typography.bodyMedium,
         )
@@ -193,7 +193,7 @@ private fun RecordStaff(
     modifier: Modifier = Modifier,
 ) {
     DesignedListPoint(
-        icon = Icons.Outlined.Person,
+        icon = painterResource(id = R.drawable.staff),
         text = staff.name,
         style = MaterialTheme.typography.bodyMedium,
         modifier = modifier
@@ -207,13 +207,17 @@ private fun RecordSchedule(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        Text(
-            schedule.date.format(),
-            style = MaterialTheme.typography.labelLarge
+        DesignedListPoint(
+            icon = painterResource(id = R.drawable.date),
+            text = schedule.date.format(),
+            style = MaterialTheme.typography.labelLarge,
+            modifier = modifier
         )
-        Text(
-            format(time.start, time.end),
-            style = MaterialTheme.typography.labelMedium
+        DesignedListPoint(
+            icon = painterResource(id = R.drawable.time),
+            text = format(time.start, time.end),
+            style = MaterialTheme.typography.labelLarge,
+            modifier = modifier
         )
     }
 }
