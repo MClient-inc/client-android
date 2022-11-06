@@ -75,7 +75,7 @@ class HomeComponent(
                 Home.Child.RecordCreate(
                     RecordCreateHostComponent(
                         componentContext = componentContext,
-                        recordId = config.companyId,
+                        companyId = config.companyId,
                     )
                 )
 
@@ -84,8 +84,6 @@ class HomeComponent(
                     RecordProfileHostComponent(
                         componentContext = componentContext,
                         recordId = config.recordId
-                        companyId = config.companyId,
-                        onSuccess = this::onRecordCreated,
                     )
                 )
         }

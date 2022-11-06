@@ -15,11 +15,11 @@ import java.time.LocalTime
 
 class RecordCreateHostComponent(
     componentContext: DIComponentContext,
-    recordId: Long,
+    companyId: Long,
 ) : RecordCreateHost, DIComponentContext by componentContext {
 
     private val store: RecordCreateStore =
-        getParameterizedStore { RecordCreateStore.Params(recordId) }
+        getParameterizedStore { RecordCreateStore.Params(companyId) }
 
     private fun onSuccess() {}
 
@@ -35,7 +35,7 @@ class RecordCreateHostComponent(
     override val clientsSelector =
         RecordCreateClientSelectorComponent(
             componentContext = childDIContext(key = "record_create_clients"),
-            companyId = recordId,
+            companyId = companyId,
         )
 
     override val dateSelector: RecordCreateDateSelector =
@@ -53,13 +53,13 @@ class RecordCreateHostComponent(
     override val servicesSelector: RecordCreateServicesSelector =
         RecordCreateServicesSelectorComponent(
             componentContext = childDIContext(key = "record_create_services"),
-            companyId = recordId,
+            companyId = companyId,
         )
 
     override val staffSelector =
         RecordCreateStaffSelectorComponent(
             componentContext = childDIContext("record_create_staff"),
-            companyId = recordId,
+            companyId = companyId,
         )
 
     override val state: RecordCreateHostState

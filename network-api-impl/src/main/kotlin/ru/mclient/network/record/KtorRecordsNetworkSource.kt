@@ -113,8 +113,8 @@ class KtorRecordsNetworkSource(
         val body = response.body<GetRecordByIdResponse>()
         return GetRecordByIdOutput(
             record = GetRecordByIdOutput.Record(
-                id = body.record.id,
-                services = body.record.services.map {
+                id = body.id,
+                services = body.services.map {
                     GetRecordByIdOutput.Service(
                         id = it.id,
                         cost = it.cost,
@@ -123,26 +123,26 @@ class KtorRecordsNetworkSource(
                     )
                 },
                 staff = GetRecordByIdOutput.Staff(
-                    id = body.record.staff.id,
-                    codename = body.record.staff.codename,
-                    name = body.record.staff.name,
-                    role = body.record.staff.role
+                    id = body.staff.id,
+                    codename = body.staff.codename,
+                    name = body.staff.name,
+                    role = body.staff.role
                 ),
                 schedule = GetRecordByIdOutput.Schedule(
-                    id = body.record.schedule.id,
-                    date = body.record.schedule.date,
-                    start = body.record.schedule.start,
-                    end = body.record.schedule.end
+                    id = body.schedule.id,
+                    date = body.schedule.date,
+                    start = body.schedule.start,
+                    end = body.schedule.end
                 ),
                 time = GetRecordByIdOutput.TimeOffset(
-                    start = body.record.time.start,
-                    end = body.record.time.end
+                    start = body.time.start,
+                    end = body.time.end
                 ),
-                totalCost = body.record.totalCost,
+                totalCost = body.totalCost,
                 client = GetRecordByIdOutput.Client(
-                    id = body.record.client.id,
-                    phone = body.record.client.phone,
-                    name = body.record.client.name
+                    id = body.client.id,
+                    phone = body.client.phone,
+                    name = body.client.name
                 )
             )
         )
@@ -153,25 +153,20 @@ class KtorRecordsNetworkSource(
 
 @Serializable
 class GetRecordByIdResponse(
-    val record: Record
+    val id: Long,
+    val client: Client,
+    val schedule: Schedule,
+    val time: TimeOffset,
+    val services: List<Service>,
+    val staff: Staff,
+    val totalCost: Long,
 ) {
-    @Serializable
-    class Record(
-        val id: Long,
-        val client: Client,
-        val schedule: Schedule,
-        val time: TimeOffset,
-        val services: List<Service>,
-        val staff: Staff,
-        val totalCost: Long
-    )
-
     @Serializable
     class Staff(
         val id: Long,
         val name: String,
         val role: String,
-        val codename: String
+        val codename: String,
     )
 
 
@@ -191,7 +186,7 @@ class GetRecordByIdResponse(
         val start: LocalTime,
         @Contextual
         val end: LocalTime,
-        val id: Long
+        val id: Long,
     )
 
     @Serializable
@@ -206,9 +201,10 @@ class GetRecordByIdResponse(
         val id: Long,
         val title: String,
         val cost: Long,
-        val description: String
+        val description: String,
     )
 }
+
 
 @Serializable
 class GetRecordsResponse(

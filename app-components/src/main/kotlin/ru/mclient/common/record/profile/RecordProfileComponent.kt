@@ -16,7 +16,6 @@ class RecordProfileComponent(
 
     override val state: RecordProfileState by store.states(this) { it.toState() }
 
-
     private fun RecordProfileStore.State.toState(): RecordProfileState {
         return RecordProfileState(
             record = record?.toState(),
