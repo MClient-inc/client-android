@@ -5,6 +5,7 @@ import com.arkivanov.decompose.value.Value
 import ru.mclient.common.home.block.HomeBlockHost
 import ru.mclient.common.record.create.RecordCreateHost
 import ru.mclient.common.record.list.RecordsListHost
+import ru.mclient.common.record.profile.RecordProfileHost
 
 
 interface Home {
@@ -18,6 +19,8 @@ interface Home {
         class RecordsList(val component: RecordsListHost) : Child()
 
         class RecordCreate(val component: RecordCreateHost) : Child()
+
+        class RecordProfile(val component: RecordProfileHost): Child()
 
     }
 

@@ -9,6 +9,7 @@ import ru.mclient.common.home.Home
 import ru.mclient.ui.LocalChildrenStackAnimator
 import ru.mclient.ui.record.create.RecordCreateHostUI
 import ru.mclient.ui.record.list.RecordsListHostUI
+import ru.mclient.ui.record.profile.RecordProfileHostUI
 
 @OptIn(ExperimentalDecomposeApi::class)
 @Composable
@@ -32,5 +33,8 @@ fun HomeNavHost(child: Home.Child, modifier: Modifier) {
 
         is Home.Child.RecordCreate ->
             RecordCreateHostUI(component = child.component, modifier = modifier)
+
+        is Home.Child.RecordProfile ->
+            RecordProfileHostUI(component = child.component, modifier = modifier)
     }
 }

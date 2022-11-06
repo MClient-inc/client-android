@@ -19,7 +19,7 @@ import ru.mclient.common.service.list.ServiceListForCategoryAndCompanyHostCompon
 import ru.mclient.common.service.profile.ServiceProfileHostComponent
 import ru.mclient.common.servicecategory.create.ServiceCategoryCreateHostComponent
 import ru.mclient.common.servicecategory.list.ServiceCategoriesListHostForCompanyComponent
-import ru.mclient.common.staff.StaffProfileHostComponent
+import ru.mclient.common.staff.profile.StaffProfileHostComponent
 import ru.mclient.common.staff.create.StaffCreateHostComponent
 import ru.mclient.common.staff.list.StaffListForCompanyHostComponent
 import ru.mclient.common.staff.schedule.StaffScheduleHostComponent

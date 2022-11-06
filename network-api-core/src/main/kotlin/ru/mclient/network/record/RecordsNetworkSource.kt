@@ -6,5 +6,6 @@ interface RecordsNetworkSource {
 
     suspend fun createRecord(input: CreateRecordInput): CreateRecordOutput
 
+    suspend fun getRecordById(input: GetRecordByIdInput): GetRecordByIdOutput
 
 }

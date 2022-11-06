@@ -10,6 +10,7 @@ class RecordsListHostComponent(
     componentContext: DIComponentContext,
     companyId: Long,
     private val onRecordCreate: () -> Unit,
+    onSelect:(RecordsListState.Record) -> Unit,
 ) : RecordsListHost, DIComponentContext by componentContext {
 
     override val bar: TopBar = ImmutableTopBar(TopBarState("Записи"))
@@ -17,6 +18,7 @@ class RecordsListHostComponent(
     override val recordsList: RecordsList = RecordsListComponent(
         componentContext = childDIContext(key = "records_list"),
         companyId = companyId,
+        onSelect = onSelect
     )
 
     override fun onRecordCreate() {

@@ -15,16 +15,13 @@ import java.time.LocalTime
 
 class RecordCreateHostComponent(
     componentContext: DIComponentContext,
-    companyId: Long,
-    private val onSuccess: () -> Unit,
+    recordId: Long,
 ) : RecordCreateHost, DIComponentContext by componentContext {
 
     private val store: RecordCreateStore =
-        getParameterizedStore { RecordCreateStore.Params(companyId) }
+        getParameterizedStore { RecordCreateStore.Params(recordId) }
 
-    private fun onSuccess() {
-        onSuccess.invoke()
-    }
+    private fun onSuccess() {}
 
     private val storeState by store.states(this) {
         if (it.isSuccess) {
@@ -38,7 +35,7 @@ class RecordCreateHostComponent(
     override val clientsSelector =
         RecordCreateClientSelectorComponent(
             componentContext = childDIContext(key = "record_create_clients"),
-            companyId = companyId,
+            companyId = recordId,
         )
 
     override val dateSelector: RecordCreateDateSelector =
@@ -56,13 +53,13 @@ class RecordCreateHostComponent(
     override val servicesSelector: RecordCreateServicesSelector =
         RecordCreateServicesSelectorComponent(
             componentContext = childDIContext(key = "record_create_services"),
-            companyId = companyId,
+            companyId = recordId,
         )
 
     override val staffSelector =
         RecordCreateStaffSelectorComponent(
             componentContext = childDIContext("record_create_staff"),
-            companyId = companyId,
+            companyId = recordId,
         )
 
     override val state: RecordCreateHostState
@@ -92,7 +89,7 @@ class RecordCreateHostComponent(
     }
 
     private fun isAllSelectorsSuccess(): Boolean {
-        return clientsSelector.state.isSuccess && dateSelector.state.isSuccess && timeSelector.state.isSuccess && staffSelector.state.isSuccess && storeState.isAvailable
+        return clientsSelector.state.isSuccess && dateSelector.state.isSuccess && timeSelector.state.isSuccess && staffSelector.state.isSuccess && !storeState.isLoading
     }
 
     private fun onDate(date: LocalDate?) {

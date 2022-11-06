@@ -9,6 +9,7 @@ import ru.mclient.mvi.record.RecordsListStore
 class RecordsListComponent(
     componentContext: DIComponentContext,
     companyId: Long,
+    private val onSelect:(RecordsListState.Record) -> Unit,
 ) : RecordsList, DIComponentContext by componentContext {
 
     private val store: RecordsListStore =
@@ -46,6 +47,6 @@ class RecordsListComponent(
     }
 
     override fun onSelect(recordId: Long) {
-        TODO("Not yet implemented")
+        state.records.find { it.id == recordId }?.let { onSelect.invoke(it) }
     }
 }
