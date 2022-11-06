@@ -93,6 +93,7 @@ fun UpcomingRecordsPage(
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = "Ближайщие записи", style = MaterialTheme.typography.headlineSmall,
