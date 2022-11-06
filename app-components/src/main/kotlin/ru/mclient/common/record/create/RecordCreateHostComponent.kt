@@ -16,12 +16,15 @@ import java.time.LocalTime
 class RecordCreateHostComponent(
     componentContext: DIComponentContext,
     companyId: Long,
+    private val onSuccess: () -> Unit,
 ) : RecordCreateHost, DIComponentContext by componentContext {
 
     private val store: RecordCreateStore =
         getParameterizedStore { RecordCreateStore.Params(companyId) }
 
-    private fun onSuccess() {}
+    private fun onSuccess() {
+        onSuccess.invoke()
+    }
 
     private val storeState by store.states(this) {
         if (it.isSuccess) {
@@ -89,7 +92,7 @@ class RecordCreateHostComponent(
     }
 
     private fun isAllSelectorsSuccess(): Boolean {
-        return clientsSelector.state.isSuccess && dateSelector.state.isSuccess && timeSelector.state.isSuccess && staffSelector.state.isSuccess && !storeState.isLoading
+        return clientsSelector.state.isSuccess && dateSelector.state.isSuccess && timeSelector.state.isSuccess && staffSelector.state.isSuccess && storeState.isAvailable
     }
 
     private fun onDate(date: LocalDate?) {

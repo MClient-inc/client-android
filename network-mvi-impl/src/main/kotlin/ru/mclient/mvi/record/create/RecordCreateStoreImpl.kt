@@ -16,7 +16,11 @@ class RecordCreateStoreImpl(
 ) : RecordCreateStore,
     Store<RecordCreateStore.Intent, RecordCreateStore.State, RecordCreateStore.Label> by storeFactory.create(
         name = "RecordCreateStoreImpl",
-        initialState = RecordCreateStore.State(isLoading = false, isSuccess = false),
+        initialState = RecordCreateStore.State(
+            isLoading = false,
+            isSuccess = false,
+            isAvailable = true
+        ),
         executorFactory = { StoreExecutor(recordsNetworkSource, params) },
         reducer = { it },
     ) {
@@ -38,10 +42,22 @@ class RecordCreateStoreImpl(
                         return
                     }
                     if (state.isSuccess) {
-                        dispatch(RecordCreateStore.State(isLoading = false, isSuccess = true))
+                        dispatch(
+                            RecordCreateStore.State(
+                                isLoading = false,
+                                isSuccess = true,
+                                isAvailable = false
+                            )
+                        )
                         return
                     }
-                    dispatch(RecordCreateStore.State(isLoading = true, isSuccess = false))
+                    dispatch(
+                        RecordCreateStore.State(
+                            isLoading = true,
+                            isSuccess = false,
+                            isAvailable = false
+                        )
+                    )
                     scope.launch {
                         recordsNetworkSource.createRecord(
                             CreateRecordInput(
@@ -52,7 +68,13 @@ class RecordCreateStoreImpl(
                                 services = intent.servicesIds,
                             )
                         )
-                        syncDispatch(RecordCreateStore.State(isLoading = false, isSuccess = true))
+                        syncDispatch(
+                            RecordCreateStore.State(
+                                isLoading = false,
+                                isSuccess = true,
+                                isAvailable = false
+                            )
+                        )
                     }
                 }
             }

@@ -22,6 +22,7 @@ interface RecordCreateStore :
     }
 
     data class State(
+        val isAvailable: Boolean,
         val isLoading: Boolean,
         val isSuccess: Boolean,
     )

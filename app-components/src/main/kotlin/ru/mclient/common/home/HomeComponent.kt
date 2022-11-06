@@ -2,6 +2,7 @@ package ru.mclient.common.home
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -25,6 +26,10 @@ class HomeComponent(
 
     private fun onRecordCreate(companyId: Long) {
         navigation.push(Config.RecordCreate(companyId))
+    }
+
+    private fun onRecordCreated() {
+        navigation.pop()
     }
 
 
@@ -65,6 +70,7 @@ class HomeComponent(
                     RecordCreateHostComponent(
                         componentContext = componentContext,
                         companyId = config.companyId,
+                        onSuccess = this::onRecordCreated,
                     )
                 )
         }
