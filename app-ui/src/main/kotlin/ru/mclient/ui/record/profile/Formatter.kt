@@ -1,7 +1,4 @@
-package ru.mclient.ui.record.preview
-
-import java.time.LocalDate
-import java.time.LocalTime
+package ru.mclient.ui.record.profile
 
 //class Formatter(
 //    private val startTime: LocalTime,
@@ -42,9 +39,6 @@ import java.time.LocalTime
 //
 //}
 
-fun formatComeDateAndTime(startTime: LocalTime, endTime: LocalTime, comeDate: LocalDate):String {
-    return "${startTime.hour}:${startTime.minute}-${endTime.hour}:${endTime.minute} ${comeDate.dayOfMonth}.${comeDate.monthValue}.${comeDate.year}"
-}
 
 fun String.toPhoneFormat(): String {
     if (this.length != 11 && !this.startsWith("7"))
@@ -57,8 +51,4 @@ fun String.toPhoneFormat(): String {
         insert(10, "-")
         insert(13, "-")
     }
-}
-
-fun Long.toMoney(): String {
-    return "${this}₽"
 }

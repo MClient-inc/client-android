@@ -17,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.mclient.ui.view.DesignedTitledBlock
+import ru.mclient.ui.view.DesignedOutlinedTitledBlock
 import ru.shafran.ui.R
 
 data class StaffProfileBlockState(
@@ -51,7 +51,7 @@ fun ClientProfileHeaderComponent(
     onEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    DesignedTitledBlock(title = "Профиль", modifier = modifier) {
+    DesignedOutlinedTitledBlock(title = "Профиль", modifier = modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

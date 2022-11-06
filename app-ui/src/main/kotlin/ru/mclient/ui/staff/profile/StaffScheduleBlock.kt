@@ -13,7 +13,7 @@ import com.himanshoe.kalendar.model.KalendarEvent
 import com.himanshoe.kalendar.ui.firey.KalendarFirey
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
-import ru.mclient.ui.view.DesignedTitledBlock
+import ru.mclient.ui.view.DesignedOutlinedTitledBlock
 
 class StaffScheduleBlockState(
     val schedule: List<Schedule>?,
@@ -34,7 +34,7 @@ fun StaffScheduleBlock(
     modifier: Modifier,
 ) {
     if (state.schedule != null)
-        DesignedTitledBlock(
+        DesignedOutlinedTitledBlock(
             title = "График работы",
             button = "Изменить",
             onClick = onEdit,

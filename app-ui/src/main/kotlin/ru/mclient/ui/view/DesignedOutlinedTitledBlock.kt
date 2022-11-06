@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DesignedTitledBlock(
+fun DesignedOutlinedTitledBlock(
     title: String,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
@@ -31,6 +31,63 @@ fun DesignedTitledBlock(
                 .padding(start = 15.dp)
         )
         Box(modifier = Modifier.outlined()) {
+            content()
+        }
+    }
+}
+
+
+@Composable
+fun DesignedOutlinedTitledBlock(
+    title: String,
+    button: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                title,
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier
+                    .padding(start = 15.dp)
+                    .fillMaxWidth()
+                    .weight(1f, fill = true)
+            )
+            TextButton(onClick = onClick) {
+                Text(button)
+            }
+        }
+        Box(modifier = Modifier.outlined()) {
+            content()
+        }
+    }
+}
+
+@Composable
+fun DesignedTitledBlock(
+    title: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier
+                .padding(start = 15.dp)
+        )
+        Box {
             content()
         }
     }
@@ -64,7 +121,7 @@ fun DesignedTitledBlock(
                 Text(button)
             }
         }
-        Box(modifier = Modifier.outlined()) {
+        Box {
             content()
         }
     }

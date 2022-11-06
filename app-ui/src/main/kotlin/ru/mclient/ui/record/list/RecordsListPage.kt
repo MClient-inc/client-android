@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.mclient.ui.record.preview.toPhoneFormat
+import ru.mclient.ui.record.profile.toPhoneFormat
 import ru.mclient.ui.record.upcoming.format
 import ru.mclient.ui.view.DesignedListPoint
 import ru.mclient.ui.view.DesignedRefreshColumn

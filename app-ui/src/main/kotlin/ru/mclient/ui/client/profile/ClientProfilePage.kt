@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.mclient.ui.record.preview.toPhoneFormat
+import ru.mclient.ui.record.profile.toPhoneFormat
 import ru.mclient.ui.view.DesignedRefreshColumn
 import ru.mclient.ui.view.outlined
 import ru.shafran.ui.R
