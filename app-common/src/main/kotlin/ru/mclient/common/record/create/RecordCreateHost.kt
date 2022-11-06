@@ -19,6 +19,8 @@ interface RecordCreateHost : TopBarHost {
 
     val timeSelector: RecordCreateTimeSelector
 
+    val servicesSelector: RecordCreateServicesSelector
+
     fun onContinue()
 
 }

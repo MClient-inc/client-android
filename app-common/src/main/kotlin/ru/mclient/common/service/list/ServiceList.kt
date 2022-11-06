@@ -8,6 +8,8 @@ class ServiceListState(
     class Service(
         val id: Long,
         val title: String,
+        val cost: Long,
+        val formattedCost: String,
     )
 }
 
@@ -19,6 +21,5 @@ interface ServiceList {
 
     fun onService(serviceId: Long)
 
-    fun onCreate()
 
 }

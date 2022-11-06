@@ -46,6 +46,8 @@ class ServiceListForCategoryAndCompanyStoreImpl(
                         ServiceListForCategoryAndCompanyStore.State.Service(
                             id = company.id,
                             title = company.title,
+                            cost = company.cost,
+                            formattedCost = "${company.cost} ₽"
                         )
                     },
                     category = ServiceListForCategoryAndCompanyStore.State.ServiceCategory(
@@ -73,7 +75,7 @@ class ServiceListForCategoryAndCompanyStoreImpl(
 
         override fun executeAction(
             action: Action,
-            getState: () -> ServiceListForCategoryAndCompanyStore.State
+            getState: () -> ServiceListForCategoryAndCompanyStore.State,
         ) {
             when (action) {
                 is Action.FirstLoad ->
@@ -83,7 +85,7 @@ class ServiceListForCategoryAndCompanyStoreImpl(
 
         override fun executeIntent(
             intent: ServiceListForCategoryAndCompanyStore.Intent,
-            getState: () -> ServiceListForCategoryAndCompanyStore.State
+            getState: () -> ServiceListForCategoryAndCompanyStore.State,
         ) {
             when (intent) {
                 is ServiceListForCategoryAndCompanyStore.Intent.Refresh ->
@@ -110,6 +112,7 @@ class ServiceListForCategoryAndCompanyStoreImpl(
                                 Message.Loaded.Service(
                                     id = service.id,
                                     title = service.title,
+                                    cost = service.cost,
                                 )
                             },
                             category = Message.Loaded.ServiceCategory(
@@ -141,6 +144,7 @@ class ServiceListForCategoryAndCompanyStoreImpl(
             class Service(
                 val id: Long,
                 val title: String,
+                val cost: Long,
             )
 
             class ServiceCategory(

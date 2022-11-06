@@ -29,6 +29,7 @@ class RecordsListState(
 
     class Service(
         val title: String,
+        val cost: Long,
     )
 
 }

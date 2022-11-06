@@ -3,10 +3,17 @@ package ru.mclient.ui.record.create
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ru.mclient.common.record.create.RecordCreateDateSelector
-import ru.mclient.ui.record.upcoming.format
+import ru.mclient.common.record.create.RecordCreateDateSelectorState
 import ru.mclient.ui.view.rememberDatePicker
 import java.time.LocalDate
 
+
+private fun RecordCreateDateSelectorState.toUI(): RecordCreateDateBlockState {
+    return RecordCreateDateBlockState(
+        isAvailable = isAvailable,
+        date = date,
+    )
+}
 
 @Composable
 fun RecordCreateDateSelectorUI(
@@ -17,9 +24,8 @@ fun RecordCreateDateSelectorUI(
         initialDate = component.state.date ?: LocalDate.now(),
         onSelected = component::onDateSelected
     )
-    RecordCreateItem(
-        text = "Дата: ${component.state.date?.format() ?: "не указано"}",
-        isAvailable = component.state.isAvailable,
+    RecordCreateDateBlock(
+        state = component.state.toUI(),
         onClick = dialog::show,
         modifier = modifier,
     )

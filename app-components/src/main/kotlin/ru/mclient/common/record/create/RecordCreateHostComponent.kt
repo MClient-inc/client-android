@@ -50,6 +50,11 @@ class RecordCreateHostComponent(
             componentContext = childDIContext("record_create_time"),
             onSelectedDate = this::onTime,
         )
+    override val servicesSelector: RecordCreateServicesSelector =
+        RecordCreateServicesSelectorComponent(
+            componentContext = childDIContext(key = "record_create_services"),
+            companyId = companyId,
+        )
 
     override val staffSelector =
         RecordCreateStaffSelectorComponent(
@@ -72,6 +77,7 @@ class RecordCreateHostComponent(
                 clientId = clientId,
                 staffId = staffId,
                 dateTime = dateTime,
+                servicesIds = servicesSelector.state.selectedServices.map { it.id },
             )
         )
     }

@@ -10,7 +10,6 @@ class ServiceCategoriesListForCompanyComponent(
     componentContext: DIComponentContext,
     companyId: Long,
     private val onCategorySelected: (Long) -> Unit,
-    private val onCreate: () -> Unit,
 ) : ServiceCategoriesList, DIComponentContext by componentContext {
 
     val store: ServiceCategoriesListForCompanyStore =
@@ -40,7 +39,4 @@ class ServiceCategoriesListForCompanyComponent(
         onCategorySelected.invoke(categoryId)
     }
 
-    override fun onCreate() {
-        onCreate.invoke()
-    }
 }

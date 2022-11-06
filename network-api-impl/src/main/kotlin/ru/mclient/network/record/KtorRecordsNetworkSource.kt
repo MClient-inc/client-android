@@ -70,7 +70,7 @@ class KtorRecordsNetworkSource(
                     input.staffId,
                     input.clientId,
                     input.dateTime,
-                    emptyList()
+                    input.services,
                 )
             )
             contentType(ContentType.Application.Json)

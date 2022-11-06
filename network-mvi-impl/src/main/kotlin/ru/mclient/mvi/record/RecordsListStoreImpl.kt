@@ -66,7 +66,8 @@ class RecordsListStoreImpl(
                             services = record.services.map { service ->
                                 RecordsListStore.State.Service(
                                     id = service.id,
-                                    title = service.title
+                                    title = service.title,
+                                    cost = service.cost,
                                 )
                             },
                             cost = record.cost,
@@ -143,7 +144,8 @@ class RecordsListStoreImpl(
                                     services = record.services.map { service ->
                                         Message.Loaded.Service(
                                             id = service.id,
-                                            title = service.title
+                                            title = service.title,
+                                            cost = service.cost,
                                         )
                                     },
                                     time = Message.Loaded.TimeOffset(
@@ -212,6 +214,7 @@ class RecordsListStoreImpl(
             class Service(
                 val id: Long,
                 val title: String,
+                val cost: Long,
             )
 
             class TimeOffset(

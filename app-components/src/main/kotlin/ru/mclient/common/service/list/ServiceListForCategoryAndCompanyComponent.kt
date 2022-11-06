@@ -10,9 +10,8 @@ class ServiceListForCategoryAndCompanyComponent(
     componentContext: DIComponentContext,
     categoryId: Long,
     companyId: Long,
-    private val onCategoryTitle: (String?) -> Unit,
-    private val onCreate: () -> Unit,
-    private val onSelect: (Long) -> Unit,
+    private val onSelect: (ServiceListState.Service) -> Unit,
+    private val onCategoryTitle: ((String?) -> Unit)? = null,
 ) : ServiceList, DIComponentContext by componentContext {
 
     private val store: ServiceListForCategoryAndCompanyStore =
@@ -28,9 +27,9 @@ class ServiceListForCategoryAndCompanyComponent(
     private fun ServiceListForCategoryAndCompanyStore.State.toState(): ServiceListState {
         val category = category
         when {
-            isFailure && category == null -> onCategoryTitle.invoke("Услуги категории")
-            category != null -> onCategoryTitle.invoke(category.title)
-            else -> onCategoryTitle.invoke(null)
+            isFailure && category == null -> onCategoryTitle?.invoke("Услуги категории")
+            category != null -> onCategoryTitle?.invoke(category.title)
+            else -> onCategoryTitle?.invoke(null)
         }
         return ServiceListState(
             services = services.map { it.toState() },
@@ -40,7 +39,12 @@ class ServiceListForCategoryAndCompanyComponent(
     }
 
     private fun ServiceListForCategoryAndCompanyStore.State.Service.toState(): ServiceListState.Service {
-        return ServiceListState.Service(id = id, title = title)
+        return ServiceListState.Service(
+            id = id,
+            title = title,
+            cost = cost,
+            formattedCost = formattedCost,
+        )
     }
 
     override fun onRefresh() {
@@ -48,10 +52,10 @@ class ServiceListForCategoryAndCompanyComponent(
     }
 
     override fun onService(serviceId: Long) {
-        onSelect.invoke(serviceId)
+        val service = state.services.firstOrNull { it.id == serviceId }
+        if (service != null) {
+            onSelect.invoke(service)
+        }
     }
 
-    override fun onCreate() {
-        onCreate.invoke()
-    }
 }

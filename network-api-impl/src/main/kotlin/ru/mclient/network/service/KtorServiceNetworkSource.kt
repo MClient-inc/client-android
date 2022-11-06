@@ -29,6 +29,7 @@ class KtorServiceNetworkSource(
                     id = it.id,
                     categoryId = it.categoryId,
                     title = it.title,
+                    cost = it.cost,
                 )
             }
         )
@@ -79,6 +80,7 @@ class GetServicesForCategoryResponse(
         val id: Long,
         val categoryId: Long,
         val title: String,
+        val cost: Long,
     )
 
 }

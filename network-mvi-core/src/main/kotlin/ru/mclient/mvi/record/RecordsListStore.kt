@@ -58,6 +58,7 @@ interface RecordsListStore :
         class Service(
             val id: Long,
             val title: String,
+            val cost: Long,
         )
     }
 

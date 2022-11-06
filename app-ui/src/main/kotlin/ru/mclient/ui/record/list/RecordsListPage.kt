@@ -65,7 +65,6 @@ class RecordsListPageState(
 
     class Service(
         val title: String,
-        val description: String,
         val cost: Long
     )
 
@@ -170,12 +169,10 @@ fun RecordsListPagePreview() {
                     services = listOf(
                         RecordsListPageState.Service(
                             title = "Стрижка",
-                            description = "Здесь будет описание",
                             cost = 500
                         ),
                         RecordsListPageState.Service(
                             title = "Стрижка",
-                            description = "Здесь будет описание",
                             cost = 500
                         ),
                     ),

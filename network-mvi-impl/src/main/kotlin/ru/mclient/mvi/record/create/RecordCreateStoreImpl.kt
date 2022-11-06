@@ -49,6 +49,7 @@ class RecordCreateStoreImpl(
                                 clientId = intent.clientId,
                                 staffId = intent.staffId,
                                 dateTime = intent.dateTime,
+                                services = intent.servicesIds,
                             )
                         )
                         syncDispatch(RecordCreateStore.State(isLoading = false, isSuccess = true))

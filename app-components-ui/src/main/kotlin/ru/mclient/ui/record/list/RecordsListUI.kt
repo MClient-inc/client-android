@@ -13,11 +13,10 @@ fun RecordsListState.toUI(): RecordsListPageState {
                 id = record.id,
                 cost = record.cost,
                 services = record.services.map { service ->
-                    RecordsListPageState.Service(title = service.title)
+                    RecordsListPageState.Service(title = service.title, service.cost)
                 },
                 client = RecordsListPageState.Client(
                     name = record.client.name,
-                    phone = record.client.phone,
                     formattedPhone = record.client.formattedPhone,
                 ),
                 staff = RecordsListPageState.Staff(record.staff.name),

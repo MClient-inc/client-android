@@ -16,6 +16,7 @@ interface RecordCreateStore :
             val clientId: Long,
             val staffId: Long,
             val dateTime: LocalDateTime,
+            val servicesIds: List<Long>,
         ) : Intent()
 
     }

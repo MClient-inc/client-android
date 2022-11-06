@@ -28,7 +28,7 @@ class RecordsListComponent(
                     ),
                     staff = RecordsListState.Staff(record.schedule.staff.name),
                     services = record.services.map { service ->
-                        RecordsListState.Service(service.title)
+                        RecordsListState.Service(service.title, service.cost)
                     },
                     formattedCost = record.formattedCost,
                     formattedTime = record.formattedTime,

@@ -53,6 +53,7 @@ class CreateRecordInput(
     val clientId: Long,
     val staffId: Long,
     val dateTime: LocalDateTime,
+    val services: List<Long>,
 )
 
 class CreateRecordOutput(

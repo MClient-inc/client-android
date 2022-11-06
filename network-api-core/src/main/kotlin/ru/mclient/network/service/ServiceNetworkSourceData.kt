@@ -13,6 +13,7 @@ class GetServicesForCategoryAndCompanyOutput(
         val id: Long,
         val categoryId: Long,
         val title: String,
+        val cost: Long,
     )
 
 }

@@ -1,5 +1,6 @@
 package ru.mclient.ui.record.create
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import ru.mclient.common.record.create.RecordCreateHost
 import ru.mclient.ui.bar.TopBarHostUI
 import ru.mclient.ui.view.DesignedButton
-import ru.mclient.ui.view.outlined
 import ru.mclient.ui.view.toDesignedString
 
 @Composable
@@ -24,14 +24,13 @@ fun RecordCreateHostUI(
     TopBarHostUI(component = component, modifier = modifier) {
         Column(
             modifier = Modifier
+                .padding(horizontal = 10.dp)
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .outlined()
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 RecordCreateClientsSelectorUI(
                     component = component.clientsSelector,
@@ -48,6 +47,10 @@ fun RecordCreateHostUI(
                 RecordCreateStaffSelectorUI(
                     component = component.staffSelector,
                     modifier = Modifier.fillMaxWidth(),
+                )
+                RecordCreateServicesSelectorUI(
+                    component = component.servicesSelector,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             DesignedButton(

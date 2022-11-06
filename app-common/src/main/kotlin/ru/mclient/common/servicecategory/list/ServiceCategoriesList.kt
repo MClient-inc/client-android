@@ -19,6 +19,4 @@ interface ServiceCategoriesList {
 
     fun onCategory(categoryId: Long)
 
-    fun onCreate()
-
 }

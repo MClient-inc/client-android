@@ -27,7 +27,6 @@ fun ServiceCategoriesListUI(component: ServiceCategoriesList, modifier: Modifier
         state = component.state.toUI(),
         onRefresh = component::onRefresh,
         onSelect = remember(component) { { component.onCategory(it.id) } },
-        onCreate = component::onCreate,
         modifier = modifier,
     )
 }

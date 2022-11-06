@@ -25,11 +25,13 @@ interface ServiceListForCategoryAndCompanyStore :
         data class Service(
             val id: Long,
             val title: String,
+            val cost: Long,
+            val formattedCost: String,
         )
 
         data class ServiceCategory(
             val id: Long,
-            val title: String
+            val title: String,
         )
     }
 
