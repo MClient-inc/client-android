@@ -108,6 +108,106 @@ class KtorRecordsNetworkSource(
         )
     }
 
+    override suspend fun getRecordById(input: GetRecordByIdInput): GetRecordByIdOutput {
+        val response = client.get("/records/${input.recordId}")
+        val body = response.body<GetRecordByIdResponse>()
+        return GetRecordByIdOutput(
+            record = GetRecordByIdOutput.Record(
+                id = body.record.id,
+                services = body.record.services.map {
+                    GetRecordByIdOutput.Service(
+                        id = it.id,
+                        cost = it.cost,
+                        title = it.title,
+                        description = it.description
+                    )
+                },
+                staff = GetRecordByIdOutput.Staff(
+                    id = body.record.staff.id,
+                    codename = body.record.staff.codename,
+                    name = body.record.staff.name,
+                    role = body.record.staff.role
+                ),
+                schedule = GetRecordByIdOutput.Schedule(
+                    id = body.record.schedule.id,
+                    date = body.record.schedule.date,
+                    start = body.record.schedule.start,
+                    end = body.record.schedule.end
+                ),
+                time = GetRecordByIdOutput.TimeOffset(
+                    start = body.record.time.start,
+                    end = body.record.time.end
+                ),
+                totalCost = body.record.totalCost,
+                client = GetRecordByIdOutput.Client(
+                    id = body.record.client.id,
+                    phone = body.record.client.phone,
+                    name = body.record.client.name
+                )
+            )
+        )
+
+    }
+}
+
+
+@Serializable
+class GetRecordByIdResponse(
+    val record: Record
+) {
+    @Serializable
+    class Record(
+        val id: Long,
+        val client: Client,
+        val schedule: Schedule,
+        val time: TimeOffset,
+        val services: List<Service>,
+        val staff: Staff,
+        val totalCost: Long
+    )
+
+    @Serializable
+    class Staff(
+        val id: Long,
+        val name: String,
+        val role: String,
+        val codename: String
+    )
+
+
+    @Serializable
+    class TimeOffset(
+        @Contextual
+        val start: LocalTime,
+        @Contextual
+        val end: LocalTime,
+    )
+
+    @Serializable
+    class Schedule(
+        @Contextual
+        val date: LocalDate,
+        @Contextual
+        val start: LocalTime,
+        @Contextual
+        val end: LocalTime,
+        val id: Long
+    )
+
+    @Serializable
+    class Client(
+        val id: Long,
+        val name: String,
+        val phone: String,
+    )
+
+    @Serializable
+    class Service(
+        val id: Long,
+        val title: String,
+        val cost: Long,
+        val description: String
+    )
 }
 
 @Serializable

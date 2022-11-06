@@ -52,3 +52,7 @@ fun String.toPhoneFormat(): String {
         insert(13, "-")
     }
 }
+
+fun Long.toMoney(): String {
+    return "${this}₽"
+}

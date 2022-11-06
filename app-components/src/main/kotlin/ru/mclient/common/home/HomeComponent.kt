@@ -11,6 +11,7 @@ import ru.mclient.common.diChildStack
 import ru.mclient.common.home.block.HomeBlockComponent
 import ru.mclient.common.record.create.RecordCreateHostComponent
 import ru.mclient.common.record.list.RecordsListHostComponent
+import ru.mclient.common.record.profile.RecordProfileHostComponent
 
 class HomeComponent(
     componentContext: DIComponentContext,
@@ -25,6 +26,10 @@ class HomeComponent(
 
     private fun onRecordCreate(companyId: Long) {
         navigation.push(Config.RecordCreate(companyId))
+    }
+
+    private fun onRecordSelect(recordId: Long) {
+        navigation.push(Config.RecordProfile(recordId))
     }
 
 
@@ -46,7 +51,7 @@ class HomeComponent(
                     HomeBlockComponent(
                         componentContext = componentContext,
                         companyId = config.companyId,
-                        onSelectRecord = { TODO() },
+                        onSelectRecord = { onRecordSelect(it) },
                         onRecordsList = { onRecordsList(config.companyId) },
                     )
                 )
@@ -56,7 +61,8 @@ class HomeComponent(
                     RecordsListHostComponent(
                         componentContext = componentContext,
                         companyId = config.companyId,
-                        onRecordCreate = { onRecordCreate(config.companyId) }
+                        onRecordCreate = { onRecordCreate(config.companyId) },
+                        onSelect = { onRecordSelect(config.companyId) }
                     )
                 )
 
@@ -64,7 +70,15 @@ class HomeComponent(
                 Home.Child.RecordCreate(
                     RecordCreateHostComponent(
                         componentContext = componentContext,
-                        companyId = config.companyId,
+                        recordId = config.companyId,
+                    )
+                )
+
+            is Config.RecordProfile ->
+                Home.Child.RecordProfile(
+                    RecordProfileHostComponent(
+                        componentContext = componentContext,
+                        recordId = config.recordId
                     )
                 )
         }
@@ -84,6 +98,10 @@ class HomeComponent(
         @Parcelize
         @JvmInline
         value class RecordCreate(val companyId: Long) : Config
+
+        @Parcelize
+        @JvmInline
+        value class RecordProfile(val recordId: Long) : Config
 
     }
 
