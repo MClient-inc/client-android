@@ -3,10 +3,13 @@ package ru.mclient.ui.view
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -15,6 +18,7 @@ fun DesignedTextField(
     onValueChange: (String) -> Unit,
     label: String,
     modifier: Modifier = Modifier,
+    placeholder: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     isError: Boolean = false,
@@ -23,17 +27,31 @@ fun DesignedTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxLines: Int = Int.MAX_VALUE,
 ) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = modifier,
-        label = { Text(label) },
-        enabled = enabled,
-        readOnly = readOnly,
-        isError = isError,
-        singleLine = singleLine,
-        keyboardActions = keyboardActions,
-        keyboardOptions = keyboardOptions,
-        maxLines = maxLines
-    )
+    DesignedOutlinedTitledBlock(title = label) {
+        TextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = modifier,
+            enabled = enabled,
+            readOnly = readOnly,
+            isError = isError,
+            singleLine = singleLine,
+            keyboardActions = keyboardActions,
+            keyboardOptions = keyboardOptions,
+            shape = MaterialTheme.shapes.medium,
+            maxLines = maxLines,
+            placeholder = placeholder?.let {
+                {
+                    Text(it)
+                }
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.Transparent,
+                errorIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+            ),
+        )
+    }
 }

@@ -26,7 +26,7 @@ fun DesignedOutlinedTitledBlock(
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier
                 .padding(start = 15.dp)
         )
@@ -55,7 +55,7 @@ fun DesignedOutlinedTitledBlock(
         ) {
             Text(
                 title,
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
                     .padding(start = 15.dp)
                     .fillMaxWidth()
@@ -83,7 +83,7 @@ fun DesignedTitledBlock(
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier
                 .padding(start = 15.dp)
         )
@@ -111,7 +111,7 @@ fun DesignedTitledBlock(
         ) {
             Text(
                 title,
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
                     .padding(start = 15.dp)
                     .fillMaxWidth()
