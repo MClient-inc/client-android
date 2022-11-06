@@ -47,7 +47,6 @@ data class RecordProfileState(
         val id: Long,
         val title: String,
         val cost: Long,
-        val description: String
     )
 
     enum class RecordStatus {

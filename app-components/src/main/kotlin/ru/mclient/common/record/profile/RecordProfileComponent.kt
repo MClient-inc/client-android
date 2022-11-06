@@ -37,7 +37,6 @@ class RecordProfileComponent(
                     id = s.id,
                     cost = s.cost,
                     title = s.title,
-                    description = s.description
                 )
             },
             staff = RecordProfileState.Staff(

@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 import ru.mclient.mvi.SyncCoroutineExecutor
 import ru.mclient.network.record.GetRecordByIdInput
-import ru.mclient.network.record.GetRecordByIdOutput
 import ru.mclient.network.record.RecordsNetworkSource
 import java.time.LocalDate
 import java.time.LocalTime
@@ -68,7 +67,6 @@ class RecordProfileStoreImpl(
                                 id = s.id,
                                 cost = s.cost,
                                 title = s.title,
-                                description = s.description
                             )
                         },
                         totalCost = message.record.totalCost
@@ -144,7 +142,6 @@ class RecordProfileStoreImpl(
                                         id = s.id,
                                         cost = s.cost,
                                         title = s.title,
-                                        description = s.description
                                     )
                                 }
                             )
@@ -209,7 +206,6 @@ class RecordProfileStoreImpl(
                 val id: Long,
                 val title: String,
                 val cost: Long,
-                val description: String
             )
         }
 

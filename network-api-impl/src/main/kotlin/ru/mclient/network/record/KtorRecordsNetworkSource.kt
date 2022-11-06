@@ -119,7 +119,6 @@ class KtorRecordsNetworkSource(
                         id = it.id,
                         cost = it.cost,
                         title = it.title,
-                        description = it.description
                     )
                 },
                 staff = GetRecordByIdOutput.Staff(
@@ -201,7 +200,6 @@ class GetRecordByIdResponse(
         val id: Long,
         val title: String,
         val cost: Long,
-        val description: String,
     )
 }
 

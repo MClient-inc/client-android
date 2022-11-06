@@ -67,7 +67,7 @@ class HomeComponent(
                         componentContext = componentContext,
                         companyId = config.companyId,
                         onRecordCreate = { onRecordCreate(config.companyId) },
-                        onSelect = { onRecordSelect(config.companyId) }
+                        onSelect = { onRecordSelect(it.id) }
                     )
                 )
 

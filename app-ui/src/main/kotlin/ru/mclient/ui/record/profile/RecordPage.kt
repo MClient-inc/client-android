@@ -65,7 +65,6 @@ data class RecordPageState(
 
     class Service(
         val title: String,
-        val description: String,
         val cost: Long,
         val formattedCost: String,
     )
@@ -370,19 +369,16 @@ fun RecordProfilePagePreview() {
                     services = listOf(
                         RecordPageState.Service(
                             "Стрижка под ноль",
-                            "",
                             250,
                             "250 ₽",
                         ),
                         RecordPageState.Service(
                             "Покраска ногтей в черный",
-                            "",
                             400,
                             "400 ₽",
                         ),
                         RecordPageState.Service(
                             "Массаж простаты",
-                            "",
                             1500,
                             "1500 ₽",
                         )

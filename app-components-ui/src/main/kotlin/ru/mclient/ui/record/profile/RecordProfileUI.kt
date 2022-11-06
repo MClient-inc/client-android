@@ -28,7 +28,6 @@ fun RecordProfileState.Record.toUI(): RecordPageState.Record {
             RecordPageState.Service(
                 title = it.title,
                 cost = it.cost,
-                description = it.description,
                 formattedCost = it.cost.toMoney()
             )
         },

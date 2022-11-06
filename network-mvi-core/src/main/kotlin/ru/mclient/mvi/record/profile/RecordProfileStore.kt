@@ -63,7 +63,6 @@ interface RecordProfileStore :
             val id: Long,
             val title: String,
             val cost: Long,
-            val description: String
         )
 
 
