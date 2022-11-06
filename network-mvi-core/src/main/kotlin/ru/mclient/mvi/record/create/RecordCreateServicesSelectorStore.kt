@@ -14,7 +14,7 @@ interface RecordCreateServicesSelectorStore :
 
         class Move(val isExpanded: Boolean) : Intent()
 
-        class DeleteById(val id: Long) : Intent()
+        class DeleteById(val id: Int) : Intent()
 
     }
 
@@ -25,11 +25,12 @@ interface RecordCreateServicesSelectorStore :
         val services: List<Service>,
     ) : Parcelable {
         @Parcelize
-        class Service(
+        data class Service(
             val id: Long,
             val title: String,
             val cost: Long,
             val formattedCost: String,
+            val uniqueId: Int,
         ) : Parcelable
     }
 

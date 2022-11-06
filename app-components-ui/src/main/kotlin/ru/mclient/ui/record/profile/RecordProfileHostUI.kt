@@ -1,5 +1,6 @@
 package ru.mclient.ui.record.profile
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ru.mclient.common.record.profile.RecordProfileHost
@@ -16,7 +17,7 @@ fun RecordProfileHostUI(
     ) {
         RecordProfileUI(
             component = component.recordProfile,
-            modifier = modifier
+            modifier = Modifier.fillMaxSize()
         )
     }
 }

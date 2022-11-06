@@ -15,6 +15,7 @@ data class RecordCreateServicesSelectorState(
         val title: String,
         val cost: Long,
         val formattedCost: String,
+        val uniqueId: Int,
     )
 }
 
@@ -28,7 +29,7 @@ interface RecordCreateServicesSelector {
 
     fun onExpand()
 
-    fun onDelete(serviceId: Long)
+    fun onDelete(serviceId: Int)
 
 
     sealed class Child {

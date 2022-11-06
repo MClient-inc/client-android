@@ -1,5 +1,6 @@
 package ru.mclient.ui.record.create
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -29,6 +30,7 @@ data class RecordCreateServicesBlockState(
         val title: String,
         val cost: Long,
         val formattedCost: String,
+        val uniqueId: Int,
     )
 }
 
@@ -70,7 +72,7 @@ fun RecordCreateServiceList(
     onDelete: (RecordCreateServicesBlockState.Service) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         if (services.isEmpty()) {
             NoRecordCreate(onCreate = onCreate, modifier = Modifier.fillMaxWidth())
         } else {

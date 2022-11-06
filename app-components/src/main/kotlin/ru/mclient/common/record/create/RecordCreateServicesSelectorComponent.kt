@@ -36,6 +36,7 @@ class RecordCreateServicesSelectorComponent(
                     it.title,
                     it.cost,
                     it.formattedCost,
+                    it.uniqueId,
                 )
             }
         )
@@ -56,7 +57,7 @@ class RecordCreateServicesSelectorComponent(
         store.accept(RecordCreateServicesSelectorStore.Intent.Move(true))
     }
 
-    override fun onDelete(serviceId: Long) {
+    override fun onDelete(serviceId: Int) {
         store.accept(RecordCreateServicesSelectorStore.Intent.DeleteById(serviceId))
     }
 

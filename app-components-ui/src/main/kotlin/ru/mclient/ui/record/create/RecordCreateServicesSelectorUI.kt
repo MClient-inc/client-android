@@ -18,7 +18,7 @@ fun RecordCreateServicesSelectorUI(
         state = component.state.toUI(),
         onExpand = component::onExpand,
         onDismiss = component::onDismiss,
-        onDelete = { component.onDelete(it.id) },
+        onDelete = { component.onDelete(it.uniqueId) },
         modifier = modifier,
     ) {
         Children(stack = component.childState) {
@@ -40,6 +40,7 @@ private fun RecordCreateServicesSelectorState.toUI(): RecordCreateServicesBlockS
                 title = it.title,
                 cost = it.cost,
                 formattedCost = it.formattedCost,
+                uniqueId = it.uniqueId,
             )
         }
     )

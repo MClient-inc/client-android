@@ -42,12 +42,13 @@ class RecordCreateServicesSelectorStoreImpl(
                     dispatch(
                         state.copy(
                             isExpanded = false,
-                            services = state.services + RecordCreateServicesSelectorStore.State.Service(
+                            services = (state.services + RecordCreateServicesSelectorStore.State.Service(
                                 intent.id,
                                 intent.title,
                                 intent.cost,
                                 "${intent.cost} ₽",
-                            )
+                                uniqueId = kotlin.random.Random.nextInt(),
+                            ))
                         )
                     )
                 }
@@ -59,7 +60,7 @@ class RecordCreateServicesSelectorStoreImpl(
                     dispatch(
                         state.copy(
                             isExpanded = false,
-                            services = state.services.filterNot { it.id == intent.id }
+                            services = state.services.filterNot { it.uniqueId == intent.id }
                         )
                     )
                 }
