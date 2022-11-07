@@ -1,4 +1,4 @@
-package ru.mclient.ui.abonnement.profile
+package ru.mclient.ui.abonement.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,21 +24,21 @@ import ru.mclient.ui.view.DesignedTitledBlock
 import ru.mclient.ui.view.outlined
 import ru.shafran.ui.R
 
-data class AbonnementProfilePageState(
-    val abonnement: Abonnement?,
+data class AbonementProfilePageState(
+    val abonement: Abonement?,
     val isRefreshing: Boolean,
-    val isLoading: Boolean
+    val isLoading: Boolean,
 ) {
 
-    data class Abonnement(
+    data class Abonement(
         val name: String,
-        val subAbonnements: List<SubAbonnement>,
+        val subabonements: List<SubAbonement>,
         val services: List<Service>,
     )
 
-    data class SubAbonnement(
+    data class SubAbonement(
         val name: String,
-        val maxTimesNumberToUse: Int
+        val maxTimesNumberToUse: Int,
     )
 
     data class Service(
@@ -49,8 +49,8 @@ data class AbonnementProfilePageState(
 }
 
 @Composable
-fun AbonnementProfilePage(
-    state: AbonnementProfilePageState,
+fun AbonementProfilePage(
+    state: AbonementProfilePageState,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -60,17 +60,17 @@ fun AbonnementProfilePage(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier.verticalScroll(rememberScrollState())
     ) {
-        if (state.abonnement != null) {
-            AbonnementProfileAbonnementComponent(
-                abonnement = state.abonnement,
+        if (state.abonement != null) {
+            AbonementProfileAbonementComponent(
+                abonement = state.abonement,
                 modifier = Modifier.fillMaxWidth()
             )
-            AbonnementProfileSubAbonnementComponent(
-                subAbonnements = state.abonnement.subAbonnements,
+            AbonementProfileSubAbonementComponent(
+                subAbonements = state.abonement.subabonements,
                 modifier = Modifier.fillMaxWidth()
             )
-            AbonnementProfileServicesComponent(
-                abonnementServices = state.abonnement.services,
+            AbonementProfileServicesComponent(
+                abonementServices = state.abonement.services,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -79,13 +79,13 @@ fun AbonnementProfilePage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AbonnementProfileAbonnementComponent(
-    abonnement: AbonnementProfilePageState.Abonnement,
-    modifier: Modifier
+fun AbonementProfileAbonementComponent(
+    abonement: AbonementProfilePageState.Abonement,
+    modifier: Modifier,
 ) {
     ListItem(
         headlineText = {
-            Text(abonnement.name)
+            Text(abonement.name)
         },
         supportingText = {
 
@@ -98,7 +98,7 @@ fun AbonnementProfileAbonnementComponent(
         },
         leadingContent = {
             Icon(
-                painter = painterResource(id = R.drawable.abonnement),
+                painter = painterResource(id = R.drawable.abonement),
                 contentDescription = "иконка",
                 modifier = Modifier.size(50.dp),
             )
@@ -109,9 +109,9 @@ fun AbonnementProfileAbonnementComponent(
 }
 
 @Composable
-fun AbonnementProfileSubAbonnementComponent(
-    subAbonnements: List<AbonnementProfilePageState.SubAbonnement>,
-    modifier: Modifier
+fun AbonementProfileSubAbonementComponent(
+    subAbonements: List<AbonementProfilePageState.SubAbonement>,
+    modifier: Modifier,
 ) {
     DesignedTitledBlock(
         title = "Подабонементы",
@@ -121,9 +121,9 @@ fun AbonnementProfileSubAbonnementComponent(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            subAbonnements.forEach { subAbonnement ->
-                SubAbonnementCardComponent(
-                    subAbonnement = subAbonnement,
+            subAbonements.forEach { subAbonement ->
+                SubAbonementCardComponent(
+                    subAbonement = subAbonement,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -134,18 +134,18 @@ fun AbonnementProfileSubAbonnementComponent(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SubAbonnementCardComponent(
-    subAbonnement: AbonnementProfilePageState.SubAbonnement,
-    modifier: Modifier
+fun SubAbonementCardComponent(
+    subAbonement: AbonementProfilePageState.SubAbonement,
+    modifier: Modifier,
 ) {
     ListItem(
         headlineText = {
-            Text(subAbonnement.name)
+            Text(subAbonement.name)
         },
         supportingText = {
             Text(
                 format(
-                    maxTimesNumberToUse = subAbonnement.maxTimesNumberToUse
+                    maxTimesNumberToUse = subAbonement.maxTimesNumberToUse
                 )
             )
         },
@@ -157,7 +157,7 @@ fun SubAbonnementCardComponent(
         },
         leadingContent = {
             Icon(
-                painter = painterResource(id = R.drawable.subabonnements),
+                painter = painterResource(id = R.drawable.subabonements),
                 contentDescription = "иконка",
                 modifier = Modifier.size(50.dp),
             )
@@ -167,9 +167,9 @@ fun SubAbonnementCardComponent(
 }
 
 @Composable
-fun AbonnementProfileServicesComponent(
-    abonnementServices: List<AbonnementProfilePageState.Service>,
-    modifier: Modifier
+fun AbonementProfileServicesComponent(
+    abonementServices: List<AbonementProfilePageState.Service>,
+    modifier: Modifier,
 ) {
     DesignedTitledBlock(
         title = "Связанные услуги",
@@ -179,7 +179,7 @@ fun AbonnementProfileServicesComponent(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            abonnementServices.forEach { service ->
+            abonementServices.forEach { service ->
                 ServiceCardComponent(
                     service,
                     modifier = Modifier.fillMaxWidth(),
@@ -193,7 +193,7 @@ fun AbonnementProfileServicesComponent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServiceCardComponent(
-    service: AbonnementProfilePageState.Service,
+    service: AbonementProfilePageState.Service,
     modifier: Modifier,
 ) {
     ListItem(
@@ -226,27 +226,27 @@ fun format(maxTimesNumberToUse: Int): String {
 
 @Preview
 @Composable
-fun AbonnementProfilePagePreview() {
-    AbonnementProfilePage(
-        state = AbonnementProfilePageState(
-            abonnement = AbonnementProfilePageState.Abonnement(
+fun AbonementProfilePagePreview() {
+    AbonementProfilePage(
+        state = AbonementProfilePageState(
+            abonement = AbonementProfilePageState.Abonement(
                 name = "Парикмахерская",
                 services = listOf(
-                    AbonnementProfilePageState.Service(
+                    AbonementProfilePageState.Service(
                         title = "Стрижка модельная",
                         cost = 350
                     ),
-                    AbonnementProfilePageState.Service(
+                    AbonementProfilePageState.Service(
                         title = "Покраска волос в ярко-красный",
                         cost = 600
                     )
                 ),
-                subAbonnements = listOf(
-                    AbonnementProfilePageState.SubAbonnement(
+                subabonements = listOf(
+                    AbonementProfilePageState.SubAbonement(
                         name = "Стрижка и покраска волос",
                         maxTimesNumberToUse = 5
                     ),
-                    AbonnementProfilePageState.SubAbonnement(
+                    AbonementProfilePageState.SubAbonement(
                         name = "Массаж",
                         maxTimesNumberToUse = 10
                     )
