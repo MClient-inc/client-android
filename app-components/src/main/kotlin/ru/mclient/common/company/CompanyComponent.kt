@@ -9,6 +9,7 @@ import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
+import ru.mclient.common.client.create.ClientCreateHostComponent
 import ru.mclient.common.client.list.ClientsListForCompanyHostComponent
 import ru.mclient.common.client.profile.ClientProfileHostComponent
 import ru.mclient.common.company.profile.CompanyProfileHostComponent
@@ -19,9 +20,9 @@ import ru.mclient.common.service.list.ServiceListForCategoryAndCompanyHostCompon
 import ru.mclient.common.service.profile.ServiceProfileHostComponent
 import ru.mclient.common.servicecategory.create.ServiceCategoryCreateHostComponent
 import ru.mclient.common.servicecategory.list.ServiceCategoriesListHostForCompanyComponent
-import ru.mclient.common.staff.profile.StaffProfileHostComponent
 import ru.mclient.common.staff.create.StaffCreateHostComponent
 import ru.mclient.common.staff.list.StaffListForCompanyHostComponent
+import ru.mclient.common.staff.profile.StaffProfileHostComponent
 import ru.mclient.common.staff.schedule.StaffScheduleHostComponent
 import ru.mclient.common.utils.states
 
@@ -94,6 +95,14 @@ class CompanyComponent(
 
     private fun onClient(clientId: Long) {
         navigation.push(Config.ClientProfile(clientId))
+    }
+
+    private fun onClientCreate(companyId: Long) {
+        navigation.push(Config.ClientCreate(companyId))
+    }
+
+    private fun onClientCreated() {
+        navigation.pop()
     }
 
     private fun onEditSchedule(staffId: Long) {
@@ -201,7 +210,7 @@ class CompanyComponent(
                 ClientsListForCompanyHostComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
-                    onCreate = {},
+                    onCreate = { onClientCreate(config.companyId) },
                     onClient = { onClient(it.id) }
                 )
             )
@@ -218,6 +227,14 @@ class CompanyComponent(
                     componentContext = componentContext,
                     staffId = config.staffId,
                     onSuccess = { onEditScheduleSuccess(config.staffId) }
+                )
+            )
+
+            is Config.ClientCreate -> Company.Child.ClientCreate(
+                ClientCreateHostComponent(
+                    componentContext = componentContext,
+                    companyId = config.companyId,
+                    onSuccess = ::onClientCreated,
                 )
             )
         }
@@ -263,6 +280,9 @@ class CompanyComponent(
 
         @Parcelize
         data class ClientProfile(val clientId: Long) : Config()
+
+        @Parcelize
+        data class ClientCreate(val companyId: Long) : Config()
 
     }
 

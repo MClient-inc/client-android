@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.InjectedParam
 import ru.mclient.mvi.SyncCoroutineExecutor
+import ru.mclient.mvi.client.create.toPhoneFormat
 import ru.mclient.network.client.ClientNetworkSource
 import ru.mclient.network.client.GetClientsForCompanyInput
 
@@ -42,7 +43,7 @@ class ClientsListForCompanyStoreImpl(
                         ClientsListForCompanyStore.State.Client(
                             id = client.id,
                             title = client.title,
-                            phone = client.phone
+                            phone = client.phone.toPhoneFormat()
                         )
                     },
                     isLoading = false,

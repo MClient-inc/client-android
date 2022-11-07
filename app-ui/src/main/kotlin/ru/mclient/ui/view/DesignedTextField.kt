@@ -10,6 +10,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.VisualTransformation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,6 +24,7 @@ fun DesignedTextField(
     readOnly: Boolean = false,
     isError: Boolean = false,
     singleLine: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxLines: Int = Int.MAX_VALUE,
@@ -39,6 +41,7 @@ fun DesignedTextField(
             keyboardActions = keyboardActions,
             keyboardOptions = keyboardOptions,
             shape = MaterialTheme.shapes.medium,
+            visualTransformation = visualTransformation,
             maxLines = maxLines,
             placeholder = placeholder?.let {
                 {
