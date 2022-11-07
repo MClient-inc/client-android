@@ -1,6 +1,7 @@
 package ru.mclient.mvi.abonnement.profile
 
 import ru.mclient.mvi.ParametrizedStore
+import java.time.LocalDateTime
 
 interface AbonnementProfileStore :
     ParametrizedStore<AbonnementProfileStore.Intent, AbonnementProfileStore.State, AbonnementProfileStore.Label, AbonnementProfileStore.Params> {
@@ -23,15 +24,17 @@ interface AbonnementProfileStore :
 
         data class Abonnement(
             val id: Long,
-            val name: String,
+            val title: String,
             val subAbonnements: List<SubAbonnement>,
-            val services: List<Service>,
+//            val services: List<Service>,
         )
 
         data class SubAbonnement(
             val id: Long,
-            val name: String,
-            val maxTimesNumberToUse: Int
+            val title: String,
+            val availableUntil: LocalDateTime,
+            val liveTimeInMillis: Long,
+            val usages: Int
         )
 
         data class Service(

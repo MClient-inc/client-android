@@ -8,6 +8,8 @@ import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 import ru.mclient.mvi.SyncCoroutineExecutor
 import ru.mclient.network.abonnement.AbonnementNetworkSource
+import ru.mclient.network.abonnement.GetAbonnementByIdInput
+import java.time.LocalDateTime
 
 
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -39,21 +41,23 @@ class AbonnementProfileStoreImpl(
                 is Message.Loaded -> copy(
                     abonnement = AbonnementProfileStore.State.Abonnement(
                         id = message.abonnement.id,
-                        name = message.abonnement.name,
+                        title = message.abonnement.title,
                         subAbonnements = message.abonnement.subAbonnements.map {
                             AbonnementProfileStore.State.SubAbonnement(
                                 id = it.id,
-                                name = it.name,
-                                maxTimesNumberToUse = it.maxTimesNumberToUse
+                                title = it.title,
+                                liveTimeInMillis = it.liveTimeInMillis,
+                                usages = it.usages,
+                                availableUntil = it.availableUntil,
                             )
                         },
-                        services = message.abonnement.services.map {
-                            AbonnementProfileStore.State.Service(
-                                id = it.id,
-                                cost = it.cost,
-                                title = it.title
-                            )
-                        }
+//                        services = message.abonnement.services.map {
+//                            AbonnementProfileStore.State.Service(
+//                                id = it.id,
+//                                cost = it.cost,
+//                                title = it.title
+//                            )
+//                        }
                     ),
                     isFailure = false,
                     isLoading = false,
@@ -94,17 +98,26 @@ class AbonnementProfileStoreImpl(
             dispatch(Message.Loading)
             scope.launch {
                 try {
-//                    val response = abonnementSource.getAbonnementById(GetAbonnementByIdInput(abonnementId))
-//                    dispatch(
-//                        Message.Loaded(
-//                            abonnement = Message.Loaded.Abonnement(
-//                                id =,
-//                                services = ,
-//                                subAbonnements = ,
-//                                name = ,
-//                            )
-//                        )
-//                    )
+                    val response =
+                        abonnementSource.getAbonnementById(GetAbonnementByIdInput(abonnementId))
+                    dispatch(
+                        Message.Loaded(
+                            abonnement = Message.Loaded.Abonnement(
+                                id = response.abonnement.id,
+//                                services = response,
+                                subAbonnements = response.abonnement.subabonements.map {
+                                    Message.Loaded.SubAbonnement(
+                                        id = it.id,
+                                        liveTimeInMillis = it.liveTimeInMillis,
+                                        availableUntil = it.availableUntil,
+                                        usages = it.usages,
+                                        title = it.title
+                                    )
+                                },
+                                title = response.abonnement.title,
+                            )
+                        )
+                    )
                 } catch (e: Exception) {
                     syncDispatch(Message.Failed)
                 }
@@ -127,15 +140,17 @@ class AbonnementProfileStoreImpl(
         ) : Message() {
             data class Abonnement(
                 val id: Long,
-                val name: String,
+                val title: String,
                 val subAbonnements: List<SubAbonnement>,
-                val services: List<Service>,
+//                val services: List<Service>,
             )
 
             data class SubAbonnement(
                 val id: Long,
-                val name: String,
-                val maxTimesNumberToUse: Int
+                val title: String,
+                val usages: Int,
+                val liveTimeInMillis: Long,
+                val availableUntil: LocalDateTime
             )
 
             data class Service(
