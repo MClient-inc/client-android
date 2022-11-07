@@ -5,27 +5,28 @@ import androidx.compose.ui.Modifier
 import ru.mclient.common.record.profile.RecordProfile
 import ru.mclient.common.record.profile.RecordProfileState
 
-fun RecordProfileState.toUI(): RecordPageState {
-    return RecordPageState(
+fun RecordProfileState.toUI(): RecordProfilePageState {
+    return RecordProfilePageState(
         record = record?.toUI(),
         isRefreshing = isRefreshing,
         isLoading = isLoading,
+        isStatusAvailable = record != null
     )
 }
 
-fun RecordProfileState.Record.toUI(): RecordPageState.Record {
-    return RecordPageState.Record(
-        client = RecordPageState.Client(
+fun RecordProfileState.Record.toUI(): RecordProfilePageState.Record {
+    return RecordProfilePageState.Record(
+        client = RecordProfilePageState.Client(
             name = client.name,
             formattedPhone = client.phone.toPhoneFormat()
         ),
-        staff = RecordPageState.Staff(
+        staff = RecordProfilePageState.Staff(
             name = staff.name,
             codename = staff.codename,
             role = staff.role
         ),
         services = services.map {
-            RecordPageState.Service(
+            RecordProfilePageState.Service(
                 title = it.title,
                 cost = it.cost,
                 formattedCost = it.cost.toMoney()
@@ -35,7 +36,11 @@ fun RecordProfileState.Record.toUI(): RecordPageState.Record {
         startTime = time.start,
         endTime = time.end,
         date = schedule.date,
-        status = RecordPageState.RecordStatus.WAITING
+        status = when (status) {
+            RecordProfileState.RecordStatus.NOT_COME -> RecordProfilePageState.RecordStatus.NOT_COME
+            RecordProfileState.RecordStatus.COME -> RecordProfilePageState.RecordStatus.COME
+            RecordProfileState.RecordStatus.WAITING -> RecordProfilePageState.RecordStatus.WAITING
+        }
     )
 }
 
@@ -46,10 +51,10 @@ fun RecordProfileUI(
 ) {
     RecordProfilePage(
         state = component.state.toUI(),
-        onCome = {},
-        onNotCome = {},
-        onWaiting = {},
-        onRefresh = {},
+        onCome = component::onCome,
+        onNotCome = component::onNotCome,
+        onWaiting = component::onWaiting,
+        onRefresh = component::onRefresh,
         modifier = modifier,
     )
 }

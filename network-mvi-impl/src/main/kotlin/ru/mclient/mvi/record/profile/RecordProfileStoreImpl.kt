@@ -7,7 +7,10 @@ import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 import ru.mclient.mvi.SyncCoroutineExecutor
+import ru.mclient.network.record.EditRecordStatusInput
 import ru.mclient.network.record.GetRecordByIdInput
+import ru.mclient.network.record.RecordVisitStatus
+import ru.mclient.network.record.RecordVisitStatus.*
 import ru.mclient.network.record.RecordsNetworkSource
 import java.time.LocalDate
 import java.time.LocalTime
@@ -38,6 +41,7 @@ class RecordProfileStoreImpl(
                     isFailure = true,
                     isLoading = false,
                 )
+
                 is Message.Loaded -> copy(
                     record = RecordProfileStore.State.Record(
                         id = message.record.id,
@@ -69,7 +73,12 @@ class RecordProfileStoreImpl(
                                 title = s.title,
                             )
                         },
-                        totalCost = message.record.totalCost
+                        totalCost = message.record.totalCost,
+                        status = when (message.record.status) {
+                            Message.RecordVisitStatus.WAITING -> RecordProfileStore.State.RecordVisitStatus.WAITING
+                            Message.RecordVisitStatus.COME -> RecordProfileStore.State.RecordVisitStatus.COME
+                            Message.RecordVisitStatus.NOT_COME -> RecordProfileStore.State.RecordVisitStatus.NOT_COME
+                        }
                     ),
                     isFailure = false,
                     isLoading = false,
@@ -80,6 +89,18 @@ class RecordProfileStoreImpl(
                     isFailure = false,
                     isLoading = true,
                     isRefreshing = record != null,
+                )
+
+                is Message.UpdateStatus -> copy(
+                    record = record?.let {
+                        it.copy(
+                            status = when (message.status) {
+                                Message.RecordVisitStatus.WAITING -> RecordProfileStore.State.RecordVisitStatus.WAITING
+                                Message.RecordVisitStatus.COME -> RecordProfileStore.State.RecordVisitStatus.COME
+                                Message.RecordVisitStatus.NOT_COME -> RecordProfileStore.State.RecordVisitStatus.NOT_COME
+                            }
+                        )
+                    }
                 )
             }
         }
@@ -103,6 +124,59 @@ class RecordProfileStoreImpl(
         ) {
             when (intent) {
                 RecordProfileStore.Intent.Refresh -> loadRecord(params.recordId)
+                RecordProfileStore.Intent.Come -> editRecordStatus(
+                    recordId = params.recordId,
+                    status = Message.RecordVisitStatus.COME,
+                    getState = getState,
+                )
+
+                RecordProfileStore.Intent.NotCome -> editRecordStatus(
+                    recordId = params.recordId,
+                    status = Message.RecordVisitStatus.NOT_COME,
+                    getState = getState,
+                )
+
+                RecordProfileStore.Intent.Waiting -> editRecordStatus(
+                    recordId = params.recordId,
+                    status = Message.RecordVisitStatus.WAITING,
+                    getState = getState,
+                )
+            }
+        }
+
+        private fun editRecordStatus(
+            recordId: Long,
+            status: Message.RecordVisitStatus,
+            getState: () -> RecordProfileStore.State,
+        ) {
+            val state = getState()
+            val record = state.record
+            if (state.isLoading || record == null)
+                return
+            dispatch(Message.UpdateStatus(status))
+            scope.launch {
+                try {
+                    recordSource.editRecordStatus(
+                        EditRecordStatusInput(
+                            recordId = recordId,
+                            status = when (status) {
+                                Message.RecordVisitStatus.WAITING -> WAITING
+                                Message.RecordVisitStatus.COME -> COME
+                                Message.RecordVisitStatus.NOT_COME -> NOT_COME
+                            }
+                        )
+                    )
+                } catch (e: Exception) {
+                    dispatch(
+                        Message.UpdateStatus(
+                            when (record.status) {
+                                RecordProfileStore.State.RecordVisitStatus.WAITING -> Message.RecordVisitStatus.WAITING
+                                RecordProfileStore.State.RecordVisitStatus.COME -> Message.RecordVisitStatus.COME
+                                RecordProfileStore.State.RecordVisitStatus.NOT_COME -> Message.RecordVisitStatus.NOT_COME
+                            }
+                        )
+                    )
+                }
             }
         }
 
@@ -143,6 +217,11 @@ class RecordProfileStoreImpl(
                                         cost = s.cost,
                                         title = s.title,
                                     )
+                                },
+                                status = when (response.record.status) {
+                                    WAITING -> Message.RecordVisitStatus.WAITING
+                                    COME -> Message.RecordVisitStatus.COME
+                                    NOT_COME -> Message.RecordVisitStatus.NOT_COME
                                 }
                             )
                         )
@@ -164,49 +243,59 @@ class RecordProfileStoreImpl(
 
         object Loading : Message()
 
-        class Loaded(
-            val record: Record
+        data class UpdateStatus(val status: RecordVisitStatus) : Message()
+
+        data class Loaded(
+            val record: Record,
         ) : Message() {
-            class Record(
+            data class Record(
                 val id: Long,
                 val client: Client,
                 val schedule: Schedule,
                 val time: TimeOffset,
                 val services: List<Service>,
                 val totalCost: Long,
-                val staff: Staff
+                val staff: Staff,
+                val status: RecordVisitStatus,
             )
 
-            class TimeOffset(
+            data class TimeOffset(
                 val start: LocalTime,
                 val end: LocalTime,
             )
 
-            class Schedule(
+            data class Schedule(
                 val id: Long,
                 val date: LocalDate,
                 val start: LocalTime,
                 val end: LocalTime,
             )
 
-            class Client(
+            data class Client(
                 val id: Long,
                 val name: String,
                 val phone: String,
             )
 
-            class Staff(
+            data class Staff(
                 val name: String,
                 val role: String,
                 val codename: String,
                 val id: Long,
             )
 
-            class Service(
+            data class Service(
                 val id: Long,
                 val title: String,
                 val cost: Long,
             )
+
+
+        }
+
+
+        enum class RecordVisitStatus {
+            WAITING, COME, NOT_COME,
         }
 
     }

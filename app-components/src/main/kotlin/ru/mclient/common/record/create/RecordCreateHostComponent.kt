@@ -16,12 +16,15 @@ import java.time.LocalTime
 class RecordCreateHostComponent(
     componentContext: DIComponentContext,
     companyId: Long,
+    private val onSuccess: () -> Unit,
 ) : RecordCreateHost, DIComponentContext by componentContext {
 
     private val store: RecordCreateStore =
         getParameterizedStore { RecordCreateStore.Params(companyId) }
 
-    private fun onSuccess() {}
+    private fun onSuccess() {
+        onSuccess.invoke()
+    }
 
     private val storeState by store.states(this) {
         if (it.isSuccess) {
@@ -65,7 +68,8 @@ class RecordCreateHostComponent(
     override val state: RecordCreateHostState
         get() = RecordCreateHostState(
             isButtonAvailable = isAllSelectorsSuccess(),
-            isLoading = storeState.isLoading
+            isLoading = storeState.isLoading,
+            totalCost = servicesSelector.state.selectedServices.sumOf { it.cost }
         )
 
     override fun onContinue() {

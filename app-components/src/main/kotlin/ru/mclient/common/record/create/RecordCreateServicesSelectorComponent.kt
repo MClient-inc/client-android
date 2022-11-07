@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
@@ -27,16 +28,23 @@ class RecordCreateServicesSelectorComponent(
 
     override val state: RecordCreateServicesSelectorState by store.states(this) { it.toState() }
 
+    var backOnNextExpand = false
+
     private fun RecordCreateServicesSelectorStore.State.toState(): RecordCreateServicesSelectorState {
+        if (isExpanded && backOnNextExpand)
+            navigation.replaceAll(Config.Categories)
+        if (!isExpanded)
+            backOnNextExpand = true
         return RecordCreateServicesSelectorState(
-            isExpanded = isExpanded, isAvailable = isAvailable,
+            isExpanded = isExpanded,
+            isAvailable = isAvailable,
             selectedServices = services.map {
                 RecordCreateServicesSelectorState.Service(
-                    it.id,
-                    it.title,
-                    it.cost,
-                    it.formattedCost,
-                    it.uniqueId,
+                    id = it.id,
+                    title = it.title,
+                    cost = it.cost,
+                    formattedCost = it.formattedCost,
+                    uniqueId = it.uniqueId,
                 )
             }
         )

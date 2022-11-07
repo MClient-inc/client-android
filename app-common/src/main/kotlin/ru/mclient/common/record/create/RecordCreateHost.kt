@@ -5,6 +5,7 @@ import ru.mclient.common.bar.TopBarHost
 class RecordCreateHostState(
     val isButtonAvailable: Boolean,
     val isLoading: Boolean,
+    val totalCost: Long,
 )
 
 interface RecordCreateHost : TopBarHost {

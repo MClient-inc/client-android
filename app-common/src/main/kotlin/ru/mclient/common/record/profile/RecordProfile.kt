@@ -15,7 +15,8 @@ data class RecordProfileState(
         val time: TimeOffset,
         val services: List<Service>,
         val totalCost: Long,
-        val staff: Staff
+        val staff: Staff,
+        val status: RecordStatus,
     )
 
     data class TimeOffset(
@@ -61,6 +62,12 @@ data class RecordProfileState(
 interface RecordProfile {
 
     val state: RecordProfileState
+
+    fun onCome()
+
+    fun onNotCome()
+
+    fun onWaiting()
 
     fun onRefresh()
 

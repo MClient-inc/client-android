@@ -55,12 +55,13 @@ class CreateRecordInput(
     val dateTime: LocalDateTime,
     val services: List<Long>,
 )
+
 class GetRecordByIdInput(
-    val recordId: Long
+    val recordId: Long,
 )
 
 class GetRecordByIdOutput(
-    val record: Record
+    val record: Record,
 ) {
     class Record(
         val id: Long,
@@ -69,7 +70,8 @@ class GetRecordByIdOutput(
         val time: TimeOffset,
         val services: List<Service>,
         val totalCost: Long,
-        val staff: Staff
+        val staff: Staff,
+        val status: RecordVisitStatus,
     )
 
     class TimeOffset(
@@ -144,4 +146,22 @@ class CreateRecordOutput(
         val title: String,
         val cost: Long,
     )
+}
+
+class EditRecordStatusInput(
+    val recordId: Long,
+    val status: RecordVisitStatus,
+)
+
+enum class RecordVisitStatus {
+    WAITING, COME, NOT_COME,
+}
+
+class EditRecordStatusOutput(
+    val recordId: Long,
+    val status: RecordVisitStatus,
+) {
+    enum class RecordVisitStatus {
+        WAITING, COME, NOT_COME,
+    }
 }

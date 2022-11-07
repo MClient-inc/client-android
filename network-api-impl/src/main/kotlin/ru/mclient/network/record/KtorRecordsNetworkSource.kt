@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -142,10 +143,48 @@ class KtorRecordsNetworkSource(
                     id = body.client.id,
                     phone = body.client.phone,
                     name = body.client.name
-                )
+                ),
+                status = when (body.status) {
+                    GetRecordByIdResponse.RecordVisitStatus.WAITING -> RecordVisitStatus.WAITING
+                    GetRecordByIdResponse.RecordVisitStatus.COME -> RecordVisitStatus.COME
+                    GetRecordByIdResponse.RecordVisitStatus.NOT_COME -> RecordVisitStatus.NOT_COME
+                }
             )
         )
 
+    }
+
+    override suspend fun editRecordStatus(input: EditRecordStatusInput): EditRecordStatusOutput {
+        client.patch("/records/${input.recordId}/status") {
+            setBody(
+                EditRecordStatusRequest(
+                    when (input.status) {
+                        RecordVisitStatus.WAITING -> EditRecordStatusRequest.RecordVisitStatus.WAITING
+                        RecordVisitStatus.COME -> EditRecordStatusRequest.RecordVisitStatus.COME
+                        RecordVisitStatus.NOT_COME -> EditRecordStatusRequest.RecordVisitStatus.NOT_COME
+                    }
+                )
+            )
+            contentType(ContentType.Application.Json)
+        }
+        return EditRecordStatusOutput(
+            input.recordId,
+            when (input.status) {
+                RecordVisitStatus.WAITING -> EditRecordStatusOutput.RecordVisitStatus.WAITING
+                RecordVisitStatus.COME -> EditRecordStatusOutput.RecordVisitStatus.COME
+                RecordVisitStatus.NOT_COME -> EditRecordStatusOutput.RecordVisitStatus.NOT_COME
+            },
+        )
+    }
+
+}
+
+@Serializable
+class EditRecordStatusRequest(
+    val status: RecordVisitStatus,
+) {
+    enum class RecordVisitStatus {
+        WAITING, COME, NOT_COME
     }
 }
 
@@ -159,7 +198,13 @@ class GetRecordByIdResponse(
     val services: List<Service>,
     val staff: Staff,
     val totalCost: Long,
+    val status: RecordVisitStatus,
 ) {
+
+    enum class RecordVisitStatus {
+        WAITING, COME, NOT_COME
+    }
+
     @Serializable
     class Staff(
         val id: Long,

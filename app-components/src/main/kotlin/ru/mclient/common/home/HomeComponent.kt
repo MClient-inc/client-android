@@ -76,6 +76,7 @@ class HomeComponent(
                     RecordCreateHostComponent(
                         componentContext = componentContext,
                         companyId = config.companyId,
+                        onSuccess = { onRecordCreated() }
                     )
                 )
 

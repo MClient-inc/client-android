@@ -1,10 +1,17 @@
 package ru.mclient.ui.record.profile
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -15,6 +22,8 @@ import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,8 +45,9 @@ import ru.shafran.ui.R
 import java.time.LocalDate
 import java.time.LocalTime
 
-data class RecordPageState(
+data class RecordProfilePageState(
     val record: Record?,
+    val isStatusAvailable: Boolean,
     val isRefreshing: Boolean,
     val isLoading: Boolean,
 ) {
@@ -76,66 +86,99 @@ data class RecordPageState(
     }
 }
 
-fun RecordPageState.copyWithStatus(status: RecordPageState.RecordStatus): RecordPageState {
+fun RecordProfilePageState.copyWithStatus(status: RecordProfilePageState.RecordStatus): RecordProfilePageState {
     return copy(record = record?.copy(status = status))
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordProfilePage(
-    state: RecordPageState,
+    state: RecordProfilePageState,
     onCome: () -> Unit,
     onNotCome: () -> Unit,
     onWaiting: () -> Unit,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    DesignedRefreshColumn(
-        refreshing = state.isRefreshing,
-        onRefresh = { onRefresh() },
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = modifier.verticalScroll(rememberScrollState())
+    val scrollState = rememberScrollState()
+    Scaffold(
+        modifier = modifier,
+        snackbarHost = {
+            AnimatedVisibility(
+                visible = state.isStatusAvailable && !scrollState.isScrollInProgress,
+                enter = slideInVertically { it } + fadeIn(),
+                exit = slideOutVertically { it } + fadeOut(),
+            ) {
+                Surface(
+                    shape = MaterialTheme.shapes.medium,
+                    tonalElevation = 1.dp,
+                    modifier = Modifier
+                        .outlined()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Text(
+                            "Итого: ${state.record?.cost ?: 0}",
+                            modifier = Modifier.align(Alignment.End)
+                        )
+                        RecordProfileClientStatusComponent(
+                            state = state,
+                            onCome = {
+                                onCome()
+                            },
+                            onNotCome = {
+                                onNotCome()
+                            },
+                            onWaiting = {
+                                onWaiting()
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+            }
+        }
     ) {
-        if (state.record != null) {
-            RecordProfileDateComponent(
-                record = state.record,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            RecordProfileClientComponent(
-                record = state.record,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+        DesignedRefreshColumn(
+            refreshing = state.isRefreshing,
+            onRefresh = { onRefresh() },
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier
+                .padding(it)
+                .verticalScroll(scrollState)
+        ) {
+            if (state.record != null) {
+                RecordProfileDateComponent(
+                    record = state.record,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                RecordProfileClientComponent(
+                    record = state.record,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
 
-            RecordProfileStaffComponent(
-                record = state.record,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+                RecordProfileStaffComponent(
+                    record = state.record,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
 
-            RecordProfileServicesComponent(
-                state = state,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-
-            RecordProfileClientStatusComponent(
-                state = state,
-                onCome = {
-                    onCome()
-                },
-                onNotCome = {
-                    onNotCome()
-                },
-                onWaiting = {
-                    onWaiting()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .outlined()
-                    .padding(10.dp)
-            )
+                RecordProfileServicesComponent(
+                    state = state,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                if (state.isStatusAvailable)
+                    Spacer(modifier = Modifier.height(100.dp))
+            }
         }
     }
 }
@@ -144,7 +187,7 @@ fun RecordProfilePage(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordProfileDateComponent(
-    record: RecordPageState.Record,
+    record: RecordProfilePageState.Record,
     modifier: Modifier,
 ) {
     DesignedOutlinedTitledBlock(
@@ -183,7 +226,7 @@ fun RecordProfileDateComponent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordProfileClientComponent(
-    record: RecordPageState.Record,
+    record: RecordProfilePageState.Record,
     modifier: Modifier,
 ) {
     DesignedOutlinedTitledBlock(
@@ -222,7 +265,7 @@ fun RecordProfileClientComponent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordProfileStaffComponent(
-    record: RecordPageState.Record,
+    record: RecordProfilePageState.Record,
     modifier: Modifier,
 ) {
     DesignedOutlinedTitledBlock(
@@ -264,7 +307,7 @@ fun RecordProfileStaffComponent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordProfileServicesComponent(
-    state: RecordPageState,
+    state: RecordProfilePageState,
     modifier: Modifier,
 ) {
     DesignedTitledBlock(
@@ -290,7 +333,7 @@ fun RecordProfileServicesComponent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServiceCardComponent(
-    service: RecordPageState.Service,
+    service: RecordProfilePageState.Service,
     modifier: Modifier,
 ) {
     ListItem(
@@ -320,7 +363,7 @@ fun ServiceCardComponent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordProfileClientStatusComponent(
-    state: RecordPageState,
+    state: RecordProfilePageState,
     onCome: () -> Unit,
     onNotCome: () -> Unit,
     onWaiting: () -> Unit,
@@ -332,19 +375,19 @@ fun RecordProfileClientStatusComponent(
         verticalAlignment = Alignment.CenterVertically
     ) {
         ElevatedFilterChip(
-            selected = state.record?.status == RecordPageState.RecordStatus.COME,
-            onClick = { onCome() },
-            label = { Text(text = "Пришел(а)") }
+            selected = state.record?.status == RecordProfilePageState.RecordStatus.NOT_COME,
+            onClick = { onNotCome() },
+            label = { Text(text = "Не пришел") }
         )
         ElevatedFilterChip(
-            selected = state.record?.status == RecordPageState.RecordStatus.WAITING,
+            selected = state.record?.status == RecordProfilePageState.RecordStatus.WAITING,
             onClick = { onWaiting() },
             label = { Text(text = "Ожидание") }
         )
         ElevatedFilterChip(
-            selected = state.record?.status == RecordPageState.RecordStatus.NOT_COME,
-            onClick = { onNotCome() },
-            label = { Text(text = "Не пришел(а)") }
+            selected = state.record?.status == RecordProfilePageState.RecordStatus.COME,
+            onClick = { onCome() },
+            label = { Text(text = "Пришел") }
         )
     }
 
@@ -355,29 +398,29 @@ fun RecordProfileClientStatusComponent(
 fun RecordProfilePagePreview() {
     var state by remember {
         mutableStateOf(
-            RecordPageState(
-                record = RecordPageState.Record(
-                    client = RecordPageState.Client(
+            RecordProfilePageState(
+                record = RecordProfilePageState.Record(
+                    client = RecordProfilePageState.Client(
                         name = "Игорь Александрович Войтенко",
                         formattedPhone = "79132281337".toPhoneFormat()
                     ),
-                    staff = RecordPageState.Staff(
+                    staff = RecordProfilePageState.Staff(
                         name = "Дядя Толик",
                         role = "Парикмахер широкого спектра",
                         codename = "tolik"
                     ),
                     services = listOf(
-                        RecordPageState.Service(
+                        RecordProfilePageState.Service(
                             "Стрижка под ноль",
                             250,
                             "250 ₽",
                         ),
-                        RecordPageState.Service(
+                        RecordProfilePageState.Service(
                             "Покраска ногтей в черный",
                             400,
                             "400 ₽",
                         ),
-                        RecordPageState.Service(
+                        RecordProfilePageState.Service(
                             "Массаж простаты",
                             1500,
                             "1500 ₽",
@@ -387,19 +430,24 @@ fun RecordProfilePagePreview() {
                     startTime = LocalTime.of(20, 21),
                     endTime = LocalTime.of(20, 50),
                     date = LocalDate.of(2022, 11, 5),
-                    status = RecordPageState.RecordStatus.WAITING
+                    status = RecordProfilePageState.RecordStatus.WAITING
                 ),
                 isRefreshing = false,
-                isLoading = false
+                isLoading = false,
+                isStatusAvailable = true,
             )
         )
     }
     Surface {
         RecordProfilePage(
             state = state,
-            onWaiting = { state = state.copyWithStatus(RecordPageState.RecordStatus.WAITING) },
-            onNotCome = { state = state.copyWithStatus(RecordPageState.RecordStatus.NOT_COME) },
-            onCome = { state = state.copyWithStatus(RecordPageState.RecordStatus.COME) },
+            onWaiting = {
+                state = state.copyWithStatus(RecordProfilePageState.RecordStatus.WAITING)
+            },
+            onNotCome = {
+                state = state.copyWithStatus(RecordProfilePageState.RecordStatus.NOT_COME)
+            },
+            onCome = { state = state.copyWithStatus(RecordProfilePageState.RecordStatus.COME) },
             onRefresh = { /*TODO*/ },
             modifier = Modifier
                 .fillMaxSize()

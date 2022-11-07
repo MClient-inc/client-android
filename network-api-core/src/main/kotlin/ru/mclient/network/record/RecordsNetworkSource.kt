@@ -8,4 +8,6 @@ interface RecordsNetworkSource {
 
     suspend fun getRecordById(input: GetRecordByIdInput): GetRecordByIdOutput
 
+    suspend fun editRecordStatus(input: EditRecordStatusInput): EditRecordStatusOutput
+
 }

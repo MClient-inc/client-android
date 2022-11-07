@@ -15,6 +15,13 @@ interface RecordProfileStore :
 
     sealed class Intent {
         object Refresh : Intent()
+
+        object Waiting : Intent()
+
+        object Come : Intent()
+
+        object NotCome : Intent()
+
     }
 
     data class State(
@@ -24,47 +31,52 @@ interface RecordProfileStore :
         val isRefreshing: Boolean,
     ) {
 
-        class Record(
+        data class Record(
             val id: Long,
             val client: Client,
             val schedule: Schedule,
             val time: TimeOffset,
             val services: List<Service>,
             val totalCost: Long,
-            val staff: Staff
+            val staff: Staff,
+            val status: RecordVisitStatus,
         )
 
-        class TimeOffset(
+        data class TimeOffset(
             val start: LocalTime,
             val end: LocalTime,
         )
 
-        class Schedule(
+        data class Schedule(
             val id: Long,
             val date: LocalDate,
             val start: LocalTime,
             val end: LocalTime,
         )
 
-        class Client(
+        data class Client(
             val id: Long,
             val name: String,
             val phone: String,
         )
 
-        class Staff(
+        data class Staff(
             val name: String,
             val role: String,
             val codename: String,
             val id: Long,
         )
 
-        class Service(
+        data class Service(
             val id: Long,
             val title: String,
             val cost: Long,
         )
 
+
+        enum class RecordVisitStatus {
+            WAITING, COME, NOT_COME,
+        }
 
     }
 

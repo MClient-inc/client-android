@@ -8,7 +8,7 @@ import ru.mclient.mvi.record.profile.RecordProfileStore
 
 class RecordProfileComponent(
     componentContext: DIComponentContext,
-    recordId: Long
+    recordId: Long,
 ) : RecordProfile, DIComponentContext by componentContext {
 
     private val store: RecordProfileStore =
@@ -55,12 +55,29 @@ class RecordProfileComponent(
                 phone = client.phone,
                 name = client.name
             ),
-            id = id
+            id = id,
+            status = when (status) {
+                RecordProfileStore.State.RecordVisitStatus.WAITING -> RecordProfileState.RecordStatus.WAITING
+                RecordProfileStore.State.RecordVisitStatus.COME -> RecordProfileState.RecordStatus.COME
+                RecordProfileStore.State.RecordVisitStatus.NOT_COME -> RecordProfileState.RecordStatus.NOT_COME
+            }
         )
     }
 
+    override fun onCome() {
+        store.accept(RecordProfileStore.Intent.Come)
+    }
+
+    override fun onNotCome() {
+        store.accept(RecordProfileStore.Intent.NotCome)
+    }
+
+    override fun onWaiting() {
+        store.accept(RecordProfileStore.Intent.Waiting)
+    }
+
     override fun onRefresh() {
-        TODO("Not yet implemented")
+        store.accept(RecordProfileStore.Intent.Refresh)
     }
 
 }
