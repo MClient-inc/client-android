@@ -4,7 +4,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.states
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.mclient.common.DIComponentContext
-import ru.mclient.common.utils.getStoreSavedState
+import ru.mclient.common.utils.getSavedStateStore
 import ru.mclient.mvi.splash.SplashStore
 
 class SplashComponent(
@@ -13,7 +13,7 @@ class SplashComponent(
     onUnauthenticated: () -> Unit,
 ) : SplashHost, DIComponentContext by componentContext {
 
-    private val store: SplashStore = getStoreSavedState("splash_store")
+    private val store: SplashStore = getSavedStateStore("splash_store")
 
     init {
         store.states.onEach {

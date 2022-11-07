@@ -17,8 +17,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 fun DesignedTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    label: String,
     modifier: Modifier = Modifier,
+    label: String? = null,
     placeholder: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -29,7 +29,36 @@ fun DesignedTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxLines: Int = Int.MAX_VALUE,
 ) {
-    DesignedOutlinedTitledBlock(title = label) {
+    if (label != null)
+        DesignedOutlinedTitledBlock(title = label) {
+            TextField(
+                value = value,
+                onValueChange = onValueChange,
+                modifier = modifier,
+                enabled = enabled,
+                readOnly = readOnly,
+                isError = isError,
+                singleLine = singleLine,
+                keyboardActions = keyboardActions,
+                keyboardOptions = keyboardOptions,
+                shape = MaterialTheme.shapes.medium,
+                visualTransformation = visualTransformation,
+                maxLines = maxLines,
+                placeholder = placeholder?.let {
+                    {
+                        Text(it)
+                    }
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                ),
+            )
+        }
+    else {
         TextField(
             value = value,
             onValueChange = onValueChange,
@@ -57,4 +86,5 @@ fun DesignedTextField(
             ),
         )
     }
+
 }

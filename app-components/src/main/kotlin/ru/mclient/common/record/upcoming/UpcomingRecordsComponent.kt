@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
-import ru.mclient.mvi.record.UpcomingRecordsStore
+import ru.mclient.mvi.record.upcoming.UpcomingRecordsStore
 
 class UpcomingRecordsComponent(
     componentContext: DIComponentContext,

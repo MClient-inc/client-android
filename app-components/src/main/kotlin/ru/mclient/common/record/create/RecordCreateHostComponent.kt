@@ -6,6 +6,8 @@ import ru.mclient.common.bar.ImmutableTopBar
 import ru.mclient.common.bar.TopBar
 import ru.mclient.common.bar.TopBarState
 import ru.mclient.common.childDIContext
+import ru.mclient.common.service.list.ServicesListForCompanySelectorComponent
+import ru.mclient.common.service.list.ServicesListSelector
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
 import ru.mclient.mvi.record.create.RecordCreateStore
@@ -53,8 +55,8 @@ class RecordCreateHostComponent(
             componentContext = childDIContext("record_create_time"),
             onSelectedDate = this::onTime,
         )
-    override val servicesSelector: RecordCreateServicesSelector =
-        RecordCreateServicesSelectorComponent(
+    override val servicesSelector: ServicesListSelector =
+        ServicesListForCompanySelectorComponent(
             componentContext = childDIContext(key = "record_create_services"),
             companyId = companyId,
         )

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import ru.mclient.ui.record.upcoming.format
+import ru.mclient.ui.view.DesignedCreateItem
 import ru.mclient.ui.view.DesignedOutlinedTitledBlock
 import ru.shafran.ui.R
 import java.time.LocalTime
@@ -23,7 +24,7 @@ fun RecordCreateTimeBlock(
         title = "Время",
         modifier = modifier,
     ) {
-        RecordCreateItem(
+        DesignedCreateItem(
             text = state.time?.format() ?: "не указано",
             isAvailable = state.isAvailable,
             onClick = onClick,

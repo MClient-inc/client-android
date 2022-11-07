@@ -11,15 +11,21 @@ interface MainHost {
     fun onStorage()
     fun onCompany()
 
-    sealed class Child {
+    sealed interface Child {
 
-        class Home(val component: ru.mclient.common.home.Home) : Child()
+        @JvmInline
+        value class Home(val component: ru.mclient.common.home.Home) : Child
 
-        class Loyalty(val component: ru.mclient.common.loyalty.Loyalty) : Child()
+        @JvmInline
+        value class Loyalty(val component: ru.mclient.common.loyalty.Loyalty) : Child
 
-        class Storage(val component: ru.mclient.common.storage.Storage) : Child()
 
-        class Company(val component: ru.mclient.common.company.Company): Child()
+        @JvmInline
+        value class Storage(val component: ru.mclient.common.storage.Storage) : Child
+
+
+        @JvmInline
+        value class Company(val component: ru.mclient.common.company.Company) : Child
 
     }
 

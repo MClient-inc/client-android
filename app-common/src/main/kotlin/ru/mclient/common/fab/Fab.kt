@@ -2,8 +2,8 @@ package ru.mclient.common.fab
 
 data class FabState(
     val title: String,
-    val isShown: Boolean,
-    val isScrollInProgress: Boolean,
+    val isShown: Boolean = true,
+    val isScrollInProgress: Boolean = false,
 )
 
 interface Fab {

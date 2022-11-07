@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import ru.mclient.common.record.create.RecordCreateHost
 import ru.mclient.ui.bar.TopBarHostUI
 import ru.mclient.ui.record.profile.toMoney
+import ru.mclient.ui.service.list.ServicesListSelectorUI
 import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.outlined
 
@@ -99,7 +100,7 @@ fun RecordCreateHostUI(
                         component = component.staffSelector,
                         modifier = Modifier.fillMaxWidth(),
                     )
-                    RecordCreateServicesSelectorUI(
+                    ServicesListSelectorUI(
                         component = component.servicesSelector,
                         modifier = Modifier.fillMaxWidth()
                     )

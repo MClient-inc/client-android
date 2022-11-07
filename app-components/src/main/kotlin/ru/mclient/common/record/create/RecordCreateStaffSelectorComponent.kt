@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.childDIContext
 import ru.mclient.common.staff.list.StaffListForCompanyAndScheduleComponent
-import ru.mclient.common.utils.getStoreSavedState
+import ru.mclient.common.utils.getSavedStateStore
 import ru.mclient.common.utils.states
 import ru.mclient.mvi.record.create.RecordCreateStaffSelectorStore
 import java.time.LocalDateTime
@@ -14,7 +14,7 @@ class RecordCreateStaffSelectorComponent(
     companyId: Long,
 ) : RecordCreateStaffSelector, DIComponentContext by componentContext {
 
-    private val store: RecordCreateStaffSelectorStore = getStoreSavedState("record_create_staff")
+    private val store: RecordCreateStaffSelectorStore = getSavedStateStore("record_create_staff")
 
     override val state: RecordCreateStaffSelectorState by store.states(this) { it.toState() }
 

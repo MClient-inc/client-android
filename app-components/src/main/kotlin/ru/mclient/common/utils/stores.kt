@@ -42,7 +42,7 @@ internal inline fun <Param : Any, reified T : ParametrizedStore<*, *, *, Param>>
     param: Param,
 ): T = getParameterizedStore { param }
 
-internal inline fun <reified SavedState : Parcelable, reified State : Any, reified T : Store<*, State, *>> DIComponentContext.getStoreSavedState(
+internal inline fun <reified SavedState : Parcelable, reified State : Any, reified T : Store<*, State, *>> DIComponentContext.getSavedStateStore(
     key: String,
     crossinline save: (State) -> SavedState,
     crossinline restore: (SavedState) -> State,
@@ -58,10 +58,10 @@ internal inline fun <reified SavedState : Parcelable, reified State : Any, reifi
 }
 
 
-internal inline fun <reified State : Parcelable, reified T : Store<*, State, *>> DIComponentContext.getStoreSavedState(
+internal inline fun <reified State : Parcelable, reified T : Store<*, State, *>> DIComponentContext.getSavedStateStore(
     key: String,
 ): T {
-    return getStoreSavedState(
+    return getSavedStateStore(
         key,
         save = { it },
         restore = { it }

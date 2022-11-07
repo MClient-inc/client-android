@@ -1,6 +1,7 @@
 package ru.mclient.common.record.create
 
 import ru.mclient.common.bar.TopBarHost
+import ru.mclient.common.service.list.ServicesListSelector
 
 class RecordCreateHostState(
     val isButtonAvailable: Boolean,
@@ -20,7 +21,7 @@ interface RecordCreateHost : TopBarHost {
 
     val timeSelector: RecordCreateTimeSelector
 
-    val servicesSelector: RecordCreateServicesSelector
+    val servicesSelector: ServicesListSelector
 
     fun onContinue()
 

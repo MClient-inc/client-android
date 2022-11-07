@@ -32,7 +32,7 @@ class MainHostComponent(
     }
 
     override fun onLoyalty() {
-        navigation.bringToFront(Config.Loyalty)
+        navigation.bringToFront(Config.Loyalty(applicationCompanyId))
     }
 
     override fun onStorage() {
@@ -40,7 +40,7 @@ class MainHostComponent(
     }
 
     override fun onCompany() {
-        navigation.bringToFront(Config.Company)
+        navigation.bringToFront(Config.Company(applicationCompanyId))
     }
 
     private fun createChild(config: Config, componentContext: DIComponentContext): MainHost.Child {
@@ -48,11 +48,17 @@ class MainHostComponent(
             is Config.Company -> MainHost.Child.Company(
                 CompanyComponent(
                     componentContext,
-                    applicationCompanyId
+                    config.companyId,
                 )
             )
 
-            is Config.Loyalty -> MainHost.Child.Loyalty(LoyaltyComponent())
+            is Config.Loyalty -> MainHost.Child.Loyalty(
+                LoyaltyComponent(
+                    componentContext,
+                    config.companyId
+                )
+            )
+
             is Config.Home -> MainHost.Child.Home(HomeComponent(componentContext, config.companyId))
             is Config.Storage -> MainHost.Child.Storage(StorageComponent())
         }
@@ -65,13 +71,16 @@ class MainHostComponent(
         value class Home(val companyId: Long) : Config
 
         @Parcelize
-        object Loyalty : Config
+        @JvmInline
+        value class Loyalty(val companyId: Long) : Config
+
 
         @Parcelize
         object Storage : Config
 
         @Parcelize
-        object Company : Config
+        @JvmInline
+        value class Company(val companyId: Long) : Config
 
     }
 

@@ -5,7 +5,7 @@ import ru.mclient.common.DIComponentContext
 import ru.mclient.common.childDIContext
 import ru.mclient.common.client.list.ClientsList
 import ru.mclient.common.client.list.ClientsListForCompanyComponent
-import ru.mclient.common.utils.getStoreSavedState
+import ru.mclient.common.utils.getSavedStateStore
 import ru.mclient.common.utils.states
 import ru.mclient.mvi.record.create.RecordCreateClientSelectorStore
 
@@ -14,7 +14,7 @@ class RecordCreateClientSelectorComponent(
     companyId: Long,
 ) : RecordCreateClientSelector, DIComponentContext by componentContext {
 
-    private val store: RecordCreateClientSelectorStore = getStoreSavedState("record_create_clients")
+    private val store: RecordCreateClientSelectorStore = getSavedStateStore("record_create_clients")
 
     override val state: RecordCreateClientSelectorState by store.states(this) { it.toState() }
 

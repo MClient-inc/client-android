@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import ru.mclient.ui.view.DesignedCreateItem
 import ru.mclient.ui.view.DesignedDropdownMenu
 import ru.mclient.ui.view.DesignedOutlinedTitledBlock
 import ru.shafran.ui.R
@@ -33,7 +34,7 @@ fun RecordCreateStaffBlock(
         title = "Исполнитель",
         modifier = modifier,
     ) {
-        RecordCreateItem(
+        DesignedCreateItem(
             text = state.selectedStaff?.name ?: "не указано",
             isAvailable = state.isAvailable,
             onClick = onExpand,

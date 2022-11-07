@@ -2,7 +2,7 @@ package ru.mclient.common.record.create
 
 import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
-import ru.mclient.common.utils.getStoreSavedState
+import ru.mclient.common.utils.getSavedStateStore
 import ru.mclient.common.utils.states
 import ru.mclient.mvi.record.create.RecordCreateDateSelectorStore
 import java.time.LocalDate
@@ -12,7 +12,7 @@ class RecordCreateDateSelectorComponent(
     private val onSelectedDate: (LocalDate?) -> Unit,
 ) : RecordCreateDateSelector, DIComponentContext by componentContext {
 
-    private val store: RecordCreateDateSelectorStore = getStoreSavedState("record_create_date")
+    private val store: RecordCreateDateSelectorStore = getSavedStateStore("record_create_date")
 
     override val state: RecordCreateDateSelectorState by store.states(this) { it.toState() }
 
