@@ -7,4 +7,6 @@ interface ClientNetworkSource {
 
     suspend fun getClientById(input: GetClientByIdInput): GetClientByIdOutput
 
+    suspend fun createClient(input: CreateClientInput): CreateClientOutput
+
 }

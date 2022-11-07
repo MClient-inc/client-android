@@ -1,5 +1,7 @@
 package ru.mclient.ui.record.profile
 
+import androidx.compose.ui.text.AnnotatedString
+
 //class Formatter(
 //    private val startTime: LocalTime,
 //    private val endTime: LocalTime,
@@ -40,19 +42,47 @@ package ru.mclient.ui.record.profile
 //}
 
 
+private fun String.filterDigits(): String {
+    return filter(Char::isDigit).trim()
+}
+
+fun String.formatAsRussianNumber(): String {
+    var phone = filterDigits()
+    if (phone.firstOrNull() != '7') phone = "7$phone"
+    return phone.sliceIgnoreLast(0, 11)
+}
+
+
+private fun String.sliceIgnoreLast(start: Int, end: Int = length): String {
+    return if (end > length) {
+        substring(start, length)
+    } else {
+        substring(start, end)
+    }
+}
+
 fun String.toPhoneFormat(): String {
-    if (this.length != 11 && !this.startsWith("7"))
+    val input = filterDigits()
+    if (!this.startsWith("7"))
         return this
     return buildString {
         append(this@toPhoneFormat)
         insert(0, "+")
-        insert(2, "(")
-        insert(6, ")")
-        insert(10, "-")
-        insert(13, "-")
+        if (input.length > 1)
+            insert(2, " (")
+        if (input.length >= 5)
+            insert(7, ") ")
+        if (input.length >= 8)
+            insert(12, "-")
+        if (input.length >= 10)
+            insert(15, "-")
     }
 }
 
+fun AnnotatedString.toPhoneFormat(): AnnotatedString {
+    return AnnotatedString(toString().toPhoneFormat())
+}
+
 fun Long.toMoney(): String {
-    return "${this}₽"
+    return "$this ₽"
 }
