@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
@@ -40,7 +41,11 @@ fun MainUI(component: MainHost, modifier: Modifier) {
                 onLongClick = {},
                 modifier = Modifier
                     .padding(10.dp)
-                    .border(1.dp, MaterialTheme.colorScheme.outline, MaterialTheme.shapes.medium)
+                    .border(
+                        Dp.Hairline,
+                        MaterialTheme.colorScheme.outline,
+                        MaterialTheme.shapes.medium
+                    )
                     .clip(MaterialTheme.shapes.medium)
                     .fillMaxWidth()
             )

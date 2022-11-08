@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -66,6 +67,7 @@ fun ClientProfilePage(
     onRefresh: () -> Unit,
     onEdit: () -> Unit,
     onCreateAbonement: () -> Unit,
+    onQRCode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DesignedRefreshColumn(
@@ -78,6 +80,7 @@ fun ClientProfilePage(
             ClientProfileHeader(
                 profile = state.profile,
                 onEdit = onEdit,
+                onQRCode = onQRCode,
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -94,6 +97,7 @@ fun ClientProfilePage(
 fun ClientProfileHeader(
     profile: ClientProfilePageState.Profile,
     onEdit: () -> Unit,
+    onQRCode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -105,22 +109,37 @@ fun ClientProfileHeader(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.client),
-            modifier = Modifier.size(125.dp),
+            modifier = Modifier.size(75.dp),
             contentDescription = "иконка"
         )
         Column {
-            Text(
-                text = profile.name,
-                style = MaterialTheme.typography.headlineSmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2,
-            )
-            Text(
-                text = profile.phone.toPhoneFormat(),
-                style = MaterialTheme.typography.labelSmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-            )
+            Row {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, fill = true)
+                ) {
+                    Text(
+                        text = profile.name,
+                        style = MaterialTheme.typography.headlineSmall,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
+                    )
+                    Text(
+                        text = profile.phone.toPhoneFormat(),
+                        style = MaterialTheme.typography.labelSmall,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                    )
+                }
+                IconButton(onClick = onQRCode) {
+                    Icon(
+                        painterResource(id = R.drawable.qr_code), contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
+            }
+
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedButton(
                 onClick = onEdit,
@@ -215,6 +234,7 @@ fun ClientProfilePagePreview() {
         ),
         onRefresh = {},
         onEdit = {},
+        onQRCode = {},
         onCreateAbonement = {},
         modifier = Modifier
             .fillMaxSize()

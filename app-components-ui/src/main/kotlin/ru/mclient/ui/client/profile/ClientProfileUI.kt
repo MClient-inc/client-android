@@ -15,6 +15,7 @@ fun ClientProfileUI(
         onEdit = component::onEdit,
         onRefresh = component::onRefresh,
         onCreateAbonement = component::onAbonementCreate,
+        onQRCode = component::onQRCode,
         modifier = modifier,
     )
 }

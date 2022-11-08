@@ -2,8 +2,10 @@ package ru.mclient.common.client.profile
 
 import ru.mclient.common.bar.TopBarHost
 
-interface ClientProfileHost: TopBarHost {
+interface ClientProfileHost : TopBarHost {
 
     val profile: ClientProfile
+
+    val clientQRProfile: ClientQRProfile
 
 }

@@ -99,7 +99,7 @@ class MenuItem(
 fun CompanyProfileHeader(
     profile: CompanyProfilePageState.Profile?,
     onEdit: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (profile != null) {
         CompanyProfileHeaderComponent(
@@ -118,7 +118,7 @@ fun CompanyProfileHeader(
 fun CompanyProfileHeaderComponent(
     profile: CompanyProfilePageState.Profile,
     onEdit: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
@@ -156,7 +156,7 @@ fun CompanyProfileHeaderComponent(
 
 @Composable
 fun CompanyProfileHeaderPlaceholder(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
@@ -198,7 +198,6 @@ fun CompanyProfileHeaderPlaceholder(
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompanyProfileBody(
@@ -214,35 +213,30 @@ fun CompanyProfileBody(
     } else {
         CompanyProfileBodyItems(
             menu = listOf(
-                MenuItem(title = "Клиенты".toDesignedString(), onClick = onClients),
-                MenuItem(title = "Услуги".toDesignedString(), onClick = onServices),
-                MenuItem(title = "Работники".toDesignedString(), onClick = onStaff),
-                MenuItem(title = "Сеть".toDesignedString(), onClick = onNetwork),
+                MenuItem(
+                    title = "Клиенты".toDesignedString(),
+                    icon = R.drawable.client.toDesignedDrawable(),
+                    onClick = onClients
+                ),
+                MenuItem(
+                    title = "Услуги".toDesignedString(),
+                    R.drawable.services.toDesignedDrawable(),
+                    onClick = onServices
+                ),
+                MenuItem(
+                    title = "Работники".toDesignedString(),
+                    R.drawable.staff_group.toDesignedDrawable(),
+                    onClick = onStaff
+                ),
+                MenuItem(
+                    title = "Сеть".toDesignedString(),
+                    R.drawable.network.toDesignedDrawable(),
+                    onClick = onNetwork
+                ),
             ),
             modifier = modifier,
         )
     }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CompanyProfileBodyComponent(
-    onClients: () -> Unit,
-    onServices: () -> Unit,
-    onStaff: () -> Unit,
-    onNetwork: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    CompanyProfileBodyItems(
-        menu = listOf(
-            MenuItem(title = "Клиенты".toDesignedString(), onClick = onClients),
-            MenuItem(title = "Услуги".toDesignedString(), onClick = onServices),
-            MenuItem(title = "Работники".toDesignedString(), onClick = onStaff),
-            MenuItem(title = "Сеть".toDesignedString(), onClick = onNetwork),
-        ),
-        modifier = modifier,
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -269,7 +263,7 @@ fun CompanyProfileBodyItems(menu: List<MenuItem>, modifier: Modifier = Modifier)
                 headlineText = { DesignedText(text = it.title) },
                 leadingContent = {
                     if (it.icon != null) {
-                        DesignedIcon(icon = it.icon)
+                        DesignedIcon(icon = it.icon, modifier = Modifier.size(25.dp))
                     }
                 },
                 modifier = Modifier

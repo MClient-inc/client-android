@@ -61,6 +61,7 @@ fun ModalUI(
     component: Modal,
     sheetContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
+    showDivider: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     val modalState = component.modalState
@@ -99,6 +100,7 @@ fun ModalUI(
         sheetState = sheet,
         sheetContent = sheetContent,
         sheetElevation = 0.dp,
+        showDivider = showDivider,
         modifier = modifier,
         content = content,
     )

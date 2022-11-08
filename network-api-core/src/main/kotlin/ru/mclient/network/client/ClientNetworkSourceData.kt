@@ -32,3 +32,7 @@ class CreateClientOutput(
     val name: String,
     val phone: String,
 )
+
+data class GetClientCardInput(val clientId: Long)
+
+data class GetClientCardOutput(val code: String)

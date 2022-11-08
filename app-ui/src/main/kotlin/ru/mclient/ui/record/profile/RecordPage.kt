@@ -125,7 +125,7 @@ fun RecordProfilePage(
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         Text(
-                            "Итого: ${state.record?.cost ?: 0}",
+                            "Итого: ${(state.record?.cost ?: 0).toMoney()}",
                             modifier = Modifier.align(Alignment.End)
                         )
                         RecordProfileClientStatusComponent(

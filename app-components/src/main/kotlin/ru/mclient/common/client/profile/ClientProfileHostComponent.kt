@@ -15,11 +15,16 @@ class ClientProfileHostComponent(
     override val bar: TopBar = ImmutableTopBar(TopBarState(title = "Клиент"))
 
 
+    override val clientQRProfile: ClientQRProfile = ClientQRProfileComponent(
+        componentContext = childDIContext("client_qr"),
+        clientId = clientId,
+    )
+
     override val profile: ClientProfile = ClientProfileComponent(
         componentContext = childDIContext(key = "client_profile"),
         clientId = clientId,
         onAbonementCreate = onAbonementCreate,
+        onQRCode = { clientQRProfile.updateState(true) }
     )
-
 
 }

@@ -17,9 +17,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.contentColorFor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -324,7 +324,7 @@ fun BlurModalBottomSheetLayout(
         rememberBlurModalBottomSheetState(Hidden),
     sheetShape: Shape = MaterialTheme.shapes.large,
     sheetElevation: Dp = ModalBottomSheetDefaults.Elevation,
-    sheetBackgroundColor: Color = MaterialTheme.colors.surface,
+    sheetBackgroundColor: Color = MaterialTheme.colorScheme.surface,
     sheetContentColor: Color = contentColorFor(sheetBackgroundColor),
     scrimColor: Color = ModalBottomSheetDefaults.scrimColor,
     content: @Composable () -> Unit,
@@ -365,7 +365,7 @@ fun BlurModalBottomSheetLayout(
             )
         }
         Surface(
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .nestedScroll(sheetState.nestedScrollConnection)
                 .offset {
@@ -408,7 +408,7 @@ fun BlurModalBottomSheetLayout(
                     }
                 },
             shape = sheetShape,
-            elevation = sheetElevation,
+            shadowElevation = sheetElevation,
             color = sheetBackgroundColor,
             contentColor = sheetContentColor
         ) {
@@ -500,5 +500,5 @@ object ModalBottomSheetDefaults {
      */
     val scrimColor: Color
         @Composable
-        get() = MaterialTheme.colors.onSurface.copy(alpha = 0.32f)
+        get() = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.32f)
 }

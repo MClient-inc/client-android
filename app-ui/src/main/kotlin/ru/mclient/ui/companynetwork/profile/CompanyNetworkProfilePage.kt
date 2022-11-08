@@ -76,7 +76,7 @@ fun CompanyNetworkProfilePage(
                 .padding(10.dp),
         )
         CompanyNetworkProfileBody(
-            isLoading = state.isLoading  && !state.isRefreshing,
+            isLoading = state.isLoading && !state.isRefreshing,
             onClients = onClients,
             onServices = onServices,
             onStaff = onStaff,
@@ -101,7 +101,7 @@ class MenuItem(
 private fun CompanyNetworkProfileHeader(
     profile: CompanyNetworkProfilePageState.Profile?,
     onEdit: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (profile != null) {
         CompanyNetworkProfileHeaderComponent(
@@ -120,7 +120,7 @@ private fun CompanyNetworkProfileHeader(
 private fun CompanyNetworkProfileHeaderComponent(
     profile: CompanyNetworkProfilePageState.Profile,
     onEdit: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
@@ -158,7 +158,7 @@ private fun CompanyNetworkProfileHeaderComponent(
 
 @Composable
 private fun CompanyNetworkProfileHeaderPlaceholder(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
@@ -217,11 +217,31 @@ private fun CompanyNetworkProfileBody(
     } else {
         CompanyNetworkProfileBodyItems(
             menu = listOf(
-                MenuItem(title = "Клиенты".toDesignedString(), onClick = onClients),
-                MenuItem(title = "Услуги".toDesignedString(), onClick = onServices),
-                MenuItem(title = "Работники".toDesignedString(), onClick = onStaff),
-                MenuItem(title = "Компании".toDesignedString(), onClick = onNetwork),
-                MenuItem(title = "Аналитика".toDesignedString(), onClick = onAnalytics),
+                MenuItem(
+                    title = "Клиенты".toDesignedString(),
+                    icon = R.drawable.client.toDesignedDrawable(),
+                    onClick = onClients
+                ),
+                MenuItem(
+                    title = "Услуги".toDesignedString(),
+                    R.drawable.services.toDesignedDrawable(),
+                    onClick = onServices
+                ),
+                MenuItem(
+                    title = "Работники".toDesignedString(),
+                    R.drawable.staff_group.toDesignedDrawable(),
+                    onClick = onStaff
+                ),
+                MenuItem(
+                    title = "Компании".toDesignedString(),
+                    R.drawable.company.toDesignedDrawable(),
+                    onClick = onNetwork
+                ),
+                MenuItem(
+                    title = "Аналитика".toDesignedString(),
+                    R.drawable.analytics.toDesignedDrawable(),
+                    onClick = onAnalytics,
+                ),
             ),
             modifier = modifier,
         )
@@ -273,7 +293,7 @@ private fun CompanyNetworkProfileBodyItems(menu: List<MenuItem>, modifier: Modif
                 headlineText = { DesignedText(text = it.title) },
                 leadingContent = {
                     if (it.icon != null) {
-                        DesignedIcon(icon = it.icon)
+                        DesignedIcon(icon = it.icon, modifier = Modifier.size(25.dp))
                     }
                 },
                 modifier = Modifier

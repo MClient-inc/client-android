@@ -8,6 +8,8 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
+import ru.mclient.common.abonement.clientcreate.AbonementClientCreateHostComponent
+import ru.mclient.common.client.profile.ClientProfileHostComponent
 import ru.mclient.common.diChildStack
 import ru.mclient.common.home.block.HomeBlockComponent
 import ru.mclient.common.record.create.RecordCreateHostComponent
@@ -16,7 +18,7 @@ import ru.mclient.common.record.profile.RecordProfileHostComponent
 
 class HomeComponent(
     componentContext: DIComponentContext,
-    companyId: Long,
+    private val companyId: Long,
 ) : Home, DIComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
@@ -58,6 +60,7 @@ class HomeComponent(
                         companyId = config.companyId,
                         onSelectRecord = { onRecordSelect(it) },
                         onRecordsList = { onRecordsList(config.companyId) },
+                        onClient = { navigation.push(Config.ClientProfile(it)) }
                     )
                 )
 
@@ -87,6 +90,25 @@ class HomeComponent(
                         recordId = config.recordId
                     )
                 )
+
+            is Config.AbonementCreate ->
+                Home.Child.AbonementCreate(
+                    AbonementClientCreateHostComponent(
+                        componentContext = componentContext,
+                        companyId = companyId,
+                        clientId = config.clientId,
+                        onSuccess = navigation::pop
+                    )
+                )
+
+            is Config.ClientProfile ->
+                Home.Child.ClientProfile(
+                    ClientProfileHostComponent(
+                        componentContext = componentContext,
+                        clientId = config.clientId,
+                        onAbonementCreate = { navigation.push(Config.AbonementCreate(config.clientId)) }
+                    )
+                )
         }
     }
 
@@ -108,6 +130,14 @@ class HomeComponent(
         @Parcelize
         @JvmInline
         value class RecordProfile(val recordId: Long) : Config
+
+        @Parcelize
+        @JvmInline
+        value class ClientProfile(val clientId: Long) : Config
+
+        @Parcelize
+        @JvmInline
+        value class AbonementCreate(val clientId: Long) : Config
 
     }
 

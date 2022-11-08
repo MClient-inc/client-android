@@ -6,6 +6,7 @@ import ru.mclient.common.Modal
 data class ClientQRProfileState(
     val code: Code?,
     val isLoading: Boolean,
+    val isShareAvailable: Boolean,
 ) {
 
     class Code(
@@ -17,5 +18,7 @@ data class ClientQRProfileState(
 interface ClientQRProfile : Modal {
 
     val state: ClientQRProfileState
+
+    fun onShare()
 
 }

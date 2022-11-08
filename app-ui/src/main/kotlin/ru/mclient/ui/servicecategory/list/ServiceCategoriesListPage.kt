@@ -5,14 +5,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.utils.defaultPlaceholder
 import ru.mclient.ui.view.DesignedIcon
@@ -83,7 +82,11 @@ fun ServiceCategoryItem(
         headlineText = { Text(company.title) },
         modifier = modifier,
         leadingContent = {
-            Icon(Icons.Outlined.Menu, contentDescription = null, modifier = Modifier.size(35.dp))
+            Icon(
+                painterResource(id = R.drawable.services),
+                contentDescription = null,
+                modifier = Modifier.size(35.dp)
+            )
         },
     )
 }

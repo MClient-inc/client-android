@@ -6,13 +6,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.utils.defaultPlaceholder
@@ -87,8 +87,9 @@ fun StaffItem(
         },
         modifier = modifier,
         leadingContent = {
-            DesignedIcon(
-                icon = staff.icon ?: Icons.Outlined.Menu.toDesignedDrawable(),
+            Icon(
+                painterResource(id = R.drawable.staff),
+                contentDescription = null,
                 modifier = Modifier.size(35.dp)
             )
         },
@@ -134,11 +135,11 @@ fun StaffListPagePreview() {
         state = StaffListPageState(
             staff = List(6) {
                 StaffListPageState.Staff(
-                    it.toLong(),
-                    "name",
-                    "codename",
-                    "role",
-                    null
+                    id = it.toLong(),
+                    name = "name",
+                    codename = "codename",
+                    role = "role",
+                    icon = null
                 )
             },
             isLoading = false,

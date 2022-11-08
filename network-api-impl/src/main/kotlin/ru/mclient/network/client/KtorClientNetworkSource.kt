@@ -49,6 +49,12 @@ class KtorClientNetworkSource(
         )
     }
 
+    override suspend fun getClientCard(input: GetClientCardInput): GetClientCardOutput {
+        val response = client.get("/clients/${input.clientId}/card")
+        val body = response.body<GetCardResponse>()
+        return GetClientCardOutput(body.cardUrl)
+    }
+
     override suspend fun getClientById(input: GetClientByIdInput): GetClientByIdOutput {
         val response = client.get("/clients/${input.clientId}")
         val body = response.body<GetClientById>()
@@ -60,6 +66,11 @@ class KtorClientNetworkSource(
     }
 
 }
+
+@Serializable
+class GetCardResponse(
+    val cardUrl: String,
+)
 
 
 @Serializable

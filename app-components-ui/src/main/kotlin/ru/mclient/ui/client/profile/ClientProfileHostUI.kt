@@ -11,14 +11,16 @@ import ru.mclient.ui.bar.TopBarHostUI
 @Composable
 fun ClientProfileHostUI(
     component: ClientProfileHost,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
-    TopBarHostUI(component = component, modifier = modifier) {
-        ClientProfileUI(
-            component = component.profile,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 10.dp)
-        )
+    ClientQRProfileUI(component = component.clientQRProfile, modifier = modifier) {
+        TopBarHostUI(component = component, modifier = Modifier.fillMaxSize()) {
+            ClientProfileUI(
+                component = component.profile,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 10.dp)
+            )
+        }
     }
 }

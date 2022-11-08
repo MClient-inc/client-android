@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowForward
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -124,25 +123,25 @@ private fun RecordItem(
                 .weight(0.75f, fill = true)
         ) {
             DesignedListPoint(
-                Icons.Outlined.Menu,
+                painterResource(id = R.drawable.date),
                 record.formattedDate,
                 style = MaterialTheme.typography.labelLarge
             )
             DesignedListPoint(
-                Icons.Outlined.Menu,
+                painterResource(id = R.drawable.client),
                 record.client.name,
             )
             DesignedListPoint(
-                Icons.Outlined.Menu,
+                painterResource(id = R.drawable.phone),
                 record.client.formattedPhone,
             )
             if (record.cost > 0)
                 DesignedListPoint(
-                    Icons.Outlined.Menu,
+                    painterResource(id = R.drawable.ruble),
                     record.formattedCost,
                 )
             DesignedListPoint(
-                icon = Icons.Outlined.Menu,
+                painterResource(id = R.drawable.staff),
                 text = record.staff.name,
             )
         }

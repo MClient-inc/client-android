@@ -38,4 +38,6 @@ interface ClientProfile {
 
     fun onAbonementCreate()
 
+    fun onQRCode()
+
 }

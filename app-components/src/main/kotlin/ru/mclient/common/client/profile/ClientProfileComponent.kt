@@ -10,8 +10,8 @@ class ClientProfileComponent(
     componentContext: DIComponentContext,
     clientId: Long,
     private val onAbonementCreate: () -> Unit,
+    private val onQRCode: () -> Unit,
 ) : ClientProfile, DIComponentContext by componentContext {
-
 
     private val store: ClientProfileStore =
         getParameterizedStore { ClientProfileStore.Params(clientId) }
@@ -46,6 +46,10 @@ class ClientProfileComponent(
 
     override fun onRefresh() {
         store.accept(ClientProfileStore.Intent.Refresh)
+    }
+
+    override fun onQRCode() {
+        onQRCode.invoke()
     }
 
     override fun onEdit() {

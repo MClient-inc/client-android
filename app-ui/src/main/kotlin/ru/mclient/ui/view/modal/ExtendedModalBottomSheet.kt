@@ -31,26 +31,29 @@ fun ExtendedModalBottomSheet(
     sheetBackgroundColor: Color = MaterialTheme.colors.surface,
     sheetContentColor: Color = contentColorFor(sheetBackgroundColor),
     scrimColor: Color = ModalBottomSheetDefaults.scrimColor,
+    showDivider: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     BlurModalBottomSheetLayout(
         sheetState = sheetState,
-        sheetContent = {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .height(10.dp)
-                )
-                DesignedDivider(modifier = Modifier.fillMaxWidth())
-                Spacer(
-                    modifier = Modifier
-                        .height(10.dp)
-                )
-                sheetContent()
+        sheetContent = if (showDivider) {
+            {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Spacer(
+                        modifier = Modifier
+                            .height(10.dp)
+                    )
+                    DesignedDivider(modifier = Modifier.fillMaxWidth())
+                    Spacer(
+                        modifier = Modifier
+                            .height(10.dp)
+                    )
+                    sheetContent()
+                }
             }
-        },
+        } else sheetContent,
         modifier = modifier,
         sheetShape = calculateTopShape(offset = sheetState.offset.value)
             .copy(bottomStart = ZeroCornerSize, bottomEnd = ZeroCornerSize),

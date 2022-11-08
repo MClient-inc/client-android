@@ -1,5 +1,6 @@
 package ru.mclient.ui.main
 
+import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
@@ -53,9 +54,14 @@ fun MainPageNavBar(
     currentItem: MainPageNavBarItem,
     onClick: (MainPageNavBarItem) -> Unit,
     onLongClick: (MainPageNavBarItem) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
-    NavigationBar(containerColor = MaterialTheme.colorScheme.surface, modifier = modifier) {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surface,
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.surface)
+            .then(modifier)
+    ) {
         items.forEach { (key, value) ->
             CombinedNavigationBarItem(
                 selected = currentItem == key,

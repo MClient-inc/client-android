@@ -177,8 +177,7 @@ interface Dependencies {
     }
 
     object Camera : Dependencies {
-        //TODO("camera")
-        const val version = "1.1.0"
+        const val version = "1.2.0-rc01"
         const val core = "androidx.camera:camera-core:$version"
         const val camera = "androidx.camera:camera-camera2:$version"
         const val lifecycle = "androidx.camera:camera-lifecycle:$version"

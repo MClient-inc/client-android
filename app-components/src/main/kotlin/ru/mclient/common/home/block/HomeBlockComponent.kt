@@ -3,9 +3,14 @@ package ru.mclient.common.home.block
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.bar.MutableTopBar
 import ru.mclient.common.bar.TopBarState
+import ru.mclient.common.fab.Fab
+import ru.mclient.common.fab.FabState
+import ru.mclient.common.fab.ImmutableFab
 import ru.mclient.common.record.upcoming.UpcomingRecords
 import ru.mclient.common.record.upcoming.UpcomingRecordsComponent
 import ru.mclient.common.record.upcoming.UpcomingRecordsState
+import ru.mclient.common.scanner.Scanner
+import ru.mclient.common.scanner.ScannerComponent
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
 import ru.mclient.mvi.home.HomeStore
@@ -15,6 +20,7 @@ class HomeBlockComponent(
     companyId: Long,
     onSelectRecord: (Long) -> Unit,
     onRecordsList: () -> Unit,
+    onClient: (Long) -> Unit,
 ) : HomeBlockHost, DIComponentContext by componentContext {
 
     private val store: HomeStore = getParameterizedStore { HomeStore.Params(companyId) }
@@ -36,6 +42,9 @@ class HomeBlockComponent(
         )
     }
 
+
+    override val scanner: Scanner = ScannerComponent(onClient)
+
     override val upcomingRecords: UpcomingRecords =
         UpcomingRecordsComponent(componentContext, companyId, onSelectRecord, onRecordsList)
 
@@ -51,4 +60,14 @@ class HomeBlockComponent(
     override fun onRefresh() {
         upcomingRecords.onRefresh()
     }
+
+    override val fab: Fab = ImmutableFab(
+        state = FabState("Сканировать", isIconShown = false),
+        onClick = ::onScanner,
+    )
+
+    override fun onScanner() {
+        scanner.updateState(true)
+    }
+
 }

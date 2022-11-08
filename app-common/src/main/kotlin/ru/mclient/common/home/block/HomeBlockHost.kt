@@ -1,7 +1,8 @@
 package ru.mclient.common.home.block
 
-import ru.mclient.common.bar.TopBarHost
+import ru.mclient.common.bar.MergedHost
 import ru.mclient.common.record.upcoming.UpcomingRecords
+import ru.mclient.common.scanner.Scanner
 
 
 class HomeBlockState(
@@ -10,12 +11,16 @@ class HomeBlockState(
 )
 
 
-interface HomeBlockHost : TopBarHost {
+interface HomeBlockHost : MergedHost {
 
     val upcomingRecords: UpcomingRecords
+
+    val scanner: Scanner
 
     fun onRefresh()
 
     val state: HomeBlockState
+
+    fun onScanner()
 
 }
