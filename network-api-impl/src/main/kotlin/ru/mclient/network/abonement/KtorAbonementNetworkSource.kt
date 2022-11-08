@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -58,6 +59,7 @@ class KtorAbonementNetworkSource(
                         GetAbonementsForCompanyOutput.Subabonement(
                             id = it.id,
                             title = it.title,
+                            cost = it.cost,
                             usages = it.usages,
                             liveTimeInMillis = it.liveTimeInMillis,
                             availableUntil = it.availableUntil
@@ -75,8 +77,9 @@ class KtorAbonementNetworkSource(
                     input.title,
                     input.subabonements.map {
                         CreateAbonementRequest.Subabonement(
-                            it.title,
-                            it.usages,
+                            title = it.title,
+                            usages = it.usages,
+                            cost = it.cost,
                         )
                     },
                     input.services
@@ -94,6 +97,7 @@ class KtorAbonementNetworkSource(
                         id = it.id,
                         title = it.title,
                         usages = it.usages,
+                        cost = it.cost,
                         liveTimeInMillis = it.liveTimeInMillis,
                         availableUntil = it.availableUntil,
                     )
@@ -108,6 +112,79 @@ class KtorAbonementNetworkSource(
             )
         )
     }
+
+    override suspend fun getAbonementsForClient(input: GetAbonementsForClientInput): GetAbonementsForClientOutput {
+        val response = client.get("/clients/${input.clientId}/abonements")
+        val body = response.body<GetClientAbonementsResponse>()
+        return GetAbonementsForClientOutput(
+            abonements = body.abonements.map {
+                GetAbonementsForClientOutput.ClientAbonement(
+                    id = it.id,
+                    usages = it.usages,
+                    abonement = GetAbonementsForClientOutput.Abonement(
+                        id = it.abonement.id,
+                        title = it.abonement.title,
+                        subabonement = GetAbonementsForClientOutput.Subabonement(
+                            id = it.abonement.subabonement.id,
+                            title = it.abonement.subabonement.title,
+                            cost = it.abonement.subabonement.cost,
+                            maxUsages = it.abonement.subabonement.maxUsages,
+                        )
+                    )
+                )
+            }
+        )
+    }
+
+    override suspend fun addAbonementForClient(input: AddAbonementToClientInput): AddAbonementToClientOutput {
+        client.put("/clients/${input.clientId}/abonements") {
+            setBody(
+                AddAbonementToClientRequest(
+                    subabonementId = input.subabonementId,
+                )
+            )
+            contentType(ContentType.Application.Json)
+        }
+        return AddAbonementToClientOutput(input.clientId)
+    }
+}
+
+@Serializable
+class AddAbonementToClientRequest(
+    val subabonementId: Long,
+)
+
+
+@Serializable
+class GetClientAbonementsResponse(
+    val abonements: List<ClientAbonement>,
+) {
+
+    @Serializable
+    class ClientAbonement(
+        val id: Long,
+        val abonement: Abonement,
+        val usages: Int,
+        val cost: Long,
+    )
+
+    @Serializable
+    class Abonement(
+        val id: Long,
+        val title: String,
+        val subabonement: Subabonement,
+    )
+
+
+    @Serializable
+    class Subabonement(
+        val id: Long,
+        val title: String,
+        val usages: Int,
+        val cost: Long,
+        val maxUsages: Int,
+    )
+
 }
 
 @Serializable
@@ -121,6 +198,7 @@ data class CreateAbonementRequest(
     class Subabonement(
         val title: String,
         val usages: Int,
+        val cost: Long,
     )
 
 }
@@ -144,6 +222,7 @@ data class CreateAbonementResponse(
         val id: Long,
         val title: String,
         val usages: Int,
+        val cost: Long,
         val liveTimeInMillis: Long,
         @Contextual
         val availableUntil: LocalDateTime,
@@ -172,6 +251,7 @@ class GetAbonementByIdResponse(
         val id: Long,
         val title: String,
         val usages: Int,
+        val cost: Long,
         val liveTimeInMillis: Long,
         @Contextual
         val availableUntil: LocalDateTime,
@@ -197,6 +277,7 @@ class GetAbonementsResponse(
         val id: Long,
         val title: String,
         val usages: Int,
+        val cost: Long,
         val liveTimeInMillis: Long,
         @Contextual
         val availableUntil: LocalDateTime,

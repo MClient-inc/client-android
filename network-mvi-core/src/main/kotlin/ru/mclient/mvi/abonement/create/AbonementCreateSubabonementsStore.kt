@@ -14,7 +14,8 @@ interface AbonementCreateSubabonementsStore :
 
         class Update(
             val title: String,
-            val usages: Int,
+            val usages: String,
+            val cost: String,
         ) : Intent()
 
         class DeleteById(val id: Int) : Intent()
@@ -32,6 +33,7 @@ interface AbonementCreateSubabonementsStore :
         data class Subabonement(
             val title: String,
             val usages: Int,
+            val cost: Long,
             val uniqueId: Int,
         ) : Parcelable
 
@@ -39,6 +41,7 @@ interface AbonementCreateSubabonementsStore :
         data class Creation(
             val title: String,
             val usages: Int,
+            val cost: Long,
             val isAvailable: Boolean,
             val isContinueAvailable: Boolean,
         ) : Parcelable

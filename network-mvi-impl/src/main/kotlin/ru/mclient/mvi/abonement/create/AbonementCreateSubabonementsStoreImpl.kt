@@ -21,6 +21,7 @@ class AbonementCreateSubabonementsStoreImpl(
             creation = AbonementCreateSubabonementsStore.State.Creation(
                 title = "",
                 usages = 0,
+                cost = 0,
                 isAvailable = true,
                 isContinueAvailable = false,
             ),
@@ -47,11 +48,13 @@ class AbonementCreateSubabonementsStoreImpl(
                             subabonements = state.subabonements + AbonementCreateSubabonementsStore.State.Subabonement(
                                 title = state.creation.title,
                                 usages = state.creation.usages,
+                                cost = state.creation.cost,
                                 uniqueId = Random.nextInt(),
                             ),
                             creation = AbonementCreateSubabonementsStore.State.Creation(
                                 title = "",
                                 usages = 0,
+                                cost = 0,
                                 isAvailable = true,
                                 isContinueAvailable = false,
                             )
@@ -72,14 +75,17 @@ class AbonementCreateSubabonementsStoreImpl(
 
                 is AbonementCreateSubabonementsStore.Intent.Update -> {
                     val state = getState()
+                    val usages = intent.usages.toIntOrNull() ?: 0
+                    val cost = intent.cost.toLongOrNull() ?: 0
                     dispatch(
                         state.copy(
                             isSuccess = state.subabonements.isNotEmpty(),
                             creation = AbonementCreateSubabonementsStore.State.Creation(
                                 title = intent.title,
-                                usages = intent.usages,
+                                usages = usages,
+                                cost = cost,
                                 isAvailable = true,
-                                isContinueAvailable = intent.title.length >= 2 && intent.usages > 0,
+                                isContinueAvailable = intent.title.length >= 2 && usages > 0,
                             )
                         )
                     )

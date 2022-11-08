@@ -22,6 +22,8 @@ interface RecordProfileStore :
 
         object NotCome : Intent()
 
+        data class UseAbonements(val abonementIds: List<Long>) : Intent()
+
     }
 
     data class State(
@@ -40,7 +42,28 @@ interface RecordProfileStore :
             val totalCost: Long,
             val staff: Staff,
             val status: RecordVisitStatus,
+            val abonements: List<ClientAbonement>,
         )
+
+        class ClientAbonement(
+            val id: Long,
+            val abonement: Abonement,
+            val usages: Int,
+        )
+
+        data class Abonement(
+            val id: Long,
+            val title: String,
+            val subabonement: Subabonement,
+        )
+
+        data class Subabonement(
+            val id: Long,
+            val title: String,
+            val maxUsages: Int,
+            val cost: Long,
+        )
+
 
         data class TimeOffset(
             val start: LocalTime,

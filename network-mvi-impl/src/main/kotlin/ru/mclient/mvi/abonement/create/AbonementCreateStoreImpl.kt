@@ -68,6 +68,7 @@ class AbonementCreateStoreImpl(
                                     CreateAbonementInput.Subabonement(
                                         title = it.title,
                                         usages = it.usages,
+                                        cost = it.cost,
                                     )
                                 },
                                 intent.services

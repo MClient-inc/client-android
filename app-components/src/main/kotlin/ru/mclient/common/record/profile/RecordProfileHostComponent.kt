@@ -19,4 +19,5 @@ class RecordProfileHostComponent(
             componentContext = childDIContext(key = "record_profile"),
             recordId = recordId
         )
+
 }

@@ -32,6 +32,8 @@ import ru.shafran.ui.R
 
 class AbonementsListPageState(
     val abonements: List<Abonement>,
+    val isSubabonementClickable: Boolean,
+    val isAbonementClickable: Boolean,
     val isLoading: Boolean,
     val isRefreshing: Boolean,
     val isFailure: Boolean,
@@ -44,6 +46,7 @@ class AbonementsListPageState(
     )
 
     data class Subabonement(
+        val id: Long,
         val title: String,
     )
 
@@ -54,7 +57,8 @@ class AbonementsListPageState(
 @Composable
 fun AbonementsListPage(
     state: AbonementsListPageState,
-    onClick: (AbonementsListPageState.Abonement) -> Unit,
+    onClickAbonement: (AbonementsListPageState.Abonement) -> Unit,
+    onClickSubabonement: (AbonementsListPageState.Abonement, AbonementsListPageState.Subabonement) -> Unit,
     onRefresh: () -> Unit,
     modifier: Modifier,
 ) {
@@ -68,7 +72,10 @@ fun AbonementsListPage(
                 items(state.abonements, key = AbonementsListPageState.Abonement::id) { record ->
                     AbonementItem(
                         abonement = record,
-                        onClick = onClick,
+                        isAbonementClickable = state.isAbonementClickable,
+                        isSubabonementClickable = state.isSubabonementClickable,
+                        onClick = onClickAbonement,
+                        onClickSubabonement = onClickSubabonement,
                         modifier = Modifier
                             .width(180.dp),
                     )
@@ -80,7 +87,10 @@ fun AbonementsListPage(
 @Composable
 private fun AbonementItem(
     abonement: AbonementsListPageState.Abonement,
+    isAbonementClickable: Boolean,
+    isSubabonementClickable: Boolean,
     onClick: (AbonementsListPageState.Abonement) -> Unit,
+    onClickSubabonement: (AbonementsListPageState.Abonement, AbonementsListPageState.Subabonement) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -88,7 +98,7 @@ private fun AbonementItem(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
             .outlined()
-            .clickable { onClick(abonement) }
+            .clickable(onClick = { onClick(abonement) }, enabled = isAbonementClickable)
             .wrapContentSize()
             .padding(10.dp),
     ) {
@@ -104,7 +114,10 @@ private fun AbonementItem(
             Text(abonement.title, style = MaterialTheme.typography.bodyLarge)
             Subabonements(
                 subabonements = abonement.subabonements,
-                modifier = Modifier.fillMaxWidth()
+                enabled = isSubabonementClickable,
+                onClick = { onClickSubabonement(abonement, it) },
+                modifier = Modifier
+                    .fillMaxWidth()
             )
         }
     }
@@ -113,6 +126,8 @@ private fun AbonementItem(
 @Composable
 fun Subabonements(
     subabonements: List<AbonementsListPageState.Subabonement>,
+    enabled: Boolean,
+    onClick: (AbonementsListPageState.Subabonement) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -121,7 +136,12 @@ fun Subabonements(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
         subabonements.forEach {
-            Subabonement(subabonement = it)
+            Subabonement(
+                subabonement = it,
+                enabled = enabled,
+                onClick = onClick,
+                modifier = Modifier
+            )
         }
     }
 }
@@ -129,9 +149,15 @@ fun Subabonements(
 @Composable
 private fun Subabonement(
     subabonement: AbonementsListPageState.Subabonement,
+    enabled: Boolean,
+    onClick: (AbonementsListPageState.Subabonement) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier.outlined()) {
+    Box(
+        modifier = modifier
+            .outlined()
+            .clickable(enabled = enabled, onClick = { onClick(subabonement) })
+    ) {
         Text(
             subabonement.title,
             style = MaterialTheme.typography.bodySmall,
@@ -150,41 +176,50 @@ fun AbonementsListPagePreview() {
                     1,
                     "Название",
                     subabonements = listOf(
-                        AbonementsListPageState.Subabonement("название1"),
-                        AbonementsListPageState.Subabonement("название2"),
-                        AbonementsListPageState.Subabonement("название3"),
-                        AbonementsListPageState.Subabonement("название4"),
-                    )
+                        AbonementsListPageState.Subabonement(1, "название1"),
+                        AbonementsListPageState.Subabonement(2, "название2"),
+                        AbonementsListPageState.Subabonement(3, "название3"),
+                        AbonementsListPageState.Subabonement(4, "название4"),
+                        AbonementsListPageState.Subabonement(5, "название5"),
+                        AbonementsListPageState.Subabonement(6, "название6"),
+                        AbonementsListPageState.Subabonement(7, "название7"),
+                    ),
                 ),
                 AbonementsListPageState.Abonement(
                     2,
                     "Название2",
                     subabonements = listOf(
-                        AbonementsListPageState.Subabonement("название1"),
-                        AbonementsListPageState.Subabonement("название2"),
-                        AbonementsListPageState.Subabonement("название3"),
-                        AbonementsListPageState.Subabonement("название4"),
-                    )
+                        AbonementsListPageState.Subabonement(1, "название1"),
+                        AbonementsListPageState.Subabonement(2, "название2"),
+                        AbonementsListPageState.Subabonement(3, "название3"),
+                        AbonementsListPageState.Subabonement(4, "название4"),
+                        AbonementsListPageState.Subabonement(5, "название5"),
+                        AbonementsListPageState.Subabonement(6, "название6"),
+                        AbonementsListPageState.Subabonement(7, "название7"),
+                    ),
                 ),
                 AbonementsListPageState.Abonement(
                     3,
                     "Название",
                     subabonements = listOf(
-                        AbonementsListPageState.Subabonement("название1"),
-                        AbonementsListPageState.Subabonement("название2"),
-                        AbonementsListPageState.Subabonement("название3"),
-                        AbonementsListPageState.Subabonement("название4"),
-                        AbonementsListPageState.Subabonement("название5"),
-                        AbonementsListPageState.Subabonement("название6"),
-                        AbonementsListPageState.Subabonement("название7"),
-                    )
+                        AbonementsListPageState.Subabonement(1, "название1"),
+                        AbonementsListPageState.Subabonement(2, "название2"),
+                        AbonementsListPageState.Subabonement(3, "название3"),
+                        AbonementsListPageState.Subabonement(4, "название4"),
+                        AbonementsListPageState.Subabonement(5, "название5"),
+                        AbonementsListPageState.Subabonement(6, "название6"),
+                        AbonementsListPageState.Subabonement(7, "название7"),
+                    ),
                 ),
             ),
+            isSubabonementClickable = false,
+            isAbonementClickable = false,
             isLoading = false,
             isRefreshing = false,
             isFailure = false,
         ),
-        onClick = {},
+        onClickAbonement = {},
+        onClickSubabonement = { _, _ -> },
         onRefresh = {},
         modifier = Modifier
             .fillMaxSize()

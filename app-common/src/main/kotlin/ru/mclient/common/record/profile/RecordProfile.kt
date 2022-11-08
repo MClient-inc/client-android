@@ -8,6 +8,7 @@ data class RecordProfileState(
     val isLoading: Boolean,
     val isRefreshing: Boolean,
 ) {
+
     data class Record(
         val id: Long,
         val client: Client,
@@ -63,6 +64,8 @@ interface RecordProfile {
 
     val state: RecordProfileState
 
+    val abonements: ClientAbonementsSelector
+
     fun onCome()
 
     fun onNotCome()
@@ -70,5 +73,7 @@ interface RecordProfile {
     fun onWaiting()
 
     fun onRefresh()
+
+    fun onApplyAbonements()
 
 }

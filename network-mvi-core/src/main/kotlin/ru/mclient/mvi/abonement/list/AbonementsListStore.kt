@@ -29,7 +29,9 @@ interface AbonementsListStore :
         )
 
         data class Subabonement(
+            val id: Long,
             val title: String,
+            val cost: Long,
         )
 
     }

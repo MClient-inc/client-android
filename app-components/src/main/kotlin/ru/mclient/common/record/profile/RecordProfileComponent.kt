@@ -2,6 +2,7 @@ package ru.mclient.common.record.profile
 
 import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
+import ru.mclient.common.childDIContext
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
 import ru.mclient.mvi.record.profile.RecordProfileStore
@@ -14,9 +15,19 @@ class RecordProfileComponent(
     private val store: RecordProfileStore =
         getParameterizedStore { RecordProfileStore.Params(recordId) }
 
+    override val abonements = ClientAbonementsSelectorComponent(
+        childDIContext("record_abonements_selector"),
+    )
+
     override val state: RecordProfileState by store.states(this) { it.toState() }
 
     private fun RecordProfileStore.State.toState(): RecordProfileState {
+        if (record?.status == RecordProfileStore.State.RecordVisitStatus.COME)
+            abonements.setSelectedAbonements(
+                record?.client?.id,
+                store.state.record?.abonements?.map { it.id })
+        else
+            abonements.setSelectedAbonements(null, null)
         return RecordProfileState(
             record = record?.toState(),
             isLoading = isLoading,
@@ -78,6 +89,10 @@ class RecordProfileComponent(
 
     override fun onRefresh() {
         store.accept(RecordProfileStore.Intent.Refresh)
+    }
+
+    override fun onApplyAbonements() {
+        store.accept(RecordProfileStore.Intent.UseAbonements(abonements.state.selectedAbonements.map { it.value.id }))
     }
 
 }

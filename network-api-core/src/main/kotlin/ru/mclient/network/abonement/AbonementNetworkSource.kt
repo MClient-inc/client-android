@@ -8,4 +8,8 @@ interface AbonementNetworkSource {
 
     suspend fun createAbonement(input: CreateAbonementInput): CreateAbonementOutput
 
+    suspend fun getAbonementsForClient(input: GetAbonementsForClientInput): GetAbonementsForClientOutput
+
+    suspend fun addAbonementForClient(input: AddAbonementToClientInput): AddAbonementToClientOutput
+
 }

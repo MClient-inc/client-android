@@ -3,6 +3,8 @@ package ru.mclient.common.abonement.list
 
 class AbonementsListState(
     val abonements: List<Abonement>,
+    val isSubabonementClickable: Boolean,
+    val isAbonementClickable: Boolean,
     val isLoading: Boolean,
     val isRefreshing: Boolean,
     val isFailure: Boolean,
@@ -15,7 +17,9 @@ class AbonementsListState(
     )
 
     data class Subabonement(
+        val id: Long,
         val title: String,
+        val cost: Long,
     )
 
 }
@@ -27,5 +31,7 @@ interface AbonementsList {
     fun onRefresh()
 
     fun onSelect(abonementId: Long)
+
+    fun onSelect(abonementId: Long, subabonementId: Long)
 
 }

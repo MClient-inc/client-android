@@ -9,6 +9,7 @@ import ru.mclient.common.childDIContext
 class ClientProfileHostComponent(
     componentContext: DIComponentContext,
     clientId: Long,
+    onAbonementCreate: () -> Unit,
 ) : ClientProfileHost, DIComponentContext by componentContext {
 
     override val bar: TopBar = ImmutableTopBar(TopBarState(title = "Клиент"))
@@ -16,7 +17,8 @@ class ClientProfileHostComponent(
 
     override val profile: ClientProfile = ClientProfileComponent(
         componentContext = childDIContext(key = "client_profile"),
-        clientId = clientId
+        clientId = clientId,
+        onAbonementCreate = onAbonementCreate,
     )
 
 

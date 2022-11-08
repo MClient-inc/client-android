@@ -34,12 +34,14 @@ data class AbonementCreateSubabonementsBlockState(
     data class Subabonement(
         val title: String,
         val usage: String,
+        val cost: String,
         val uniqueId: Int,
     )
 
     data class SubabonementCreation(
         val title: String,
         val usages: String,
+        val cost: String,
         val isAvailable: Boolean,
         val isButtonAvailable: Boolean,
     )
@@ -49,15 +51,18 @@ data class AbonementCreateSubabonementsBlockState(
 data class SubabonementInput(
     val title: String,
     val usage: String,
+    val cost: String,
 )
 
 fun AbonementCreateSubabonementsBlockState.SubabonementCreation.toInput(
     title: String = this.title,
     usages: String = this.usages,
+    cost: String = this.cost,
 ): SubabonementInput {
     return SubabonementInput(
         title = title,
         usage = usages,
+        cost = cost,
     )
 }
 
@@ -108,7 +113,7 @@ fun SubabonementCreation(
                 placeholder = "Название",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f, fill = true)
+                    .weight(0.5f, fill = true)
             )
             DesignedTextField(
                 value = creation.usages,
@@ -116,7 +121,15 @@ fun SubabonementCreation(
                 placeholder = "Кол-во использований",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f, fill = true)
+                    .weight(0.25f, fill = true)
+            )
+            DesignedTextField(
+                value = creation.cost,
+                onValueChange = { onUpdate(creation.toInput(cost = it)) },
+                placeholder = "Стоимость",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.25f, fill = true)
             )
             IconButton(
                 onClick = onCreate,
@@ -137,6 +150,12 @@ fun SubabonementCreation(
                 value = creation.usages,
                 onValueChange = { onUpdate(creation.toInput(usages = it)) },
                 placeholder = "Кол-во использований",
+                modifier = Modifier.fillMaxWidth()
+            )
+            DesignedTextField(
+                value = creation.cost,
+                onValueChange = { onUpdate(creation.toInput(cost = it)) },
+                placeholder = "Стоимость",
                 modifier = Modifier.fillMaxWidth()
             )
             DesignedButton(

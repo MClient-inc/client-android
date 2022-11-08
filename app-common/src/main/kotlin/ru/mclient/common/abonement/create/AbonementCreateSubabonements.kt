@@ -9,12 +9,14 @@ data class AbonementCreateSubabonementsState(
     data class Subabonement(
         val title: String,
         val usages: Int,
+        val cost: Long,
         val uniqueId: Int,
     )
 
     data class Creation(
         val title: String,
         val usages: Int,
+        val cost: Long,
         val isAvailable: Boolean,
         val isButtonAvailable: Boolean,
     )
@@ -27,7 +29,7 @@ interface AbonementCreateSubabonements {
 
     fun onCreate()
 
-    fun onUpdate(title: String, usages: String)
+    fun onUpdate(title: String, usages: String, cost: String)
 
     fun onDelete(uniqueId: Int)
 

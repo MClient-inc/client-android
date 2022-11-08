@@ -12,7 +12,13 @@ fun AbonementsListUI(
 ) {
     AbonementsListPage(
         state = component.state.toUI(),
-        onClick = { component.onSelect(it.id) },
+        onClickAbonement = { component.onSelect(it.id) },
+        onClickSubabonement = { abonement, subabonement ->
+            component.onSelect(
+                abonement.id,
+                subabonement.id
+            )
+        },
         onRefresh = component::onRefresh,
         modifier = modifier,
     )
@@ -25,10 +31,12 @@ private fun AbonementsListState.toUI(): AbonementsListPageState {
                 id = abonement.id,
                 title = abonement.title,
                 subabonements = abonement.subabonements.map { subabonement ->
-                    AbonementsListPageState.Subabonement(subabonement.title)
+                    AbonementsListPageState.Subabonement(subabonement.id, subabonement.title)
                 }
             )
         },
+        isSubabonementClickable = isSubabonementClickable,
+        isAbonementClickable = isAbonementClickable,
         isLoading = isLoading,
         isRefreshing = isRefreshing,
         isFailure = isFailure,

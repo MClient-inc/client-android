@@ -9,6 +9,7 @@ import org.koin.core.annotation.Factory
 import ru.mclient.mvi.SyncCoroutineExecutor
 import ru.mclient.network.record.EditRecordStatusInput
 import ru.mclient.network.record.GetRecordByIdInput
+import ru.mclient.network.record.PayWithAbonementsInput
 import ru.mclient.network.record.RecordVisitStatus
 import ru.mclient.network.record.RecordVisitStatus.*
 import ru.mclient.network.record.RecordsNetworkSource
@@ -78,6 +79,22 @@ class RecordProfileStoreImpl(
                             Message.RecordVisitStatus.WAITING -> RecordProfileStore.State.RecordVisitStatus.WAITING
                             Message.RecordVisitStatus.COME -> RecordProfileStore.State.RecordVisitStatus.COME
                             Message.RecordVisitStatus.NOT_COME -> RecordProfileStore.State.RecordVisitStatus.NOT_COME
+                        },
+                        abonements = message.record.abonements.map {
+                            RecordProfileStore.State.ClientAbonement(
+                                id = it.id,
+                                usages = it.usages,
+                                abonement = RecordProfileStore.State.Abonement(
+                                    id = it.abonement.id,
+                                    title = it.abonement.title,
+                                    subabonement = RecordProfileStore.State.Subabonement(
+                                        id = it.abonement.subabonement.id,
+                                        title = it.abonement.subabonement.title,
+                                        maxUsages = it.abonement.subabonement.maxUsages,
+                                        cost = it.abonement.subabonement.cost,
+                                    )
+                                )
+                            )
                         }
                     ),
                     isFailure = false,
@@ -101,6 +118,11 @@ class RecordProfileStoreImpl(
                             }
                         )
                     }
+                )
+
+                Message.CancelLoading -> copy(
+                    isLoading = false,
+                    isRefreshing = false,
                 )
             }
         }
@@ -141,6 +163,32 @@ class RecordProfileStoreImpl(
                     status = Message.RecordVisitStatus.WAITING,
                     getState = getState,
                 )
+
+                is RecordProfileStore.Intent.UseAbonements -> payWithAbonements(
+                    params.recordId,
+                    intent.abonementIds,
+                )
+            }
+        }
+
+        private fun payWithAbonements(
+            recordId: Long,
+            abonements: List<Long>,
+        ) {
+            dispatch(Message.Loading)
+            scope.launch {
+                try {
+                    recordSource.payWithAbonements(
+                        PayWithAbonementsInput(
+                            recordId = recordId,
+                            abonements = abonements
+                        )
+                    )
+                } catch (e: Exception) {
+                    dispatch(
+                        Message.CancelLoading,
+                    )
+                }
             }
         }
 
@@ -222,8 +270,24 @@ class RecordProfileStoreImpl(
                                     WAITING -> Message.RecordVisitStatus.WAITING
                                     COME -> Message.RecordVisitStatus.COME
                                     NOT_COME -> Message.RecordVisitStatus.NOT_COME
+                                },
+                                abonements = response.record.abonements.map {
+                                    Message.Loaded.ClientAbonement(
+                                        id = it.id,
+                                        usages = it.usages,
+                                        abonement = Message.Loaded.Abonement(
+                                            id = it.abonement.id,
+                                            title = it.abonement.title,
+                                            subabonement = Message.Loaded.Subabonement(
+                                                id = it.abonement.subabonement.id,
+                                                title = it.abonement.subabonement.title,
+                                                maxUsages = it.abonement.subabonement.maxUsages,
+                                                cost = it.abonement.subabonement.cost,
+                                            )
+                                        )
+                                    )
                                 }
-                            )
+                            ),
                         )
                     )
                 } catch (e: Exception) {
@@ -245,6 +309,8 @@ class RecordProfileStoreImpl(
 
         data class UpdateStatus(val status: RecordVisitStatus) : Message()
 
+        object CancelLoading : Message()
+
         data class Loaded(
             val record: Record,
         ) : Message() {
@@ -257,6 +323,26 @@ class RecordProfileStoreImpl(
                 val totalCost: Long,
                 val staff: Staff,
                 val status: RecordVisitStatus,
+                val abonements: List<ClientAbonement>,
+            )
+
+            class ClientAbonement(
+                val id: Long,
+                val abonement: Abonement,
+                val usages: Int,
+            )
+
+            data class Abonement(
+                val id: Long,
+                val title: String,
+                val subabonement: Subabonement,
+            )
+
+            data class Subabonement(
+                val id: Long,
+                val title: String,
+                val maxUsages: Int,
+                val cost: Long,
             )
 
             data class TimeOffset(

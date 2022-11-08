@@ -9,6 +9,7 @@ import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.common.DIComponentContext
+import ru.mclient.common.abonement.clientcreate.AbonementClientCreateHostComponent
 import ru.mclient.common.client.create.ClientCreateHostComponent
 import ru.mclient.common.client.list.ClientsListForCompanyHostComponent
 import ru.mclient.common.client.profile.ClientProfileHostComponent
@@ -28,7 +29,7 @@ import ru.mclient.common.utils.states
 
 class CompanyComponent(
     componentContext: DIComponentContext,
-    applicationCompanyId: Long,
+    private val applicationCompanyId: Long,
 ) : Company, DIComponentContext by componentContext {
 
 
@@ -111,6 +112,19 @@ class CompanyComponent(
 
     private fun onEditScheduleSuccess(staffId: Long) {
         navigation.pop()
+    }
+
+    private fun onAbonementCreatedSuccess() {
+        navigation.pop()
+    }
+
+    private fun onAbonementClientCreate(clientId: Long) {
+        navigation.push(
+            Config.ClientAbonementCreate(
+                companyId = applicationCompanyId,
+                clientId = clientId,
+            )
+        )
     }
 
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
@@ -219,6 +233,7 @@ class CompanyComponent(
                 ClientProfileHostComponent(
                     componentContext = componentContext,
                     clientId = config.clientId,
+                    onAbonementCreate = { onAbonementClientCreate(config.clientId) },
                 )
             )
 
@@ -235,6 +250,15 @@ class CompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
                     onSuccess = ::onClientCreated,
+                )
+            )
+
+            is Config.ClientAbonementCreate -> Company.Child.ClientAbonementCreate(
+                AbonementClientCreateHostComponent(
+                    componentContext = componentContext,
+                    companyId = config.companyId,
+                    clientId = config.clientId,
+                    onSuccess = ::onAbonementCreatedSuccess,
                 )
             )
         }
@@ -283,6 +307,9 @@ class CompanyComponent(
 
         @Parcelize
         data class ClientCreate(val companyId: Long) : Config()
+
+        @Parcelize
+        data class ClientAbonementCreate(val companyId: Long, val clientId: Long) : Config()
 
     }
 

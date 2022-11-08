@@ -17,7 +17,10 @@ class AbonementsListHostComponent(
 ) : AbonementsListHost, DIComponentContext by componentContext {
 
     override val abonementsList: AbonementsList = AbonementsListComponent(
-        childDIContext("abonements_list"), companyId, onSelect
+        componentContext = childDIContext(key = "abonements_list"),
+        companyId = companyId,
+        isAbonementClickable = true,
+        onSelect = { onSelect(it.abonement.id) },
     )
 
     override val bar: TopBar = ImmutableTopBar(TopBarState("Абонементы"))

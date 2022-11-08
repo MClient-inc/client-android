@@ -21,14 +21,16 @@ class AbonementCreateSubabonementsComponent(
             creation = AbonementCreateSubabonementsState.Creation(
                 title = creation.title,
                 usages = creation.usages,
+                cost = creation.cost,
                 isAvailable = creation.isAvailable,
                 isButtonAvailable = creation.isContinueAvailable,
             ),
             subabonements = subabonements.map {
                 AbonementCreateSubabonementsState.Subabonement(
-                    it.title,
-                    it.usages,
-                    it.uniqueId,
+                    title = it.title,
+                    usages = it.usages,
+                    cost = it.cost,
+                    uniqueId = it.uniqueId,
                 )
             }
         )
@@ -39,11 +41,12 @@ class AbonementCreateSubabonementsComponent(
         store.accept(AbonementCreateSubabonementsStore.Intent.Create)
     }
 
-    override fun onUpdate(title: String, usages: String) {
+    override fun onUpdate(title: String, usages: String, cost: String) {
         store.accept(
             AbonementCreateSubabonementsStore.Intent.Update(
-                title,
-                usages.toIntOrNull() ?: 0
+                title = title,
+                usages = usages,
+                cost = cost,
             )
         )
     }

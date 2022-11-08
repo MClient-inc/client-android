@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -100,6 +101,7 @@ fun RecordProfilePage(
     onWaiting: () -> Unit,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
+    statusComeContent: @Composable () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Scaffold(
@@ -140,6 +142,10 @@ fun RecordProfilePage(
                             modifier = Modifier
                                 .fillMaxWidth()
                         )
+                        if (state.record?.status == RecordProfilePageState.RecordStatus.COME)
+                            Box {
+                                statusComeContent()
+                            }
                     }
                 }
             }
@@ -451,7 +457,8 @@ fun RecordProfilePagePreview() {
             onRefresh = { /*TODO*/ },
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 10.dp)
+                .padding(horizontal = 10.dp),
+            statusComeContent = {}
         )
     }
 }

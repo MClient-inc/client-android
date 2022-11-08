@@ -12,6 +12,7 @@ import ru.mclient.mvi.record.create.RecordCreateClientSelectorStore
 class RecordCreateClientSelectorComponent(
     componentContext: DIComponentContext,
     companyId: Long,
+    private val onClientSelected: (Long?) -> Unit = {},
 ) : RecordCreateClientSelector, DIComponentContext by componentContext {
 
     private val store: RecordCreateClientSelectorStore = getSavedStateStore("record_create_clients")
@@ -19,6 +20,7 @@ class RecordCreateClientSelectorComponent(
     override val state: RecordCreateClientSelectorState by store.states(this) { it.toState() }
 
     private fun RecordCreateClientSelectorStore.State.toState(): RecordCreateClientSelectorState {
+        onClientSelected.invoke(selectedClient?.id)
         return RecordCreateClientSelectorState(
             isExpanded = isExpanded,
             isAvailable = isAvailable,

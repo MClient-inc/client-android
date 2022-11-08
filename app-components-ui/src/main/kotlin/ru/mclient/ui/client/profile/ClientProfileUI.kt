@@ -8,13 +8,14 @@ import ru.mclient.common.client.profile.ClientProfileState
 @Composable
 fun ClientProfileUI(
     component: ClientProfile,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     ClientProfilePage(
         state = component.state.toUI(),
         onEdit = component::onEdit,
         onRefresh = component::onRefresh,
-        modifier = modifier
+        onCreateAbonement = component::onAbonementCreate,
+        modifier = modifier,
     )
 }
 
@@ -22,6 +23,19 @@ fun ClientProfileState.toUI(): ClientProfilePageState {
     return ClientProfilePageState(
         profile = client?.toUI(),
         isRefreshing = client != null && isLoading,
+        abonements = abonements?.map {
+            ClientProfilePageState.ClientAbonement(
+                id = it.id,
+                usages = it.usages,
+                abonement = ClientProfilePageState.Abonement(
+                    title = it.abonement.title,
+                    subabonement = ClientProfilePageState.Subabonement(
+                        title = it.abonement.subabonement.title,
+                        maxUsages = it.abonement.subabonement.maxUsages
+                    )
+                )
+            )
+        },
         isLoading = isLoading
     )
 }

@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ fun DesignedCreateItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     icon: Painter? = null,
+    supportingText: String? = null,
 ) {
     ListItem(
         leadingContent = icon?.let {
@@ -35,9 +37,49 @@ fun DesignedCreateItem(
         headlineText = {
             Text(text)
         },
+        supportingText = supportingText?.let {
+            {
+                Text(it)
+            }
+        },
+        trailingContent = {
+            IconButton(onClick = onClick, enabled = isAvailable) {
+                Icon(Icons.Outlined.ArrowForward, contentDescription = null)
+            }
+        },
+        modifier = modifier.clickable(enabled = isAvailable, onClick = onClick),
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DesignedCreateItem(
+    text: String,
+    modifier: Modifier = Modifier,
+    icon: Painter? = null,
+    supportingText: String? = null,
+) {
+    ListItem(
+        leadingContent = icon?.let {
+            {
+                Icon(
+                    painter = icon,
+                    contentDescription = null,
+                    modifier = Modifier.size(50.dp),
+                )
+            }
+        },
+        headlineText = {
+            Text(text)
+        },
+        supportingText = supportingText?.let {
+            {
+                Text(it)
+            }
+        },
         trailingContent = {
             Icon(Icons.Outlined.ArrowForward, contentDescription = null)
         },
-        modifier = modifier.clickable(enabled = isAvailable, onClick = onClick),
+        modifier = modifier,
     )
 }

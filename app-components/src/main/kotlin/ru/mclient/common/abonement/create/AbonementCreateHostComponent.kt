@@ -55,7 +55,8 @@ class AbonementCreateHostComponent(
                 subabonements = subabonements.state.subabonements.map {
                     AbonementCreateStore.Intent.Create.Subabonement(
                         title = it.title,
-                        usages = it.usages
+                        usages = it.usages,
+                        cost = it.cost,
                     )
                 },
                 services = services.state.selectedServices.map { it.id }

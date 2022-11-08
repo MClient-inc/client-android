@@ -12,6 +12,7 @@ data class CreateAbonementInput(
     class Subabonement(
         val title: String,
         val usages: Int,
+        val cost: Long,
     )
 
 }
@@ -36,6 +37,7 @@ data class CreateAbonementOutput(
         val id: Long,
         val title: String,
         val usages: Int,
+        val cost: Long,
         val liveTimeInMillis: Long,
         val availableUntil: LocalDateTime,
     )
@@ -61,10 +63,50 @@ data class GetAbonementsForCompanyOutput(
     class Subabonement(
         val id: Long,
         val title: String,
+        val cost: Long,
         val usages: Int,
         val liveTimeInMillis: Long,
         val availableUntil: LocalDateTime,
     )
+}
+
+data class GetAbonementsForClientInput(
+    val clientId: Long,
+)
+
+
+data class AddAbonementToClientInput(
+    val clientId: Long,
+    val subabonementId: Long,
+)
+
+data class AddAbonementToClientOutput(
+    val clientId: Long,
+)
+
+data class GetAbonementsForClientOutput(
+    val abonements: List<ClientAbonement>,
+) {
+
+    class ClientAbonement(
+        val id: Long,
+        val usages: Int,
+        val abonement: Abonement,
+    )
+
+    class Abonement(
+        val id: Long,
+        val title: String,
+        val subabonement: Subabonement,
+    )
+
+    class Subabonement(
+        val id: Long,
+        val title: String,
+        val cost: Long,
+        val maxUsages: Int,
+    )
+
 }
 
 data class GetAbonementByIdOutput(

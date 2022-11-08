@@ -9,7 +9,9 @@ import ru.mclient.mvi.abonement.list.AbonementsListStore
 class AbonementsListComponent(
     componentContext: DIComponentContext,
     companyId: Long,
-    private val onSelect: (Long) -> Unit,
+    private val isAbonementClickable: Boolean = false,
+    private val isSubabonementClickable: Boolean = false,
+    private val onSelect: (Selected) -> Unit = {},
 ) : AbonementsList, DIComponentContext by componentContext {
 
     private val store: AbonementsListStore =
@@ -24,10 +26,12 @@ class AbonementsListComponent(
                     abonement.id,
                     abonement.title,
                     abonement.subabonements.map {
-                        AbonementsListState.Subabonement(it.title)
+                        AbonementsListState.Subabonement(it.id, it.title, it.cost)
                     }
                 )
             },
+            isAbonementClickable = isAbonementClickable,
+            isSubabonementClickable = isSubabonementClickable,
             isLoading = isLoading,
             isRefreshing = isRefreshing,
             isFailure = isFailure
@@ -39,6 +43,50 @@ class AbonementsListComponent(
     }
 
     override fun onSelect(abonementId: Long) {
-        onSelect.invoke(abonementId)
+        val abonement = state.abonements.firstOrNull { it.id == abonementId } ?: return
+        onSelect.invoke(
+            Selected(
+                Selected.Abonement(
+                    id = abonement.id,
+                    title = abonement.title,
+                    subabonement = null,
+                )
+            )
+        )
     }
+
+    override fun onSelect(abonementId: Long, subabonementId: Long) {
+        val abonement = state.abonements.firstOrNull { it.id == abonementId } ?: return
+        val subabonement = abonement.subabonements.firstOrNull { it.id == subabonementId } ?: return
+        onSelect.invoke(
+            Selected(
+                Selected.Abonement(
+                    id = abonement.id,
+                    title = abonement.title,
+                    subabonement = Selected.Subabonement(
+                        id = subabonement.id,
+                        title = subabonement.title,
+                        cost = subabonement.cost
+                    )
+                )
+            )
+        )
+    }
+
+    class Selected(
+        val abonement: Abonement,
+    ) {
+        data class Abonement(
+            val id: Long,
+            val title: String,
+            val subabonement: Subabonement?,
+        )
+
+        data class Subabonement(
+            val id: Long,
+            val title: String,
+            val cost: Long,
+        )
+    }
+
 }

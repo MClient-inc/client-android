@@ -11,12 +11,14 @@ private fun AbonementCreateSubabonementsState.toUI(): AbonementCreateSubabonemen
             AbonementCreateSubabonementsBlockState.Subabonement(
                 it.title,
                 it.usages.toString(),
+                it.cost.toString(),
                 it.uniqueId,
             )
         },
         creation = AbonementCreateSubabonementsBlockState.SubabonementCreation(
             title = creation.title,
             usages = if (creation.usages == 0) "" else creation.usages.toString(),
+            cost = if (creation.cost == 0L) "" else creation.cost.toString(),
             isAvailable = creation.isAvailable,
             isButtonAvailable = creation.isButtonAvailable
         )
@@ -31,7 +33,7 @@ fun AbonementCreateSubabonementsUI(
     AbonementCreateSubabonementsBlock(
         state = component.state.toUI(),
         onCreate = component::onCreate,
-        onUpdate = { component.onUpdate(it.title, it.usage) },
+        onUpdate = { component.onUpdate(it.title, it.usage, it.cost) },
         onDelete = { component.onDelete(it.uniqueId) },
         modifier = modifier
     )

@@ -42,7 +42,7 @@ class AbonementsListStoreImpl(
                             id = abonement.id,
                             title = abonement.title,
                             subabonements = abonement.subabonements.map {
-                                AbonementsListStore.State.Subabonement(it.title)
+                                AbonementsListStore.State.Subabonement(it.id, it.title, it.cost)
                             }
                         )
                     },
@@ -101,7 +101,9 @@ class AbonementsListStoreImpl(
                                 title = abonement.title,
                                 subabonements = abonement.subabonements.map {
                                     Message.Loaded.Subabonement(
-                                        it.title
+                                        id = it.id,
+                                        title = it.title,
+                                        cost = it.cost,
                                     )
                                 }
                             )
@@ -135,7 +137,9 @@ class AbonementsListStoreImpl(
             )
 
             data class Subabonement(
+                val id: Long,
                 val title: String,
+                val cost: Long,
             )
 
         }

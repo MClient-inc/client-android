@@ -10,4 +10,6 @@ interface RecordsNetworkSource {
 
     suspend fun editRecordStatus(input: EditRecordStatusInput): EditRecordStatusOutput
 
+    suspend fun payWithAbonements(input: PayWithAbonementsInput): PayWithAbonementsOutput
+
 }

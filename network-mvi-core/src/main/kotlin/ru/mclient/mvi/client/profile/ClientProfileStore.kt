@@ -1,10 +1,8 @@
 package ru.mclient.mvi.client.profile
 
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import ru.mclient.mvi.ParametrizedStore
 
-interface ClientProfileStore:
+interface ClientProfileStore :
     ParametrizedStore<ClientProfileStore.Intent, ClientProfileStore.State, ClientProfileStore.Label, ClientProfileStore.Params> {
 
 
@@ -17,18 +15,37 @@ interface ClientProfileStore:
         object Refresh : Intent()
     }
 
-    @Parcelize
+
     data class State(
         val client: Client?,
+        val abonements: List<ClientAbonement>?,
         val isFailure: Boolean,
         val isLoading: Boolean,
-    ) : Parcelable {
-        @Parcelize
+    ) {
+
         data class Client(
             val id: Long,
             val name: String,
             val phone: String,
-        ) : Parcelable
+        )
+
+        class ClientAbonement(
+            val id: Long,
+            val usages: Int,
+            val abonement: Abonement,
+        )
+
+        class Abonement(
+            val title: String,
+            val subabonement: Subabonement,
+        )
+
+        class Subabonement(
+            val title: String,
+            val maxUsages: Int,
+        )
+
+
     }
 
     sealed class Label

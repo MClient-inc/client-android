@@ -11,7 +11,7 @@ interface AbonementCreateStore :
 
     sealed class Intent {
 
-        class Create(
+        data class Create(
             val title: String,
             val subabonements: List<Subabonement>,
             val services: List<Long>,
@@ -20,6 +20,7 @@ interface AbonementCreateStore :
             data class Subabonement(
                 val title: String,
                 val usages: Int,
+                val cost: Long,
             )
 
         }
@@ -32,7 +33,7 @@ interface AbonementCreateStore :
         val isSuccess: Boolean,
         val abonement: Abonement?,
     ) {
-        class Abonement(
+        data class Abonement(
             val id: Long,
         )
     }

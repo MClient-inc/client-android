@@ -8,7 +8,8 @@ import ru.mclient.mvi.client.profile.ClientProfileStore
 
 class ClientProfileComponent(
     componentContext: DIComponentContext,
-    clientId: Long
+    clientId: Long,
+    private val onAbonementCreate: () -> Unit,
 ) : ClientProfile, DIComponentContext by componentContext {
 
 
@@ -20,6 +21,19 @@ class ClientProfileComponent(
     private fun ClientProfileStore.State.toState(): ClientProfileState {
         return ClientProfileState(
             client = client?.toState(),
+            abonements = abonements?.map {
+                ClientProfileState.ClientAbonement(
+                    id = it.id,
+                    usages = it.usages,
+                    abonement = ClientProfileState.Abonement(
+                        title = it.abonement.title,
+                        subabonement = ClientProfileState.Subabonement(
+                            title = it.abonement.subabonement.title,
+                            maxUsages = it.abonement.subabonement.maxUsages
+                        )
+                    )
+                )
+            },
             isLoading = isLoading,
         )
     }
@@ -36,6 +50,10 @@ class ClientProfileComponent(
 
     override fun onEdit() {
 //        TODO("Not yet implemented")
+    }
+
+    override fun onAbonementCreate() {
+        onAbonementCreate.invoke()
     }
 
 }

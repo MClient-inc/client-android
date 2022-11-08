@@ -111,7 +111,9 @@ class KtorRecordsNetworkSource(
 
     override suspend fun getRecordById(input: GetRecordByIdInput): GetRecordByIdOutput {
         val response = client.get("/records/${input.recordId}")
+        val payResponse = client.get("/records/${input.recordId}/pay")
         val body = response.body<GetRecordByIdResponse>()
+        val payBody = payResponse.body<GetRecordPaymentResponse>()
         return GetRecordByIdOutput(
             record = GetRecordByIdOutput.Record(
                 id = body.id,
@@ -148,6 +150,22 @@ class KtorRecordsNetworkSource(
                     GetRecordByIdResponse.RecordVisitStatus.WAITING -> RecordVisitStatus.WAITING
                     GetRecordByIdResponse.RecordVisitStatus.COME -> RecordVisitStatus.COME
                     GetRecordByIdResponse.RecordVisitStatus.NOT_COME -> RecordVisitStatus.NOT_COME
+                },
+                abonements = payBody.abonements.map {
+                    GetRecordByIdOutput.ClientAbonement(
+                        id = it.id,
+                        usages = it.usages,
+                        abonement = GetRecordByIdOutput.Abonement(
+                            id = it.abonement.id,
+                            title = it.abonement.title,
+                            subabonement = GetRecordByIdOutput.Subabonement(
+                                id = it.abonement.subabonement.id,
+                                title = it.abonement.subabonement.title,
+                                maxUsages = it.abonement.subabonement.maxUsages,
+                                cost = it.abonement.subabonement.cost,
+                            )
+                        )
+                    )
                 }
             )
         )
@@ -177,7 +195,26 @@ class KtorRecordsNetworkSource(
         )
     }
 
+    override suspend fun payWithAbonements(input: PayWithAbonementsInput): PayWithAbonementsOutput {
+        client.patch("/records/${input.recordId}/pay") {
+            setBody(
+                EditRecordVisitRequest(
+                    abonements = input.abonements,
+                )
+            )
+            contentType(ContentType.Application.Json)
+        }
+        return PayWithAbonementsOutput(
+            input.recordId,
+        )
+    }
 }
+
+
+@Serializable
+class EditRecordVisitRequest(
+    val abonements: List<Long>,
+)
 
 @Serializable
 class EditRecordStatusRequest(
@@ -367,4 +404,34 @@ class CreateRecordResponse(
         @Contextual
         val end: LocalTime,
     )
+}
+
+
+@Serializable
+class GetRecordPaymentResponse(
+    val abonements: List<ClientAbonement>,
+) {
+    @Serializable
+    class ClientAbonement(
+        val id: Long,
+        val abonement: Abonement,
+        val usages: Int,
+        val cost: Long,
+    )
+
+    @Serializable
+    class Abonement(
+        val id: Long,
+        val title: String,
+        val subabonement: Subabonement,
+    )
+
+    @Serializable
+    class Subabonement(
+        val id: Long,
+        val title: String,
+        val maxUsages: Int,
+        val cost: Long,
+    )
+
 }
