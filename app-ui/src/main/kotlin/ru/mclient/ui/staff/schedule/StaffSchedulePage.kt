@@ -154,7 +154,7 @@ fun StaffEmptyItem(
             )
         },
         headlineText = {
-            Text("Здесь пока пусть")
+            Text("Здесь пока пусто")
         },
         modifier = modifier
     )
