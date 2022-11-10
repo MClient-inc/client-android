@@ -2,24 +2,24 @@ package ru.mclient.ui.auth
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.utils.currentTime
 import ru.mclient.ui.utils.pulse
 import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.toDesignedString
+import ru.shafran.ui.R
 import kotlin.math.max
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit
@@ -50,12 +50,12 @@ fun ExternalLoginPage(
         verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.CenterVertically),
         modifier = modifier.animateContentSize(),
     ) {
-        Icon(
-            Icons.Outlined.Person,
+        Image(
+            painterResource(id = R.drawable.icon),
             contentDescription = null,
             modifier = Modifier
                 .size(250.dp)
-                .pulse(),
+                .pulse()
         )
         Text(
             text = state.account?.let { "С возвращением, ${it.name}" } ?: state.message,
