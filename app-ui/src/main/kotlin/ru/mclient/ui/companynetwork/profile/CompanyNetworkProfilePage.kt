@@ -2,6 +2,7 @@ package ru.mclient.ui.companynetwork.profile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -127,10 +128,15 @@ private fun CompanyNetworkProfileHeaderComponent(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        DesignedIcon(
-            icon = painterResource(id = R.drawable.company).toDesignedDrawable(),
-            modifier = Modifier.size(125.dp)
-        )
+        Box(
+            modifier = Modifier.size(125.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            DesignedIcon(
+                icon = painterResource(id = R.drawable.network).toDesignedDrawable(),
+                modifier = Modifier.size(100.dp)
+            )
+        }
         Column {
             DesignedText(
                 text = profile.title,
