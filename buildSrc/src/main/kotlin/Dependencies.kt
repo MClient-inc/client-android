@@ -27,7 +27,7 @@ interface Dependencies {
 
     object Ksp : Dependencies {
         const val plugin = "com.google.devtools.ksp"
-        const val version = "1.7.20-1.0.6"
+        const val version = "1.7.20-1.0.8"
     }
 
     object Apollo {
@@ -82,6 +82,13 @@ interface Dependencies {
         const val compose = "com.arkivanov.decompose:extensions-compose-jetpack:$version"
     }
 
+    object Destinations : Dependencies {
+        const val version = "1.7.26-beta"
+        const val core = "io.github.raamcosta.compose-destinations:core:$version"
+        const val compiler = "io.github.raamcosta.compose-destinations:ksp:$version"
+        const val compose = "com.arkivanov.decompose:extensions-compose-jetpack:$version"
+    }
+
     object Activity : Dependencies {
         const val version = "1.6.1"
         const val core = "androidx.activity:activity-ktx:$version"
@@ -127,11 +134,11 @@ interface Dependencies {
 
     object Compose : Dependencies {
         const val compilerVersion = "1.3.2"
-        const val version = "1.4.0-alpha01"
+        const val version = "1.3.1"
         const val ui = "androidx.compose.ui:ui:$version"
         const val runtime = "androidx.compose.runtime:runtime:$version"
         const val material = "androidx.compose.material:material:$version"
-        const val material3 = "androidx.compose.material3:material3:1.1.0-alpha01"
+        const val material3 = "androidx.compose.material3:material3:1.0.1"
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val tooling = "androidx.compose.ui:ui-tooling:$version"
@@ -140,10 +147,11 @@ interface Dependencies {
 
     object Koin : Dependencies {
         const val version = "3.2.2"
-        const val android = "io.insert-koin:koin-android:$version"
-        const val core = "io.insert-koin:koin-core:$version"
+        const val android = "io.insert-koin:koin-android:3.3.0"
+        const val core = "io.insert-koin:koin-core:3.2.2"
         const val annotations = "io.insert-koin:koin-annotations:1.0.3"
         const val compiler = "io.insert-koin:koin-ksp-compiler:1.0.3"
+        const val compose = "io.insert-koin:koin-androidx-compose:3.3.0"
     }
 
     object Kodein : Dependencies {

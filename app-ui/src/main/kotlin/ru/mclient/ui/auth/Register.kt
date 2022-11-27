@@ -1,6 +1,7 @@
 package ru.mclient.ui.auth
 
 import android.os.Parcelable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
@@ -8,12 +9,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import kotlinx.parcelize.Parcelize
 import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.DesignedTextField
@@ -35,14 +38,14 @@ class RegisterUIInput(
     val email: String,
     val username: String,
     val password: String,
-    val repeatedPassword: String
+    val repeatedPassword: String,
 )
 
 fun RegisterPageState.toInput(
     mail: String = this.email,
     username: String = this.username,
     password: String = this.password,
-    repeatedPassword: String = this.repeatedPassword
+    repeatedPassword: String = this.repeatedPassword,
 ): RegisterUIInput {
     return RegisterUIInput(mail, username, password, repeatedPassword)
 }
@@ -54,7 +57,11 @@ fun Register(
     onRegister: (RegisterUIInput) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
+    ) {
         if (!state.error.isNullOrEmpty())
             Text(
                 text = state.error,

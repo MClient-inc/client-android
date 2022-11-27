@@ -3,10 +3,10 @@ package ru.mclient.common.home.block
 import ru.mclient.common.DIComponentContext
 import ru.mclient.common.bar.MutableTopBar
 import ru.mclient.common.bar.TopBarState
+import ru.mclient.common.childDIContext
 import ru.mclient.common.fab.Fab
 import ru.mclient.common.fab.FabState
 import ru.mclient.common.fab.ImmutableFab
-import ru.mclient.common.record.upcoming.UpcomingRecords
 import ru.mclient.common.record.upcoming.UpcomingRecordsComponent
 import ru.mclient.common.record.upcoming.UpcomingRecordsState
 import ru.mclient.common.scanner.Scanner
@@ -24,6 +24,9 @@ class HomeBlockComponent(
 ) : HomeBlockHost, DIComponentContext by componentContext {
 
     private val store: HomeStore = getParameterizedStore { HomeStore.Params(companyId) }
+
+    override val analytics: HomeAnalytics =
+        HomeAnalyticsComponent(childDIContext("daily_analytics"), companyId = companyId)
 
     override val bar: MutableTopBar = MutableTopBar(
         state = store.state.toTopBarState()
@@ -45,8 +48,14 @@ class HomeBlockComponent(
 
     override val scanner: Scanner = ScannerComponent(onClient)
 
-    override val upcomingRecords: UpcomingRecords =
-        UpcomingRecordsComponent(componentContext, companyId, onSelectRecord, onRecordsList)
+    override val upcomingRecords =
+        UpcomingRecordsComponent(
+            componentContext,
+            companyId,
+            onSelectRecord,
+            onRecordsList,
+            onRefresh = analytics::onForceRefresh
+        )
 
     override val state: HomeBlockState get() = mergeState(upcomingRecords.state)
 
@@ -58,7 +67,8 @@ class HomeBlockComponent(
     }
 
     override fun onRefresh() {
-        upcomingRecords.onRefresh()
+        upcomingRecords.onForceRefresh()
+        analytics.onForceRefresh()
     }
 
     override val fab: Fab = ImmutableFab(

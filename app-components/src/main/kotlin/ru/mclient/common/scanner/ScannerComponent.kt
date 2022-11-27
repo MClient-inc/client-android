@@ -10,7 +10,7 @@ class ScannerComponent(
     private val onClientProfile: (Long) -> Unit,
 ) : Scanner {
 
-    override val state: ScannerState get() = ScannerState(modalState.isShown, false)
+    override val state: ScannerState get() = ScannerState(modalState.isVisible, false)
 
     private val regex =
         "(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.\\S{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.\\S{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.\\S{2,}|www\\.[a-zA-Z0-9]+\\.\\S{2,})/clients/".toRegex()
@@ -19,7 +19,7 @@ class ScannerComponent(
         Log.d("ScannerLogger", "scanned: $value")
         Log.d("ScannerLogger", "scanned: ${value.replace(regex, "")}")
         if (regex in value) {
-            modalState = modalState.copy(isShown = false)
+            modalState = modalState.copy(isVisible = false)
             val clientId = value.replace(regex, "").removeSuffix("?source=qrcode")
             onClientProfile.invoke(clientId.toLongOrNull() ?: return)
         }

@@ -3,7 +3,7 @@ package ru.mclient.common
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 
-data class ModalState(val isShown: Boolean)
+data class ModalState(val isVisible: Boolean)
 
 interface Modal {
 

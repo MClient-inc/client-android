@@ -1,5 +1,6 @@
 package ru.mclient.ui.scanner
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,6 +28,7 @@ fun ScannerUI(
                 state = component.state.toUI(),
                 onRecognize = component::onRecognize,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .height(350.dp)
             )
         },

@@ -1,5 +1,7 @@
 package ru.mclient.common.auth
 
+import ru.mclient.common.agreement.AgreementModal
+
 
 class AuthState(
     val isLoginAvailable: Boolean,
@@ -13,5 +15,8 @@ interface AuthRequest {
     fun onLogin()
 
     fun onRegister()
+
+    val agreement: AgreementModal
+    fun onAgreement()
 
 }

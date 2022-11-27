@@ -1,5 +1,6 @@
 package ru.mclient.ui.home
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,12 +26,17 @@ fun HomeBlockHostUI(
             DesignedRefreshColumn(
                 refreshing = component.state.isRefreshing,
                 onRefresh = component::onRefresh,
+                verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
                     .fillMaxSize()
             ) {
                 RecordsUpcomingUI(
                     component = component.upcomingRecords,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                HomeAnalyticsUI(
+                    component = component.analytics,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }

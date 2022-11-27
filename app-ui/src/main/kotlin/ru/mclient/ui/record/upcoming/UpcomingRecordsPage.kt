@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,26 +11,22 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.record.profile.toPhoneFormat
-import ru.mclient.ui.view.DesignedDivider
-import ru.mclient.ui.view.DesignedIcon
+import ru.mclient.ui.utils.defaultPlaceholder
+import ru.mclient.ui.view.DesignedButton
 import ru.mclient.ui.view.DesignedListPoint
-import ru.mclient.ui.view.DesignedText
+import ru.mclient.ui.view.DesignedTitledBlock
 import ru.mclient.ui.view.outlined
-import ru.mclient.ui.view.toDesignedDrawable
-import ru.mclient.ui.view.toDesignedString
 import ru.shafran.ui.R
 import java.time.LocalDate
 import java.time.LocalTime
@@ -85,46 +80,72 @@ fun UpcomingRecordsPage(
     state: UpcomingRecordsPageState,
     onClick: (UpcomingRecordsPageState.Record) -> Unit,
     onMoreDetails: () -> Unit,
+    onRefresh: () -> Unit,
     modifier: Modifier,
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+    DesignedTitledBlock(
+        title = "Ближайщие записи",
+        button = "Ещё",
+        onClick = onMoreDetails,
+        modifier = modifier
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Ближайщие записи", style = MaterialTheme.typography.headlineSmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
+        val count = LocalConfiguration.current.screenWidthDp / 180
+        if (!state.isLoading && state.records.isEmpty()) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
+                    .outlined()
+                    .padding(10.dp)
                     .fillMaxWidth()
-                    .weight(0.75f, fill = true),
-            )
-            TextButton(onClick = onMoreDetails) {
-                Text("Ещё")
+            ) {
+                Icon(
+                    painterResource(id = R.drawable.empty),
+                    contentDescription = null,
+                    modifier = Modifier.size(75.dp)
+                )
+                Text("Пусто", style = MaterialTheme.typography.headlineSmall)
+                DesignedButton(text = "Обновить", onClick = onRefresh)
             }
+        } else {
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Adaptive(180.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.fillMaxWidth(),
+                content = {
+                    when {
+                        state.isLoading -> {
+                            items(count) {
+                                RecordItemPlaceholder(
+                                    modifier = Modifier
+                                        .width(180.dp)
+                                        .outlined()
+                                        .padding(10.dp)
+                                )
+                            }
+                        }
+
+                        else -> {
+                            items(
+                                state.records,
+                                key = UpcomingRecordsPageState.Record::id
+                            ) { record ->
+                                RecordItem(
+                                    record = record,
+                                    modifier = Modifier
+                                        .width(180.dp)
+                                        .outlined()
+                                        .clickable(onClick = { onClick(record) })
+                                        .padding(10.dp),
+                                )
+                            }
+                        }
+                    }
+
+                })
         }
-        DesignedDivider(modifier = Modifier.fillMaxWidth())
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Adaptive(180.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier.fillMaxWidth(),
-            content = {
-                items(state.records, key = UpcomingRecordsPageState.Record::id) { record ->
-                    RecordItem(
-                        record = record,
-                        modifier = Modifier
-                            .width(180.dp)
-                            .outlined()
-                            .clickable(onClick = { onClick(record) })
-                            .padding(10.dp),
-                    )
-                }
-            })
+
     }
 }
 
@@ -139,34 +160,22 @@ private fun RecordItem(
         RecordSchedule(schedule = record.schedule, time = record.time)
         RecordStaff(staff = record.schedule.staff)
         RecordClient(client = record.client)
-//        RecordServices(services = record.services)
     }
 }
-
 
 @Composable
-fun RecordServices(
-    services: List<UpcomingRecordsPageState.Service>,
+private fun RecordItemPlaceholder(
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
-        services.forEach { record ->
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(5.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                DesignedIcon(
-                    Icons.Outlined.Menu.toDesignedDrawable(),
-                    modifier = Modifier.size(15.dp)
-                )
-                DesignedText(
-                    record.title.toDesignedString(),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
+    Column(
+        modifier = modifier
+    ) {
+        RecordClientPlaceholder()
+        RecordStaffPlaceholder()
+        RecordClientPlaceholder()
     }
 }
+
 
 @Composable
 private fun RecordClient(
@@ -218,6 +227,58 @@ private fun RecordSchedule(
             text = format(time.start, time.end),
             style = MaterialTheme.typography.labelLarge,
             modifier = modifier
+        )
+    }
+}
+
+@Composable
+private fun RecordClientPlaceholder(
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        DesignedListPoint(
+            icon = painterResource(id = R.drawable.client),
+            text = "Имя клиента",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.defaultPlaceholder(),
+        )
+        DesignedListPoint(
+            icon = painterResource(id = R.drawable.phone),
+            text = "Номер телефона",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.defaultPlaceholder(),
+        )
+    }
+}
+
+@Composable
+private fun RecordStaffPlaceholder(
+    modifier: Modifier = Modifier,
+) {
+    DesignedListPoint(
+        icon = painterResource(id = R.drawable.staff),
+        text = "Имя работника",
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = modifier.defaultPlaceholder(),
+    )
+}
+
+@Composable
+private fun RecordSchedulePlaceholder(
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        DesignedListPoint(
+            icon = painterResource(id = R.drawable.date),
+            text = "Дата записи",
+            style = MaterialTheme.typography.labelLarge,
+            modifier = Modifier.defaultPlaceholder(),
+        )
+        DesignedListPoint(
+            icon = painterResource(id = R.drawable.time),
+            text = "Время",
+            style = MaterialTheme.typography.labelLarge,
+            modifier = Modifier.defaultPlaceholder(),
         )
     }
 }
@@ -388,6 +449,7 @@ fun UpcomingRecordsPagePreview() {
             isLoading = true,
             isFailure = false,
         ),
+        onRefresh = {},
         onClick = {},
         onMoreDetails = {},
         modifier = Modifier

@@ -15,6 +15,8 @@ interface HomeBlockHost : MergedHost {
 
     val upcomingRecords: UpcomingRecords
 
+    val analytics: HomeAnalytics
+
     val scanner: Scanner
 
     fun onRefresh()

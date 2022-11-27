@@ -40,6 +40,7 @@ class AuthHostComponent(
             is Config.Register -> AuthHost.Child.Register(register)
             is Config.Request -> AuthHost.Child.Request(
                 DelegatingAuthRequestComponent(
+                    componentContext = componentContext,
                     onLogin = ::onLogin,
                     onRegister = ::onRegister,
                     state = AuthState(
