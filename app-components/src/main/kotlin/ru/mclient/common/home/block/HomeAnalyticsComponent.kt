@@ -21,11 +21,11 @@ class HomeAnalyticsComponent(
         return HomeAnalyticsState(
             analytics = analytics?.let {
                 HomeAnalyticsState.Analytics(
-                    totalSum = it.totalSum,
-                    averageSum = it.averageSum,
-                    comeCount = it.comeCount,
-                    notComeCount = it.notComeCount,
-                    waitingCome = it.waitingCome,
+                    totalSum = it.totalSum.toItem(),
+                    averageSum = it.averageSum.toItem(),
+                    comeCount = it.comeCount.toItem(),
+                    notComeCount = it.notComeCount.toItem(),
+                    waitingCount = it.waitingCount.toItem(),
                 )
             }
         )
@@ -34,4 +34,8 @@ class HomeAnalyticsComponent(
     override fun onForceRefresh() {
         store.accept(HomeAnalyticsStore.Intent.Refresh)
     }
+}
+
+private fun HomeAnalyticsStore.State.AnalyticItem.toItem(): HomeAnalyticsState.AnalyticItem {
+    return HomeAnalyticsState.AnalyticItem(value, difference)
 }

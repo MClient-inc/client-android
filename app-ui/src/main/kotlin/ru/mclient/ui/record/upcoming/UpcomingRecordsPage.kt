@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -84,7 +85,7 @@ fun UpcomingRecordsPage(
     modifier: Modifier,
 ) {
     DesignedTitledBlock(
-        title = "Ближайщие записи",
+        title = "Ближайшие записи",
         button = "Ещё",
         onClick = onMoreDetails,
         modifier = modifier
@@ -112,7 +113,9 @@ fun UpcomingRecordsPage(
                 columns = StaggeredGridCells.Adaptive(180.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 600.dp),
                 content = {
                     when {
                         state.isLoading -> {

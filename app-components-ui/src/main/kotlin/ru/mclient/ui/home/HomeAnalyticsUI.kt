@@ -16,12 +16,16 @@ private fun HomeAnalyticsState.toUI(): HomeAnalyticsBlockState {
     return HomeAnalyticsBlockState(
         analytics = analytics?.let {
             HomeAnalyticsBlockState.Analytics(
-                totalSum = it.totalSum,
-                averageSum = it.averageSum,
-                comeCount = it.comeCount,
-                notComeCount = it.notComeCount,
-                waitingCount = it.waitingCome,
+                totalSum = it.totalSum.toItem(),
+                averageSum = it.averageSum.toItem(),
+                comeCount = it.comeCount.toItem(),
+                notComeCount = it.notComeCount.toItem(),
+                waitingCount = it.waitingCount.toItem(),
             )
         }
     )
+}
+
+private fun HomeAnalyticsState.AnalyticItem.toItem(): HomeAnalyticsBlockState.AnalyticItem {
+    return HomeAnalyticsBlockState.AnalyticItem(value, difference)
 }
