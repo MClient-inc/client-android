@@ -7,6 +7,6 @@ import com.google.accompanist.placeholder.placeholder
 
 fun Modifier.defaultPlaceholder(visible: Boolean = true): Modifier {
     return composed {
-        Modifier.placeholder(visible, MaterialTheme.colorScheme.scrim, MaterialTheme.shapes.small)
+        Modifier.placeholder(visible, MaterialTheme.colorScheme.scrim, MaterialTheme.shapes.medium)
     }
 }

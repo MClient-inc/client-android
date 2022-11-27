@@ -11,6 +11,7 @@ class UpcomingRecordsComponent(
     companyId: Long,
     private val onSelect: (Long) -> Unit,
     private val onRecordsList: () -> Unit,
+    private val onRefresh: () -> Unit,
 ) : UpcomingRecords, DIComponentContext by componentContext {
 
 
@@ -59,7 +60,13 @@ class UpcomingRecordsComponent(
 
     override fun onRefresh() {
         store.accept(UpcomingRecordsStore.Intent.Refresh)
+        onRefresh.invoke()
     }
+
+    fun onForceRefresh() {
+        store.accept(UpcomingRecordsStore.Intent.Refresh)
+    }
+
 
     override fun onSelect(recordId: Long) {
         onSelect.invoke(recordId)

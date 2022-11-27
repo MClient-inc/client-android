@@ -68,7 +68,7 @@ fun ModalUI(
     val firstState = remember { modalState }
     val sheet =
         rememberBlurModalBottomSheetState(
-            initialValue = if (firstState.isShown) BlurModalBottomSheetValue.Expanded else BlurModalBottomSheetValue.Hidden,
+            initialValue = if (firstState.isVisible) BlurModalBottomSheetValue.Expanded else BlurModalBottomSheetValue.Hidden,
             confirmStateChange = remember(component) {
                 {
                     if (it == BlurModalBottomSheetValue.Hidden) {
@@ -80,18 +80,18 @@ fun ModalUI(
         )
     LaunchedEffect(component, modalState, sheet, block = {
         when {
-            modalState.isShown && !sheet.isVisible -> {
+            modalState.isVisible && !sheet.isVisible -> {
                 sheet.show()
             }
 
-            !modalState.isShown && sheet.isVisible -> {
+            !modalState.isVisible && sheet.isVisible -> {
                 sheet.hide()
             }
 
             else -> {
                 Log.d(
                     "ModalUI",
-                    "State for $component does not affect to sheet state (modalState = ${modalState.isShown}, sheet = ${sheet.isVisible}/${sheet.currentValue}) "
+                    "State for $component does not affect to sheet state (modalState = ${modalState.isVisible}, sheet = ${sheet.isVisible}/${sheet.currentValue}) "
                 )
             }
         }

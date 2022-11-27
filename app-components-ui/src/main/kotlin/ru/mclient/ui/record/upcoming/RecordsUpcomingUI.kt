@@ -46,6 +46,7 @@ fun RecordsUpcomingUI(component: UpcomingRecords, modifier: Modifier) {
         state = component.state.toUI(),
         onClick = { component.onSelect(it.id) },
         onMoreDetails = component::onMoreDetails,
+        onRefresh = component::onRefresh,
         modifier = modifier
     )
 }

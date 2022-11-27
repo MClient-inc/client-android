@@ -92,6 +92,9 @@ class HttpClientModule {
     fun bindUnauthorizedHttpClient(json: Json): HttpClient {
         return HttpClient(CIO) {
             expectSuccess = true
+            defaultRequest {
+                url(BuildConfig.REST_URI)
+            }
             install(HttpRequestRetry) {
                 retryOnException(maxRetries = 5)
                 exponentialDelay()

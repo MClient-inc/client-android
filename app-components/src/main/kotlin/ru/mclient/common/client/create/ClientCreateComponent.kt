@@ -2,6 +2,9 @@ package ru.mclient.common.client.create
 
 import androidx.compose.runtime.getValue
 import ru.mclient.common.DIComponentContext
+import ru.mclient.common.agreement.AgreementModalComponent
+import ru.mclient.common.agreement.AgreementState.Type.CLIENT_DATA_PROCESSING_AGREEMENT
+import ru.mclient.common.childDIContext
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
 import ru.mclient.mvi.client.create.ClientCreateStore
@@ -11,6 +14,11 @@ class ClientCreateComponent(
     companyId: Long,
     private val onSuccess: (Long) -> Unit,
 ) : ClientCreate, DIComponentContext by componentContext {
+
+    override val agreement = AgreementModalComponent(
+        componentContext = childDIContext("client_agreement"),
+        agreementType = CLIENT_DATA_PROCESSING_AGREEMENT,
+    )
 
     private val store: ClientCreateStore =
         getParameterizedStore { ClientCreateStore.Params(companyId) }
@@ -39,6 +47,10 @@ class ClientCreateComponent(
 
     override fun onCreate() {
         store.accept(ClientCreateStore.Intent.Create)
+    }
+
+    override fun onAgreement() {
+        agreement.updateState(true)
     }
 
 }

@@ -33,6 +33,10 @@ fun HomeBlockHostUI(
                     component = component.upcomingRecords,
                     modifier = Modifier.fillMaxWidth(),
                 )
+                HomeAnalyticsUI(
+                    component = component.analytics,
+                    modifier = Modifier.fillMaxWidth(),
+                )
             }
         }
     }

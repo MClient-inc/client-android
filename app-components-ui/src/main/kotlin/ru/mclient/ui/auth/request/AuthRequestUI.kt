@@ -1,14 +1,11 @@
 package ru.mclient.ui.auth.request
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import ru.mclient.common.auth.AuthRequest
 import ru.mclient.common.auth.AuthState
+import ru.mclient.ui.agreement.AgreementModalUI
 import ru.mclient.ui.auth.Auth
 import ru.mclient.ui.auth.AuthUIState
 
@@ -21,14 +18,14 @@ fun AuthState.toUI(): AuthUIState {
 
 @Composable
 fun AuthRequestUI(component: AuthRequest, modifier: Modifier) {
-    Box(modifier = modifier, contentAlignment = Alignment.BottomCenter) {
+    AgreementModalUI(component = component.agreement, modifier = modifier) {
         Auth(
             state = component.state.toUI(),
             onLogin = component::onLogin,
             onRegister = component::onRegister,
+            onAgreement = component::onAgreement,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
+                .fillMaxSize()
         )
     }
 }
