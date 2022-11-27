@@ -22,20 +22,30 @@ class KtorAnalyticsNetworkSource(
         }
         val body = response.body<GetCompanyAnalyticsRequest>()
         return GetCompanyAnalyticsOutput(
-            totalSum = body.totalSum,
-            averageSum = body.averageSum,
-            comeCount = body.comeCount,
-            notComeCount = body.notComeCount,
-            waitingCount = body.waitingCount,
+            totalSum = body.totalSum.toItem(),
+            averageSum = body.averageSum.toItem(),
+            comeCount = body.comeCount.toItem(),
+            notComeCount = body.notComeCount.toItem(),
+            waitingCount = body.waitingCount.toItem(),
         )
     }
 }
 
+private fun AnalyticItemRequest.toItem(): AnalyticItem
+{
+    return AnalyticItem(value, difference)
+}
 @Serializable
 class GetCompanyAnalyticsRequest(
-    val totalSum: Long,
-    val averageSum: Long,
-    val comeCount: Int,
-    val notComeCount: Int,
-    val waitingCount: Int,
+    val totalSum: AnalyticItemRequest,
+    val averageSum: AnalyticItemRequest,
+    val comeCount: AnalyticItemRequest,
+    val notComeCount: AnalyticItemRequest,
+    val waitingCount: AnalyticItemRequest,
+)
+
+@Serializable
+class AnalyticItemRequest(
+    val value: String,
+    val difference: Int,
 )

@@ -20,12 +20,18 @@ interface HomeAnalyticsStore :
         val isLoading: Boolean,
         val isFailure: Boolean,
     ) {
-        data class Analytics(
-            val totalSum: Long,
-            val averageSum: Long,
-            val comeCount: Int,
-            val notComeCount: Int,
-            val waitingCome: Int,
+
+        class AnalyticItem(
+            val value: String,
+            val difference: Int,
+        )
+
+        class Analytics(
+            val totalSum: AnalyticItem,
+            val averageSum: AnalyticItem,
+            val comeCount: AnalyticItem,
+            val notComeCount: AnalyticItem,
+            val waitingCount: AnalyticItem,
         )
 
     }

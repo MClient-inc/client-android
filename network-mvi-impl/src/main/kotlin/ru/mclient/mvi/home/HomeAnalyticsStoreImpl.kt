@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 import ru.mclient.mvi.SyncCoroutineExecutor
+import ru.mclient.network.analytics.AnalyticItem
 import ru.mclient.network.analytics.AnalyticsNetworkSource
 import ru.mclient.network.analytics.GetCompanyAnalyticsInput
 import java.time.LocalDate
@@ -41,11 +42,11 @@ class HomeAnalyticsStoreImpl(
                 is Message.Loaded -> copy(
                     analytics = message.let {
                         HomeAnalyticsStore.State.Analytics(
-                            totalSum = it.totalSum,
-                            averageSum = it.averageSum,
-                            comeCount = it.comeCount,
-                            notComeCount = it.notComeCount,
-                            waitingCome = it.waitingCount,
+                            totalSum = it.totalSum.toItem(),
+                            averageSum = it.averageSum.toItem(),
+                            comeCount = it.comeCount.toItem(),
+                            notComeCount = it.notComeCount.toItem(),
+                            waitingCount = it.waitingCount.toItem(),
                         )
                     },
                     isLoading = false,
@@ -100,11 +101,11 @@ class HomeAnalyticsStoreImpl(
                     )
                     syncDispatch(
                         Message.Loaded(
-                            totalSum = recordsResponse.totalSum,
-                            averageSum = recordsResponse.averageSum,
-                            comeCount = recordsResponse.comeCount,
-                            notComeCount = recordsResponse.notComeCount,
-                            waitingCount = recordsResponse.waitingCount,
+                            totalSum = recordsResponse.totalSum.toItem(),
+                            averageSum = recordsResponse.averageSum.toItem(),
+                            comeCount = recordsResponse.comeCount.toItem(),
+                            notComeCount = recordsResponse.notComeCount.toItem(),
+                            waitingCount = recordsResponse.waitingCount.toItem(),
                         )
                     )
                 } catch (e: Exception) {
@@ -124,12 +125,30 @@ class HomeAnalyticsStoreImpl(
         object Failed : Message()
         object Loading : Message()
         class Loaded(
-            val totalSum: Long,
-            val averageSum: Long,
-            val comeCount: Int,
-            val notComeCount: Int,
-            val waitingCount: Int,
-        ) : Message()
+            val totalSum: AnalyticItem,
+            val averageSum: AnalyticItem,
+            val comeCount: AnalyticItem,
+            val notComeCount: AnalyticItem,
+            val waitingCount: AnalyticItem,
+        ) : Message() {
+
+
+            class AnalyticItem(
+                val value: String,
+                val difference: Int,
+            )
+
+
+        }
 
     }
+
+}
+
+private fun AnalyticItem.toItem(): HomeAnalyticsStoreImpl.Message.Loaded.AnalyticItem {
+    return HomeAnalyticsStoreImpl.Message.Loaded.AnalyticItem(value, difference)
+}
+
+private fun HomeAnalyticsStoreImpl.Message.Loaded.AnalyticItem.toItem(): HomeAnalyticsStore.State.AnalyticItem {
+    return HomeAnalyticsStore.State.AnalyticItem(value, difference)
 }

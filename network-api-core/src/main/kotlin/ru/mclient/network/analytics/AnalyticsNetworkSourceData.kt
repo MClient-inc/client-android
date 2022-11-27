@@ -9,9 +9,14 @@ class GetCompanyAnalyticsInput(
 )
 
 class GetCompanyAnalyticsOutput(
-    val totalSum: Long,
-    val averageSum: Long,
-    val comeCount: Int,
-    val notComeCount: Int,
-    val waitingCount: Int,
+    val totalSum: AnalyticItem,
+    val averageSum: AnalyticItem,
+    val comeCount: AnalyticItem,
+    val notComeCount: AnalyticItem,
+    val waitingCount: AnalyticItem,
+)
+
+class AnalyticItem(
+    val value: String,
+    val difference: Int,
 )
