@@ -16,7 +16,34 @@ fun ClientProfileUI(
         onRefresh = component::onRefresh,
         onCreateAbonement = component::onAbonementCreate,
         onQRCode = component::onQRCode,
+        onRecord = component::onRecord,
         modifier = modifier,
+    )
+}
+
+private fun ClientProfileState.NetworkAnalytics.toState(): ClientProfilePageState.NetworkAnalytics {
+    return ClientProfilePageState.NetworkAnalytics(
+        id = id,
+        title = title,
+        analytics = ClientProfilePageState.ClientAnalyticsItem(
+            comeCount = this.analytics.comeCount,
+            notComeCount = this.analytics.notComeCount,
+            waitingCount = this.analytics.waitingCount,
+            totalCount = this.analytics.totalCount
+        )
+    )
+}
+
+private fun ClientProfileState.CompanyAnalytics.toState(): ClientProfilePageState.CompanyAnalytics {
+    return ClientProfilePageState.CompanyAnalytics(
+        id = id,
+        title = title,
+        analytics = ClientProfilePageState.ClientAnalyticsItem(
+            comeCount = this.analytics.comeCount,
+            notComeCount = this.analytics.notComeCount,
+            waitingCount = this.analytics.waitingCount,
+            totalCount = this.analytics.totalCount
+        )
     )
 }
 
@@ -24,6 +51,7 @@ fun ClientProfileState.toUI(): ClientProfilePageState {
     return ClientProfilePageState(
         profile = client?.toUI(),
         isRefreshing = client != null && isLoading,
+        isLoading = isLoading,
         abonements = abonements?.map {
             ClientProfilePageState.ClientAbonement(
                 id = it.id,
@@ -37,7 +65,33 @@ fun ClientProfileState.toUI(): ClientProfilePageState {
                 )
             )
         },
-        isLoading = isLoading
+        networkAnalytics = networkAnalytics?.toState(),
+        companyAnalytics = companyAnalytics?.toState(),
+        records = records?.map {
+            ClientProfilePageState.Record(
+                id = it.id,
+                time = ClientProfilePageState.Time(
+                    start = it.time.start,
+                    end = it.time.end,
+                    date = it.time.date
+                ),
+                company = ClientProfilePageState.Company(
+                    id = it.company.id,
+                    title = it.company.title
+                ),
+                services = it.services.map { service ->
+                    ClientProfilePageState.Service(
+                        id = service.id, cost = service.cost, title = service.title
+                    )
+                },
+                totalCost = it.totalCost,
+                staff = ClientProfilePageState.Staff(
+                    id = it.staff.id,
+                    name = it.staff.name
+                )
+            )
+        }
+
     )
 }
 

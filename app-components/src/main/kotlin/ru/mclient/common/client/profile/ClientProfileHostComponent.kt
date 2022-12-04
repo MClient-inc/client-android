@@ -5,11 +5,14 @@ import ru.mclient.common.bar.ImmutableTopBar
 import ru.mclient.common.bar.TopBar
 import ru.mclient.common.bar.TopBarState
 import ru.mclient.common.childDIContext
+import ru.mclient.common.record.profile.RecordProfile
+import ru.mclient.common.record.profile.RecordProfileComponent
 
 class ClientProfileHostComponent(
     componentContext: DIComponentContext,
     clientId: Long,
     onAbonementCreate: () -> Unit,
+    onRecord: (Long) ->Unit,
 ) : ClientProfileHost, DIComponentContext by componentContext {
 
     override val bar: TopBar = ImmutableTopBar(TopBarState(title = "Клиент"))
@@ -24,7 +27,8 @@ class ClientProfileHostComponent(
         componentContext = childDIContext(key = "client_profile"),
         clientId = clientId,
         onAbonementCreate = onAbonementCreate,
-        onQRCode = { clientQRProfile.updateState(true) }
+        onQRCode = { clientQRProfile.updateState(true) },
+        onRecord = { onRecord(it) }
     )
 
 }

@@ -11,6 +11,8 @@ import ru.mclient.network.abonement.AbonementNetworkSource
 import ru.mclient.network.abonement.GetAbonementsForClientInput
 import ru.mclient.network.client.ClientNetworkSource
 import ru.mclient.network.client.GetClientByIdInput
+import java.time.LocalDate
+import java.time.LocalTime
 
 @OptIn(ExperimentalMviKotlinApi::class)
 @Factory
@@ -25,6 +27,9 @@ class ClientProfileStoreImpl(
         initialState = ClientProfileStore.State(
             client = null,
             abonements = null,
+            records = null,
+            networkAnalytics = null,
+            companyAnalytics = null,
             isFailure = false,
             isLoading = true
         ),
@@ -100,6 +105,9 @@ class ClientProfileStoreImpl(
                     val abonements = abonementSource.getAbonementsForClient(
                         GetAbonementsForClientInput((clientId))
                     )
+                    val networkAnalytics = TODO("make networkAnalytics")
+                    val companyAnalytics = TODO("make companyAnalytics")
+                    val records = TODO("make records")
                     dispatch(
                         Message.Loaded(
                             Message.Loaded.Client(
@@ -117,9 +125,12 @@ class ClientProfileStoreImpl(
                                             title = it.abonement.subabonement.title,
                                             maxUsages = it.abonement.subabonement.maxUsages,
                                         )
-                                    )
+                                    ),
                                 )
-                            }
+                            },
+                            companyAnalytics = networkAnalytics,
+                            networkAnalytics = companyAnalytics,
+                            records = records
                         )
                     )
                 } catch (e: Exception) {
@@ -139,6 +150,9 @@ class ClientProfileStoreImpl(
         class Loaded(
             val client: Client,
             val abonements: List<ClientAbonement>,
+            val networkAnalytics: NetworkAnalytics,
+            val companyAnalytics: CompanyAnalytics,
+            val records: List<Record>
         ) : Message() {
             class Client(
                 val id: Long,
@@ -149,7 +163,7 @@ class ClientProfileStoreImpl(
             class ClientAbonement(
                 val id: Long,
                 val usages: Int,
-                val abonement: Abonement,
+                val abonement: Abonement
             )
 
             class Abonement(
@@ -160,6 +174,58 @@ class ClientProfileStoreImpl(
             class Subabonement(
                 val title: String,
                 val maxUsages: Int,
+            )
+
+            //    Analytics
+
+            class ClientAnalyticsItem(
+                var notComeCount: Long,
+                var comeCount: Long,
+                var waitingCount: Long,
+                val totalCount: Long,
+            )
+
+            class NetworkAnalytics(
+                val id: Long,
+                val title: String,
+                val analytics: ClientAnalyticsItem,
+            )
+
+            class CompanyAnalytics(
+                val id: Long,
+                val title: String,
+                val analytics: ClientAnalyticsItem,
+            )
+
+            class Record(
+                val id: Long,
+                val company: Company,
+                val time: Time,
+                val staff: Staff,
+                val services: List<Service>,
+                val totalCost: Long
+            )
+
+            class Service(
+                val id: Long,
+                val title: String,
+                val cost: Long,
+            )
+
+            class Staff(
+                val id: Long,
+                val name: String,
+            )
+
+            class Time(
+                val date: LocalDate,
+                val start: LocalTime,
+                val end: LocalTime,
+            )
+
+            class Company(
+                val id: Long,
+                val title: String,
             )
 
         }

@@ -11,12 +11,39 @@ class ClientProfileComponent(
     clientId: Long,
     private val onAbonementCreate: () -> Unit,
     private val onQRCode: () -> Unit,
+    private val onRecord: (Long) -> Unit,
 ) : ClientProfile, DIComponentContext by componentContext {
 
     private val store: ClientProfileStore =
         getParameterizedStore { ClientProfileStore.Params(clientId) }
 
     override val state: ClientProfileState by store.states(this) { it.toState() }
+
+    private fun ClientProfileStore.State.NetworkAnalytics.toState(): ClientProfileState.NetworkAnalytics {
+        return ClientProfileState.NetworkAnalytics(
+            id = id,
+            title = title,
+            analytics = ClientProfileState.ClientAnalyticsItem(
+                notComeCount = analytics.notComeCount,
+                comeCount = analytics.comeCount,
+                waitingCount = analytics.waitingCount,
+                totalCount = analytics.totalCount
+            )
+        )
+    }
+
+    private fun ClientProfileStore.State.CompanyAnalytics.toState(): ClientProfileState.CompanyAnalytics {
+        return ClientProfileState.CompanyAnalytics(
+            id = id,
+            title = title,
+            analytics = ClientProfileState.ClientAnalyticsItem(
+                notComeCount = analytics.notComeCount,
+                comeCount = analytics.comeCount,
+                waitingCount = analytics.waitingCount,
+                totalCount = analytics.totalCount
+            )
+        )
+    }
 
     private fun ClientProfileStore.State.toState(): ClientProfileState {
         return ClientProfileState(
@@ -32,6 +59,34 @@ class ClientProfileComponent(
                             maxUsages = it.abonement.subabonement.maxUsages
                         )
                     )
+                )
+            },
+            networkAnalytics = networkAnalytics?.toState(),
+            companyAnalytics = companyAnalytics?.toState(),
+            records = records?.map { record ->
+                ClientProfileState.Record(
+                    id = record.id,
+                    services = record.services.map { service ->
+                        ClientProfileState.Service(
+                            id = service.id,
+                            title = service.title,
+                            cost = service.cost
+                        )
+                    },
+                    staff = ClientProfileState.Staff(
+                        id = record.staff.id,
+                        name = record.staff.name
+                    ),
+                    company = ClientProfileState.Company(
+                        id = record.company.id,
+                        title = record.company.title
+                    ),
+                    time = ClientProfileState.Time(
+                        start = record.time.start,
+                        end = record.time.end,
+                        date = record.time.date
+                    ),
+                    totalCost = record.totalCost
                 )
             },
             isLoading = isLoading,
@@ -50,6 +105,10 @@ class ClientProfileComponent(
 
     override fun onQRCode() {
         onQRCode.invoke()
+    }
+
+    override fun onRecord(recordId: Long) {
+        onRecord.invoke(recordId)
     }
 
     override fun onEdit() {

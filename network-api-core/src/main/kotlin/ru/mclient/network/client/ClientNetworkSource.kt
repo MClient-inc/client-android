@@ -11,4 +11,6 @@ interface ClientNetworkSource {
 
     suspend fun getClientCard(input: GetClientCardInput): GetClientCardOutput
 
+//    suspend fun getClientAnalytics(input: GetClientAnalyticsInput): GetClientAnalyticsOutput
+
 }

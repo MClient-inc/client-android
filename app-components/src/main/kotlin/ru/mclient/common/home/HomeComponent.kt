@@ -106,7 +106,8 @@ class HomeComponent(
                     ClientProfileHostComponent(
                         componentContext = componentContext,
                         clientId = config.clientId,
-                        onAbonementCreate = { navigation.push(Config.AbonementCreate(config.clientId)) }
+                        onAbonementCreate = { navigation.push(Config.AbonementCreate(config.clientId)) },
+                        onRecord = { onRecordSelect(it) }
                     )
                 )
         }
