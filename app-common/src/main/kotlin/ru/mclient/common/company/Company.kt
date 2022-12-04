@@ -7,6 +7,7 @@ import ru.mclient.common.client.list.ClientsListHost
 import ru.mclient.common.client.profile.ClientProfileHost
 import ru.mclient.common.company.profile.CompanyProfileHost
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileHost
+import ru.mclient.common.record.profile.RecordProfileHost
 import ru.mclient.common.service.create.ServiceCreateHost
 import ru.mclient.common.service.list.ServiceListHost
 import ru.mclient.common.service.profile.ServiceProfileHost
@@ -71,6 +72,9 @@ interface Company {
 
         @JvmInline
         value class StaffSchedule(val component: StaffScheduleHost) : Child
+
+        @JvmInline
+        value class RecordProfile(val component: RecordProfileHost): Child
 
     }
 

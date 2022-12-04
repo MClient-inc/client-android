@@ -13,6 +13,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.utils.defaultPlaceholder
 import ru.mclient.ui.view.DesignedIcon
@@ -34,7 +35,6 @@ data class ClientListPageState(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClientsListPage(
     state: ClientListPageState,
@@ -91,7 +91,7 @@ private fun ClientListItem(
         },
         modifier = modifier,
         leadingContent = {
-            Icon(Icons.Outlined.Person, contentDescription = null, modifier = Modifier.size(35.dp))
+            Icon(painterResource(id = R.drawable.client), contentDescription = null, modifier = Modifier.size(35.dp))
         },
     )
 }

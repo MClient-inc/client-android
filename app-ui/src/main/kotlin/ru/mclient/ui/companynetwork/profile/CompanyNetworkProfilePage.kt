@@ -207,7 +207,6 @@ private fun CompanyNetworkProfileHeaderPlaceholder(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CompanyNetworkProfileBody(
     isLoading: Boolean,
@@ -225,7 +224,7 @@ private fun CompanyNetworkProfileBody(
             menu = listOf(
                 MenuItem(
                     title = "Клиенты".toDesignedString(),
-                    icon = R.drawable.client.toDesignedDrawable(),
+                    icon = R.drawable.clients.toDesignedDrawable(),
                     onClick = onClients
                 ),
                 MenuItem(
@@ -255,7 +254,6 @@ private fun CompanyNetworkProfileBody(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CompanyNetworkProfileBodyComponent(
     onClients: () -> Unit,
@@ -275,7 +273,6 @@ private fun CompanyNetworkProfileBodyComponent(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CompanyNetworkProfileBodyPlaceholder(
     count: Int,

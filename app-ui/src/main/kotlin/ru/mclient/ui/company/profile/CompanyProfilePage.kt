@@ -215,7 +215,7 @@ fun CompanyProfileBody(
             menu = listOf(
                 MenuItem(
                     title = "Клиенты".toDesignedString(),
-                    icon = R.drawable.client.toDesignedDrawable(),
+                    icon = R.drawable.clients.toDesignedDrawable(),
                     onClick = onClients
                 ),
                 MenuItem(

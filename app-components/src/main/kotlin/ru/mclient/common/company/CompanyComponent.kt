@@ -16,6 +16,7 @@ import ru.mclient.common.client.profile.ClientProfileHostComponent
 import ru.mclient.common.company.profile.CompanyProfileHostComponent
 import ru.mclient.common.companynetwork.profile.CompanyNetworkProfileByIdHostComponent
 import ru.mclient.common.diChildStack
+import ru.mclient.common.record.profile.RecordProfileHostComponent
 import ru.mclient.common.service.create.ServiceCreateHostComponent
 import ru.mclient.common.service.list.ServiceListForCategoryAndCompanyHostComponent
 import ru.mclient.common.service.profile.ServiceProfileHostComponent
@@ -127,6 +128,10 @@ class CompanyComponent(
         )
     }
 
+    private fun onRecordSelect(recordId: Long) {
+        navigation.push(Config.RecordProfile(recordId))
+    }
+
     private fun createChild(config: Config, componentContext: DIComponentContext): Company.Child {
         return when (config) {
             is Config.CompanyProfile -> Company.Child.CompanyProfile(
@@ -234,6 +239,7 @@ class CompanyComponent(
                     componentContext = componentContext,
                     clientId = config.clientId,
                     onAbonementCreate = { onAbonementClientCreate(config.clientId) },
+                    onRecord = { onRecordSelect(it) }
                 )
             )
 
@@ -259,6 +265,13 @@ class CompanyComponent(
                     companyId = config.companyId,
                     clientId = config.clientId,
                     onSuccess = ::onAbonementCreatedSuccess,
+                )
+            )
+
+            is Config.RecordProfile -> Company.Child.RecordProfile(
+                RecordProfileHostComponent(
+                    componentContext = componentContext,
+                    recordId = config.recordId
                 )
             )
         }
@@ -310,6 +323,9 @@ class CompanyComponent(
 
         @Parcelize
         data class ClientAbonementCreate(val companyId: Long, val clientId: Long) : Config()
+
+        @Parcelize
+        data class RecordProfile(val recordId: Long) : Config()
 
     }
 
