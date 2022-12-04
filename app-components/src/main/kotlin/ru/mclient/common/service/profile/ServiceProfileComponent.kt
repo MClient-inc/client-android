@@ -16,9 +16,39 @@ class ServiceProfileComponent(
 
     override val state: ServiceProfileState by store.states(this) { it.toState() }
 
+    private fun ServiceProfileStore.State.NetworkAnalytics.toState(): ServiceProfileState.NetworkAnalytics {
+        return ServiceProfileState.NetworkAnalytics(
+            id = id,
+            title = title,
+            analytics = ServiceProfileState.AnalyticsItem(
+                comeCount = analytics.comeCount,
+                notComeCount = analytics.notComeCount,
+                waitingCount = analytics.waitingCount,
+                totalRecords = analytics.totalRecords,
+                value = analytics.value
+            )
+        )
+    }
+
+    private fun ServiceProfileStore.State.CompanyAnalytics.toState(): ServiceProfileState.CompanyAnalytics {
+        return ServiceProfileState.CompanyAnalytics(
+            id = id,
+            title = title,
+            analytics = ServiceProfileState.AnalyticsItem(
+                comeCount = analytics.comeCount,
+                notComeCount = analytics.notComeCount,
+                waitingCount = analytics.waitingCount,
+                totalRecords = analytics.totalRecords,
+                value = analytics.value
+            )
+        )
+    }
+
     private fun ServiceProfileStore.State.toState(): ServiceProfileState {
         return ServiceProfileState(
             service = service?.toState(),
+            network = network?.toState(),
+            company = company?.toState(),
             isLoading = isLoading
         )
     }

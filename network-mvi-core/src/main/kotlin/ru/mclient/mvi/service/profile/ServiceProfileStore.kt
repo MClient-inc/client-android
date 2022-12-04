@@ -19,6 +19,8 @@ interface ServiceProfileStore :
     @Parcelize
     data class State(
         val service: Service?,
+        val network: NetworkAnalytics?,
+        val company: CompanyAnalytics?,
         val isFailure: Boolean,
         val isLoading: Boolean
     ) : Parcelable {
@@ -28,6 +30,26 @@ interface ServiceProfileStore :
             val title: String,
             val description: String,
             val cost: String
+        ) : Parcelable
+        @Parcelize
+        data class AnalyticsItem(
+            val comeCount: Long,
+            val notComeCount: Long,
+            val waitingCount: Long,
+            val totalRecords: Long,
+            val value: String
+        ) : Parcelable
+        @Parcelize
+        data class NetworkAnalytics(
+            val id: Long,
+            val title: String,
+            val analytics: AnalyticsItem,
+        ) : Parcelable
+        @Parcelize
+        data class CompanyAnalytics(
+            val id: Long,
+            val title: String,
+            val analytics: AnalyticsItem,
         ) : Parcelable
     }
 

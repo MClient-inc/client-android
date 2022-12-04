@@ -358,12 +358,10 @@ private fun NetworkAnalyticsItemBlock(
         headlineText = {
             Text(text = "${item.comeCount}", color = Color.Green)
         },
-        supportingText = {},
         overlineText = {
             Text(text = "Пришёл")
         }
     )
-
     ListItem(
         leadingContent = {
             Icon(
@@ -376,13 +374,10 @@ private fun NetworkAnalyticsItemBlock(
         headlineText = {
             Text(text = "${item.notComeCount}", color = Color.Red)
         },
-        supportingText = {},
         overlineText = {
             Text(text = "Не пришёл")
         }
     )
-
-
     ListItem(
         leadingContent = {
             Icon(
@@ -395,7 +390,6 @@ private fun NetworkAnalyticsItemBlock(
         headlineText = {
             Text(text = "${item.waitingCount}", color = Color(255, 150, 0, 255))
         },
-        supportingText = {},
         overlineText = {
             Text(text = "В ожидании")
         }
@@ -419,7 +413,6 @@ private fun CompanyAnalyticsItemBlock(
         headlineText = {
             Text(text = "${item.comeCount}", color = Color.Green)
         },
-        supportingText = {},
         overlineText = {
             Text(text = "Пришёл")
         }
@@ -437,7 +430,6 @@ private fun CompanyAnalyticsItemBlock(
         headlineText = {
             Text(text = "${item.notComeCount}", color = Color.Red)
         },
-        supportingText = {},
         overlineText = {
             Text(text = "Не пришёл")
         }
@@ -455,7 +447,6 @@ private fun CompanyAnalyticsItemBlock(
         headlineText = {
             Text(text = "${item.waitingCount}", color = Color(255, 150, 0, 255))
         },
-        supportingText = {},
         overlineText = {
             Text(text = "В ожидании")
         }
@@ -469,7 +460,7 @@ fun ClientRecords(
     onRecord: (Long) -> Unit,
     modifier: Modifier
 ) {
-    DesignedOutlinedTitledBlock(title = "Ближайшие записи пользователя", modifier = modifier) {
+    DesignedTitledBlock(title = "Ближайшие записи пользователя", modifier = modifier) {
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Adaptive(180.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),

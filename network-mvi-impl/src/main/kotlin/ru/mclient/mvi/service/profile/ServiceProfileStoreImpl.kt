@@ -20,7 +20,9 @@ class ServiceProfileStoreImpl(
     Store<ServiceProfileStore.Intent, ServiceProfileStore.State, ServiceProfileStore.Label> by storeFactory.create(
         name = "ServiceProfileStoreImpl",
         initialState = ServiceProfileStore.State(
-            null,
+            service = null,
+            network = null,
+            company = null,
             isFailure = false,
             isLoading = true
         ),
@@ -68,12 +70,14 @@ class ServiceProfileStoreImpl(
                     val response = serviceSource.getServiceById(GetServiceByIdInput(serviceId))
                     dispatch(
                         Message.Loaded(
-                            Message.Loaded.Service(
+                            service = Message.Loaded.Service(
                                 id = response.id,
                                 title = response.title,
                                 description = response.description,
                                 cost = response.cost
-                            )
+                            ),
+                            network = TODO("network"),
+                            company = TODO("company")
                         )
                     )
                 } catch (e: Exception) {
@@ -92,13 +96,34 @@ class ServiceProfileStoreImpl(
         object Failed : Message()
         object Loading : Message()
         class Loaded(
-            val service: Service
+            val service: Service,
+            val network: NetworkAnalytics,
+            val company: CompanyAnalytics
         ) : Message() {
             class Service(
                 val id: Long,
                 val title: String,
                 val description: String,
                 val cost: String,
+            )
+
+            class AnalyticsItem(
+                val comeCount: Long,
+                val notComeCount: Long,
+                val waitingCount: Long,
+                val totalRecords: Long,
+                val value: String
+            )
+
+            class NetworkAnalytics(
+                val id: Long,
+                val title: String,
+                val analytics: AnalyticsItem
+            )
+            class CompanyAnalytics(
+                val id: Long,
+                val title: String,
+                val analytics: AnalyticsItem
             )
         }
 
