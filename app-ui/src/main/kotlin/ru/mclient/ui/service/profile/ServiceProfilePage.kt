@@ -41,8 +41,8 @@ import ru.shafran.ui.R
 
 data class ServiceProfilePageState(
     val service: Service?,
-    val network: NetworkAnalytics?,
-    val company: CompanyAnalytics?,
+//    val network: NetworkAnalytics?,
+//    val company: CompanyAnalytics?,
     val isRefreshing: Boolean,
     val isLoading: Boolean
 ) {
@@ -95,16 +95,16 @@ fun ServiceProfilePage(
                     .outlined()
                     .padding(10.dp)
             )
-        if (state.network != null)
-            ServiceProfileNetworkAnalyticsItem(
-                network = state.network,
-                modifier = Modifier.fillMaxWidth()
-            )
-        if (state.company != null)
-            ServiceProfileCompanyAnalyticsItem(
-                company = state.company,
-                modifier = Modifier.fillMaxWidth()
-            )
+//        if (state.network != null)
+//            ServiceProfileNetworkAnalyticsItem(
+//                network = state.network,
+//                modifier = Modifier.fillMaxWidth()
+//            )
+//        if (state.company != null)
+//            ServiceProfileCompanyAnalyticsItem(
+//                company = state.company,
+//                modifier = Modifier.fillMaxWidth()
+//            )
     }
 }
 
@@ -365,28 +365,28 @@ fun ServiceProfilePagePreview() {
                 "Наш лучший мастер - Дядя Толя всегда к вашим услугам",
                 "200 рублей"
             ),
-            network = ServiceProfilePageState.NetworkAnalytics(
-                id = 1,
-                title = "Network-001",
-                analytics = ServiceProfilePageState.AnalyticsItem(
-                    comeCount = 124,
-                    notComeCount = 21,
-                    waitingCount = 8,
-                    totalRecords = 124 + 21 + 8,
-                    value = "66%"
-                ),
-            ),
-            company = ServiceProfilePageState.CompanyAnalytics(
-                id = 1,
-                title = "Company-001",
-                analytics = ServiceProfilePageState.AnalyticsItem(
-                    comeCount = 60,
-                    notComeCount = 12,
-                    waitingCount = 2,
-                    totalRecords = 60 + 12 + 2,
-                    value = "34%"
-                )
-            ),
+//            network = ServiceProfilePageState.NetworkAnalytics(
+//                id = 1,
+//                title = "Network-001",
+//                analytics = ServiceProfilePageState.AnalyticsItem(
+//                    comeCount = 124,
+//                    notComeCount = 21,
+//                    waitingCount = 8,
+//                    totalRecords = 124 + 21 + 8,
+//                    value = "66%"
+//                ),
+//            ),
+//            company = ServiceProfilePageState.CompanyAnalytics(
+//                id = 1,
+//                title = "Company-001",
+//                analytics = ServiceProfilePageState.AnalyticsItem(
+//                    comeCount = 60,
+//                    notComeCount = 12,
+//                    waitingCount = 2,
+//                    totalRecords = 60 + 12 + 2,
+//                    value = "34%"
+//                )
+//            ),
             isLoading = false,
             isRefreshing = false
         ),

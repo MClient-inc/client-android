@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
@@ -18,9 +20,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.mclient.ui.abonement.profile.formatToUsages
-import ru.mclient.ui.view.DesignedButton
+import ru.mclient.ui.view.DesignedFilledButton
 import ru.mclient.ui.view.DesignedTextField
 import ru.mclient.ui.view.DesignedTitledBlock
 import ru.mclient.ui.view.outlined
@@ -76,7 +79,8 @@ fun AbonementCreateSubabonementsBlock(
 ) {
     DesignedTitledBlock(title = "Подабонементы", modifier = modifier) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.padding(5.dp)
         ) {
             state.subabonements.forEach {
                 SubabonementItem(
@@ -85,7 +89,7 @@ fun AbonementCreateSubabonementsBlock(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            AnimatedVisibility(visible = state.creation.isAvailable) {
+            AnimatedVisibility(visible = state.creation.isAvailable, modifier = modifier.outlined()) {
                 SubabonementCreation(
                     creation = state.creation,
                     onUpdate = onUpdate,
@@ -119,6 +123,7 @@ fun SubabonementCreation(
                 value = creation.usages,
                 onValueChange = { onUpdate(creation.toInput(usages = it)) },
                 placeholder = "Кол-во использований",
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(0.25f, fill = true)
@@ -127,6 +132,7 @@ fun SubabonementCreation(
                 value = creation.cost,
                 onValueChange = { onUpdate(creation.toInput(cost = it)) },
                 placeholder = "Стоимость",
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(0.25f, fill = true)
@@ -150,15 +156,17 @@ fun SubabonementCreation(
                 value = creation.usages,
                 onValueChange = { onUpdate(creation.toInput(usages = it)) },
                 placeholder = "Кол-во использований",
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
             DesignedTextField(
                 value = creation.cost,
                 onValueChange = { onUpdate(creation.toInput(cost = it)) },
                 placeholder = "Стоимость",
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
-            DesignedButton(
+            DesignedFilledButton(
                 text = "Добавить",
                 onClick = onCreate,
                 enabled = creation.isButtonAvailable,
