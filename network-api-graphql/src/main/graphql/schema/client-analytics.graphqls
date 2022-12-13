@@ -1,0 +1,23 @@
+extend type Client {
+    analytics: ClientAnalytics!
+}
+
+type ClientAnalytics {
+    forNetwork(period: DateRangeInput, range: RequestRangeInput): ClientNetworkAnalytics!
+    forCompany(company: ID!, period: DateRangeInput, range: RequestRangeInput): ClientCompanyAnalytics!
+}
+
+type ClientNetworkAnalytics {
+    counts: CountAnalyticsItem!
+}
+
+type ClientCompanyAnalytics {
+    counts: CountAnalyticsItem!
+}
+
+type CountAnalyticsItem {
+    comeCount: Int!
+    notComeCount: Int!
+    waitingCount: Int!
+    totalCount: Int!
+}

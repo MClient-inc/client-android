@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
@@ -19,10 +21,11 @@ import androidx.compose.ui.unit.dp
 fun DesignedListPoint(
     icon: ImageVector,
     text: String,
+    modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,
     overflow: TextOverflow = TextOverflow.Ellipsis,
     maxLines: Int = Int.MAX_VALUE,
-    modifier: Modifier = Modifier,
+    tint: Color = LocalContentColor.current,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -33,6 +36,7 @@ fun DesignedListPoint(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier.size(15.dp),
+            tint = tint,
         )
         Text(
             text = text,
@@ -47,10 +51,11 @@ fun DesignedListPoint(
 fun DesignedListPoint(
     icon: Painter,
     text: String,
+    modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,
     overflow: TextOverflow = TextOverflow.Ellipsis,
     maxLines: Int = Int.MAX_VALUE,
-    modifier: Modifier = Modifier,
+    tint: Color = LocalContentColor.current,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -61,6 +66,7 @@ fun DesignedListPoint(
             painter = icon,
             contentDescription = null,
             modifier = Modifier.size(17.5.dp),
+            tint = tint,
         )
         Text(
             text = text,

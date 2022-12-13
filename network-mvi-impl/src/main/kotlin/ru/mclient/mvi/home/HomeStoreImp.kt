@@ -91,11 +91,12 @@ class HomeStoreImpl(
             dispatch(Message.Loading)
             scope.launch {
                 try {
-                    val company = companyNetworkSource.getCompany(GetCompanyInput(companyId))
+                    val company =
+                        companyNetworkSource.getCompany(GetCompanyInput(companyId.toString()))
                     syncDispatch(
                         Message.Loaded(
                             company = Message.Loaded.Company(
-                                id = company.company.id,
+                                id = company.company.id.toLong(),
                                 title = company.company.title,
                             )
                         )

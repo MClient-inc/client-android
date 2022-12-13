@@ -81,16 +81,16 @@ class ClientCreateStoreImpl(
                     scope.launch {
                         val response = clientNetworkSource.createClient(
                             CreateClientInput(
-                                companyId = params.companyId,
+                                companyId = params.companyId.toString(),
                                 name = state.name,
                                 phone = state.phone,
                             )
                         )
                         syncDispatch(
                             Message.Success(
-                                clientId = response.id,
+                                clientId = response.id.toLong(),
                                 name = response.name,
-                                phone = response.phone,
+                                phone = response.phone.orEmpty(),
                             )
                         )
                     }

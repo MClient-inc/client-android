@@ -5,13 +5,11 @@ import ru.mclient.common.bar.ImmutableTopBar
 import ru.mclient.common.bar.TopBar
 import ru.mclient.common.bar.TopBarState
 import ru.mclient.common.childDIContext
-import ru.mclient.common.staff.profile.StaffProfile
-import ru.mclient.common.staff.profile.StaffProfileComponent
-import ru.mclient.common.staff.profile.StaffProfileHost
 
 class StaffProfileHostComponent(
     componentContext: DIComponentContext,
     staffId: Long,
+    companyId: Long,
     onEditSchedule: () -> Unit,
 ) : StaffProfileHost, DIComponentContext by componentContext {
 
@@ -21,6 +19,7 @@ class StaffProfileHostComponent(
         StaffProfileComponent(
             componentContext = childDIContext(key = "staff_profile"),
             staffId = staffId,
+            companyId = companyId,
             onEditSchedule = onEditSchedule
         )
 

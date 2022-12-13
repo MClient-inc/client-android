@@ -10,11 +10,9 @@ import io.ktor.http.contentType
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.koin.core.annotation.Named
-import org.koin.core.annotation.Single
 import java.time.LocalDate
 import java.time.LocalTime
 
-@Single
 class KtorClientNetworkSource(
     @Named("authorized")
     private val client: HttpClient,
@@ -32,7 +30,7 @@ class KtorClientNetworkSource(
         }
         val body = response.body<CreateClientResponse>()
         return CreateClientOutput(
-            id = body.id,
+            id = body.id.toString(),
             name = body.name,
             phone = body.phone.orEmpty()
         )
@@ -44,7 +42,7 @@ class KtorClientNetworkSource(
         return GetClientsForCompanyOutput(
             clients = body.clients.map {
                 GetClientsForCompanyOutput.Client(
-                    id = it.id,
+                    id = it.id.toString(),
                     title = it.name,
                     phone = it.phone.orEmpty(),
                 )
@@ -58,11 +56,15 @@ class KtorClientNetworkSource(
         return GetClientCardOutput(body.cardUrl)
     }
 
+    override suspend fun getClientAnalytics(input: GetClientAnalyticsInput): GetClientAnalyticsOutput {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getClientById(input: GetClientByIdInput): GetClientByIdOutput {
         val response = client.get("/clients/${input.clientId}")
         val body = response.body<GetClientById>()
         return GetClientByIdOutput(
-            id = body.id,
+            id = body.id.toString(),
             name = body.name,
             phone = body.phone.orEmpty()
         )

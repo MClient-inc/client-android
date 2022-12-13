@@ -62,6 +62,7 @@ dependencies {
     implementation(Dependencies.Compose.material3)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Accompanist.placeholder)
+    implementation(Dependencies.Accompanist.pager)
     implementation(Dependencies.Activity.compose)
     debugImplementation(Dependencies.Compose.tooling)
     implementation(Dependencies.Compose.toolingPreview)

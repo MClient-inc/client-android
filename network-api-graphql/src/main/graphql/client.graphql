@@ -1,0 +1,138 @@
+fragment ClientPhoneNumber on PhoneNumber {
+    rawNumber
+}
+
+fragment BasicClient on Client {
+    id
+    data {
+        name
+        phone { ...ClientPhoneNumber }
+    }
+}
+
+query GetClientsForCompany($company: ID!) {
+    company(query: $company) {
+        clients {
+            ...BasicClient
+        }
+    }
+
+}
+
+query GetClientById($id: ID!) {
+    client(id: $id) {
+        ...BasicClient
+    }
+}
+
+query GetClientCardById($id: ID!) {
+    client(id: $id) {
+        card {
+            token
+        }
+    }
+}
+
+mutation CreateClientForCompany($companyQuery: ID!, $name: String!, $rawPhone: String) {
+    company(query: $companyQuery) {
+        addClient(input: {name: $name, rawPhone: $rawPhone}) {
+            ...BasicClient
+        }
+    }
+}
+
+query ClientAnalyticsWithCompany($clientId: ID!, $company: ID!, $period: DateRangeInput!) {
+    company(query: $company) {
+        id
+        data {
+            title
+        }
+    }
+    client(id: $clientId) {
+        records(period: $period, company: $company) {
+            ...ClientAnalyticsRecordFragment
+        }
+        network {
+            id
+            data {
+                title
+            }
+        }
+        analytics {
+            forNetwork(period: $period, range: {}) {
+                counts {
+                    ...ClientAnalyticsFragment
+                }
+            }
+            forCompany(company: $company, period: $period, range: {}) {
+                counts {
+                    ...ClientAnalyticsFragment
+                }
+            }
+        }
+    }
+}
+
+query ClientAnalyticsWithoutCompany($clientId: ID!, $period: DateRangeInput!) {
+    client(id: $clientId) {
+        records(period: $period) {
+            ...ClientAnalyticsRecordFragment
+        }
+        network {
+            id
+            data {
+                title
+            }
+        }
+        analytics {
+            forNetwork(period: $period, range: {}) {
+                counts {
+                    ...ClientAnalyticsFragment
+                }
+            }
+        }
+    }
+}
+
+fragment ClientAnalyticsRecordFragment on Record{
+
+    id
+    date {
+        start
+        end
+    }
+    company {
+        id
+        codename
+        data {
+            title
+        }
+    }
+    staff {
+        id
+        codename
+        data {
+            name
+        }
+    }
+    services {
+        id
+        data {
+            title
+            cost {
+                rawCost
+            }
+        }
+    }
+    info {
+        totalCost
+        status
+    }
+}
+
+fragment ClientAnalyticsFragment on CountAnalyticsItem{
+    comeCount
+    notComeCount
+    waitingCount
+    totalCount
+}

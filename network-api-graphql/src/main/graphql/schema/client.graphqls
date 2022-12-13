@@ -1,0 +1,46 @@
+extend type Query {
+    client(id: ID!): Client!
+}
+
+extend type Mutation {
+    client(id: ID!): ClientMutation!
+}
+
+extend type Company {
+    clients: [Client!]!
+}
+
+extend type CompanyMutation  {
+    addClient(input: AddClientInput!): Client!
+}
+
+input AddClientInput {
+    name: String!
+    rawPhone: String
+}
+
+type Client {
+    id: ID!
+    data: ClientData!
+    network: Network!
+    card: ClientCard!
+}
+
+type ClientMutation{
+
+}
+
+type ClientCard {
+    token: String!
+}
+
+type ClientData {
+    name: String!
+    phone: PhoneNumber
+}
+
+type PhoneNumber{
+    #    countryCode: String!
+    #    number: String!
+    rawNumber: String!
+}

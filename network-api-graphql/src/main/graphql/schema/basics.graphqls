@@ -1,0 +1,38 @@
+type Query{}
+type Mutation{}
+
+scalar Long
+scalar LocalDate
+scalar LocalTime
+scalar LocalDateTime
+
+
+input RequestRangeInput {
+    start: Int! = 2147483647
+    limit: Int! = 2147483647
+}
+
+input DateRangeInput {
+    start: LocalDate
+    end: LocalDate
+}
+
+type DateRange {
+    start: LocalDate
+    end: LocalDate
+}
+
+type TimeRange {
+    start: LocalTime!
+    end: LocalTime!
+}
+
+type DateTimeRange {
+    start: LocalDateTime!
+    end: LocalDateTime!
+}
+
+type Cost {
+    rawCost: Long!
+    formattedCost: String!
+}

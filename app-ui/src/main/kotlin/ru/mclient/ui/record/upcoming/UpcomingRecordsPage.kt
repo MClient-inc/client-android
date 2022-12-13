@@ -92,22 +92,7 @@ fun UpcomingRecordsPage(
     ) {
         val count = LocalConfiguration.current.screenWidthDp / 180
         if (!state.isLoading && state.records.isEmpty()) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .outlined()
-                    .padding(10.dp)
-                    .fillMaxWidth()
-            ) {
-                Icon(
-                    painterResource(id = R.drawable.empty),
-                    contentDescription = null,
-                    modifier = Modifier.size(75.dp)
-                )
-                Text("Пусто", style = MaterialTheme.typography.headlineSmall)
-                DesignedButton(text = "Обновить", onClick = onRefresh)
-            }
+            EmptyRecords(modifier = Modifier.fillMaxWidth())
         } else {
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Adaptive(180.dp),
@@ -149,6 +134,31 @@ fun UpcomingRecordsPage(
                 })
         }
 
+    }
+}
+
+@Composable
+fun EmptyRecords(
+    modifier: Modifier = Modifier,
+    onRefresh: (() -> Unit)? = null,
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .outlined()
+            .padding(10.dp)
+            .then(modifier)
+    ) {
+        Icon(
+            painterResource(id = R.drawable.empty),
+            contentDescription = null,
+            modifier = Modifier.size(75.dp)
+        )
+        Text("Пусто", style = MaterialTheme.typography.headlineSmall)
+        if (onRefresh != null) {
+            DesignedButton(text = "Обновить", onClick = onRefresh)
+        }
     }
 }
 

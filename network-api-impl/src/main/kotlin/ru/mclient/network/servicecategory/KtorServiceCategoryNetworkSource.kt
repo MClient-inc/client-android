@@ -9,9 +9,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.Serializable
 import org.koin.core.annotation.Named
-import org.koin.core.annotation.Single
 
-@Single
 class KtorServiceCategoryNetworkSource(
     @Named("authorized")
     private val client: HttpClient,
@@ -23,7 +21,7 @@ class KtorServiceCategoryNetworkSource(
         return GetServiceCategoriesByCompanyOutput(
             categories = body.categories.map { category ->
                 GetServiceCategoriesByCompanyOutput.ServiceCategory(
-                    id = category.id,
+                    id = category.id.toString(),
                     title = category.title
                 )
             }
@@ -34,7 +32,7 @@ class KtorServiceCategoryNetworkSource(
         val response = client.get("/categories/${input.categoryId}")
         val body = response.body<GetServiceCategoryResponse>()
         return GetServiceCategoryByIdOutput(
-            id = body.id,
+            id = body.id.toString(),
             title = body.title,
         )
     }
@@ -46,7 +44,7 @@ class KtorServiceCategoryNetworkSource(
         }
         val body = response.body<CreateServiceCategoryResponse>()
         return CreateServiceCategoryOutput(
-            id = body.id,
+            id = body.id.toString(),
             title = body.title,
         )
     }

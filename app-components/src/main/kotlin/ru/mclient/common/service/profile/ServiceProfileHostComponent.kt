@@ -8,13 +8,16 @@ import ru.mclient.common.childDIContext
 
 class ServiceProfileHostComponent(
     componentContext: DIComponentContext,
-    serviceId: Long
+    serviceId: Long,
+    companyId: Long,
 ) : ServiceProfileHost, DIComponentContext by componentContext {
 
     override val bar: TopBar = ImmutableTopBar(TopBarState("Профиль"))
 
     override val profile: ServiceProfile =
         ServiceProfileComponent(
-            componentContext = childDIContext(key = "service_profile"), serviceId = serviceId
+            componentContext = childDIContext(key = "service_profile"),
+            serviceId = serviceId,
+            companyId = companyId,
         )
 }

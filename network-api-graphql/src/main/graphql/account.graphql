@@ -1,0 +1,13 @@
+fragment BaseAccount on Account {
+    id
+    username
+    data {
+        name
+    }
+}
+
+query GetAccount {
+    account {
+        ...BaseAccount
+    }
+}

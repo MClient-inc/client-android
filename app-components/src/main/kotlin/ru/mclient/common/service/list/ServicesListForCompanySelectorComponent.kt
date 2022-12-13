@@ -72,8 +72,15 @@ class ServicesListForCompanySelectorComponent(
         navigation.push(Config.Services(categoryId))
     }
 
-    private fun onServiceSelected(id: Long, title: String, cost: Long) {
-        store.accept(RecordCreateServicesSelectorStore.Intent.Select(id, title, cost))
+    private fun onServiceSelected(id: Long, title: String, cost: Long, formattedCost: String) {
+        store.accept(
+            RecordCreateServicesSelectorStore.Intent.Select(
+                id = id,
+                title = title,
+                cost = cost,
+                formattedCost = formattedCost
+            )
+        )
     }
 
     private fun createChild(
@@ -94,7 +101,7 @@ class ServicesListForCompanySelectorComponent(
                     componentContext = componentContext,
                     companyId = companyId,
                     categoryId = config.categoryId,
-                    onSelect = { onServiceSelected(it.id, it.title, it.cost) },
+                    onSelect = { onServiceSelected(it.id, it.title, it.cost, it.formattedCost) },
                 )
             )
         }

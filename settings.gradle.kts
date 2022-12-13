@@ -43,6 +43,7 @@ include(
     "app-startup",
     "network-api-core",
     "network-api-impl",
+    "network-api-graphql",
     "network-local-core",
     "network-local-impl",
     "network-mvi-core",

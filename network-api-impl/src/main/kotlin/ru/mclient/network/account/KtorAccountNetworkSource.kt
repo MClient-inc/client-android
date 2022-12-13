@@ -5,7 +5,6 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import kotlinx.serialization.Serializable
 import org.koin.core.annotation.Named
-import org.koin.core.annotation.Single
 
 @Serializable
 class GetAccountResponse(
@@ -14,7 +13,6 @@ class GetAccountResponse(
     val name: String,
 )
 
-@Single
 class KtorAccountNetworkSource(
     @Named("authorized")
     private val client: HttpClient

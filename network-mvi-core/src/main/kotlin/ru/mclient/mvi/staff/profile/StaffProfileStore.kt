@@ -7,9 +7,9 @@ import java.time.LocalTime
 interface StaffProfileStore :
     ParametrizedStore<StaffProfileStore.Intent, StaffProfileStore.State, StaffProfileStore.Label, StaffProfileStore.Params> {
 
-    @JvmInline
-    value class Params(
+    class Params(
         val staffId: Long,
+        val companyId: Long,
     )
 
     sealed class Intent {

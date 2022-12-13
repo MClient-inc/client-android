@@ -91,13 +91,13 @@ class ClientsListForCompanyStoreImpl(
             scope.launch {
                 try {
                     val response = clientNetworkSource.findClientsForCompany(
-                        GetClientsForCompanyInput(companyId)
+                        GetClientsForCompanyInput(companyId.toString())
                     )
                     syncDispatch(
                         Message.Loaded(
                             response.clients.map { client ->
                                 Message.Loaded.Client(
-                                    id = client.id,
+                                    id = client.id.toLong(),
                                     title = client.title,
                                     phone = client.phone,
                                 )

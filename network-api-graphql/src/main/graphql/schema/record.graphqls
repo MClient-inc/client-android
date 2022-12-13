@@ -1,0 +1,31 @@
+extend type Query {
+    record(id: ID!): Record!
+}
+
+extend type Client {
+    records(company: ID = null, period: DateRangeInput! = {}): [Record!]!
+}
+
+type Record {
+    id: ID!
+    data: RecordData!
+    company: Company!
+    client: Client!
+    staff: Staff!
+    services: [Service!]!
+    date: DateTimeRange!
+    info: RecordInfo!
+}
+
+type RecordInfo {
+    totalCost: Long!
+    status: RecordStatus!
+}
+
+type RecordData {
+    comment: String
+}
+
+enum RecordStatus {
+    WAITING, COME, NOT_COME
+}

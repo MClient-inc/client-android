@@ -1,0 +1,48 @@
+fragment BaseCompany on Company {
+    id
+    codename
+    data {
+        title
+        description
+    }
+    network {
+        id
+    }
+}
+fragment BaseNetwork on Network {
+    id
+    codename
+    data {
+        title
+        description
+    }
+}
+
+
+query GetCompany($query: ID!) {
+    company(query: $query) {
+        ...BaseCompany
+    }
+}
+
+query GetAccountNetworks {
+    account {
+        networks {
+            ...BaseNetwork
+        }
+    }
+}
+
+query GetNetworkCompanies($query: ID!) {
+    network(query: $query) {
+        companies {
+            ...BaseCompany
+        }
+    }
+}
+
+query GetNetwork($query: ID!) {
+    network(query: $query) {
+        ...BaseNetwork
+    }
+}

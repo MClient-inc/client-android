@@ -89,7 +89,7 @@ class CompanyNetworksListForAccountStoreImpl(
             dispatch(Message.Loading)
             scope.launch {
                 val response = try {
-                    companiesSource.getNetworks(GetCompanyNetworksInput(accountId))
+                    companiesSource.getNetworks(GetCompanyNetworksInput(accountId.toString()))
                 } catch (e: Exception) {
                     syncDispatch(Message.Failed)
                     return@launch
@@ -98,7 +98,7 @@ class CompanyNetworksListForAccountStoreImpl(
                     Message.Loaded(
                         response.networks.map { network ->
                             Message.Loaded.CompanyNetwork(
-                                id = network.id,
+                                id = network.id.toLong(),
                                 title = network.title,
                                 codename = network.codename,
                                 icon = network.icon,

@@ -1,0 +1,83 @@
+fragment BasicStaff on Staff {
+    id
+    codename
+    data {
+        name
+        role
+    }
+}
+
+query GetStaffForCompany($company: ID!) {
+    company(query: $company) {
+        staff {
+            ...BasicStaff
+        }
+    }
+}
+
+query GetStaff($staff: ID!) {
+    staff(query: $staff) {
+        ...BasicStaff
+    }
+}
+
+mutation AddStaff(
+    $company: ID!
+    $name: String!
+    $codename: String!
+    $role: String
+) {
+    company(query: $company) {
+        addStaff(input: { name: $name, codename: $codename, role: $role }) {
+            ...BasicStaff
+        }
+    }
+}
+
+query GetStaffSchedule(
+    $company: ID!
+    $staff: ID!
+) {
+    staff(query: $staff) {
+        schedules(company: $company) {
+            date
+            slots {
+                start
+                end
+            }
+        }
+    }
+}
+
+mutation EditStaffSchedule(
+    $staff: ID!
+    $input: [EditStaffScheduleInput!]!
+) {
+    staff (query: $staff) {
+        schedules(input: $input) {
+            date
+            slots {
+                start
+                end
+            }
+        }
+    }
+}
+
+query GetCompanyStaffSchedule(
+    $company: ID!
+    $date: LocalDateTime!
+) {
+    company(query: $company) {
+        schedule(date: $date) {
+            staff {
+                id
+                codename
+                data {
+                    name
+                    role
+                }
+            }
+        }
+    }
+}

@@ -8,6 +8,7 @@ import ru.mclient.common.bar.TopBarState
 class StaffScheduleHostComponent(
     componentContext: DIComponentContext,
     staffId: Long,
+    companyId: Long,
     onSuccess: () -> Unit,
 ) : StaffScheduleHost, DIComponentContext by componentContext {
 
@@ -16,6 +17,7 @@ class StaffScheduleHostComponent(
     override val staffSchedule: StaffSchedule = StaffScheduleComponent(
         componentContext = componentContext,
         staffId = staffId,
+        companyId = companyId,
         onSuccess = onSuccess
     )
 }

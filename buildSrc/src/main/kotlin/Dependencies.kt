@@ -30,13 +30,6 @@ interface Dependencies {
         const val version = "1.7.20-1.0.8"
     }
 
-    object Apollo {
-        const val plugin = "com.apollographql.apollo3"
-        const val version = "3.4.0"
-        const val runtime = "com.apollographql.apollo3:apollo-runtime:$version"
-        const val api = "com.apollographql.apollo3:apollo-api:$version"
-    }
-
     object Kotlin : Dependencies {
         const val version = "1.7.20"
     }
@@ -52,6 +45,13 @@ interface Dependencies {
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val guava = "org.jetbrains.kotlinx:kotlinx-coroutines-guava:$version"
         const val tasks = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$version"
+    }
+
+    object Apollo : Dependencies {
+        const val version = "3.7.1"
+        const val plugin = "com.apollographql.apollo3"
+        const val runtime = "com.apollographql.apollo3:apollo-runtime:$version"
+        const val adapters = "com.apollographql.apollo3:apollo-adapters:$version"
     }
 
     object Serialization : Dependencies {
@@ -166,6 +166,7 @@ interface Dependencies {
         const val swiperefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
         const val permissions = "com.google.accompanist:accompanist-permissions:$version"
         const val placeholder = "com.google.accompanist:accompanist-placeholder:$version"
+        const val pager = "com.google.accompanist:accompanist-pager:$version"
     }
 
     object Ktor : Dependencies {

@@ -43,10 +43,10 @@ class RecordCreateServicesSelectorStoreImpl(
                         state.copy(
                             isExpanded = false,
                             services = (state.services + RecordCreateServicesSelectorStore.State.Service(
-                                intent.id,
-                                intent.title,
-                                intent.cost,
-                                "${intent.cost} ₽",
+                                id = intent.id,
+                                title = intent.title,
+                                cost = intent.cost,
+                                formattedCost = intent.formattedCost,
                                 uniqueId = kotlin.random.Random.nextInt(),
                             ))
                         )

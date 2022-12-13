@@ -92,16 +92,16 @@ class AbonementsListStoreImpl(
             scope.launch {
                 try {
                     val response = abonementSource.getAbonementsForCompany(
-                        GetAbonementsForCompanyInput(companyId)
+                        GetAbonementsForCompanyInput(companyId.toString())
                     )
                     syncDispatch(Message.Loaded(
                         response.abonements.map { abonement ->
                             Message.Loaded.Abonement(
-                                id = abonement.id,
+                                id = abonement.id.toLong(),
                                 title = abonement.title,
                                 subabonements = abonement.subabonements.map {
                                     Message.Loaded.Subabonement(
-                                        id = it.id,
+                                        id = it.id.toLong(),
                                         title = it.title,
                                         cost = it.cost,
                                     )

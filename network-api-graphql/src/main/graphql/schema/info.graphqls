@@ -1,0 +1,22 @@
+extend type Query {
+    info: Info!
+}
+
+extend type Mutation {
+    info: InfoMutation
+}
+
+type InfoMutation {
+    setUserAgreement(title: String!, content: String!): Agreement!
+    setDateProcessingAgreement(title: String!, content: String!): Agreement!
+}
+
+type Info {
+    userAgreement: Agreement!
+    dataProcessingAgreement: Agreement!
+}
+
+type Agreement {
+    title: String!
+    content: String!
+}

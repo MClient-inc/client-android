@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ru.mclient.common.client.profile.ClientProfile
 import ru.mclient.common.client.profile.ClientProfileState
+import ru.mclient.common.client.profile.ClientProfileState.RecordStatus.COME
+import ru.mclient.common.client.profile.ClientProfileState.RecordStatus.NOT_COME
+import ru.mclient.common.client.profile.ClientProfileState.RecordStatus.WAITING
 
 @Composable
 fun ClientProfileUI(
@@ -88,7 +91,12 @@ fun ClientProfileState.toUI(): ClientProfilePageState {
                 staff = ClientProfilePageState.Staff(
                     id = it.staff.id,
                     name = it.staff.name
-                )
+                ),
+                status = when (it.status) {
+                    WAITING -> ClientProfilePageState.RecordStatus.WAITING
+                    COME -> ClientProfilePageState.RecordStatus.COME
+                    NOT_COME -> ClientProfilePageState.RecordStatus.NOT_COME
+                }
             )
         }
 

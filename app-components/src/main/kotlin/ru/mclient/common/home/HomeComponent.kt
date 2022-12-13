@@ -60,7 +60,7 @@ class HomeComponent(
                         companyId = config.companyId,
                         onSelectRecord = { onRecordSelect(it) },
                         onRecordsList = { onRecordsList(config.companyId) },
-                        onClient = { navigation.push(Config.ClientProfile(it)) }
+                        onClient = { navigation.push(Config.ClientProfile(it, config.companyId)) }
                     )
                 )
 
@@ -106,6 +106,7 @@ class HomeComponent(
                     ClientProfileHostComponent(
                         componentContext = componentContext,
                         clientId = config.clientId,
+                        companyId = config.companyId,
                         onAbonementCreate = { navigation.push(Config.AbonementCreate(config.clientId)) },
                         onRecord = { onRecordSelect(it) }
                     )
@@ -133,8 +134,7 @@ class HomeComponent(
         value class RecordProfile(val recordId: Long) : Config
 
         @Parcelize
-        @JvmInline
-        value class ClientProfile(val clientId: Long) : Config
+        data class ClientProfile(val clientId: Long, val companyId: Long) : Config
 
         @Parcelize
         @JvmInline

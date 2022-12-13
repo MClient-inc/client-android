@@ -1,0 +1,140 @@
+query GetAbonementsForCompany($company: ID!) {
+    company(query: $company) {
+        abonements {
+            id
+            data {
+                title
+            }
+            subabonements {
+                id
+                data {
+                    title
+                    cost {
+                        ...BasicCost
+                    }
+                }
+                info {
+                    usages
+                    liveInMillis
+                    availableUntil
+                }
+            }
+            services {
+                id
+                data {
+                    title
+                    cost {
+                        ...BasicCost
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+query GetAbonement($abonementId: ID!) {
+    abonement(id: $abonementId) {
+        id
+        data {
+            title
+        }
+        subabonements {
+            id
+            data {
+                title
+                cost {
+                    ...BasicCost
+                }
+            }
+            info {
+                usages
+                liveInMillis
+                availableUntil
+            }
+        }
+        services {
+            id
+            data {
+                title
+                cost {
+                    ...BasicCost
+                }
+            }
+        }
+    }
+}
+
+query GetAbonementsForClient($clietId: ID!) {
+    client(id: $clietId) {
+        abonements {
+            id
+            data {
+                currentUsages
+            }
+            subabonement{
+                id
+                data {
+                    title
+                    cost {
+                        ...BasicCost
+                    }
+                }
+                info {
+                    usages
+                }
+                abonement {
+                    id
+                    data {
+                        title
+                    }
+                }
+            }
+        }
+    }
+}
+
+mutation AddAbonement($company: ID! $input: AddAbonementInput!) {
+    company(query: $company) {
+        addAbonement(input: $input) {
+            id
+            data {
+                title
+                description
+            }
+            subabonements {
+                id
+                data {
+                    title
+                    cost {
+                        rawCost
+                    }
+                }
+                info {
+                    usages
+                    liveInMillis
+                    availableUntil
+                }
+            }
+            services {
+                id
+                data {
+                    title
+                    cost {
+                        ...BasicCost
+                    }
+                }
+            }
+        }
+    }
+}
+
+mutation AddClientAbonement($client: ID! $subabonement: ID!) {
+    client(id: $client) {
+        addClientAbonement(subabonement: $subabonement) {
+            client {
+                id
+            }
+        }
+    }
+}

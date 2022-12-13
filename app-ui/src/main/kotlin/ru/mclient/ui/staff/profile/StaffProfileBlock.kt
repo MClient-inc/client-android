@@ -71,11 +71,12 @@ fun ClientProfileHeaderComponent(
                     style = MaterialTheme.typography.headlineSmall,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(
-                    text = staff.role.ifBlank { staff.codename },
-                    style = MaterialTheme.typography.labelSmall,
-                    overflow = TextOverflow.Ellipsis
-                )
+                if (staff.role.isNotBlank())
+                    Text(
+                        text = staff.role,
+                        style = MaterialTheme.typography.labelSmall,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 Text(
                     text = staff.codename,
                     style = MaterialTheme.typography.labelSmall,

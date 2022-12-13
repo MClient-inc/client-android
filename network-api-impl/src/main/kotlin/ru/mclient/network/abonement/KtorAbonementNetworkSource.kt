@@ -11,10 +11,8 @@ import io.ktor.http.contentType
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.koin.core.annotation.Named
-import org.koin.core.annotation.Single
 import java.time.LocalDateTime
 
-@Single
 class KtorAbonementNetworkSource(
     @Named("authorized")
     val client: HttpClient,
@@ -25,10 +23,10 @@ class KtorAbonementNetworkSource(
         val body = response.body<GetAbonementByIdResponse>()
         return GetAbonementByIdOutput(
             abonement = GetAbonementByIdOutput.Abonement(
-                id = body.id,
+                id = body.id.toString(),
                 subabonements = body.subabonements.map {
                     GetAbonementByIdOutput.Subabonement(
-                        id = it.id,
+                        id = it.id.toString(),
                         liveTimeInMillis = it.liveTimeInMillis,
                         availableUntil = it.availableUntil,
                         usages = it.usages,
@@ -38,7 +36,7 @@ class KtorAbonementNetworkSource(
                 title = body.title,
                 services = body.services.map {
                     GetAbonementByIdOutput.Service(
-                        id = it.id,
+                        id = it.id.toString(),
                         title = it.title,
                         cost = it.cost,
                     )
@@ -53,11 +51,11 @@ class KtorAbonementNetworkSource(
         return GetAbonementsForCompanyOutput(
             abonements = body.abonements.map { abonement ->
                 GetAbonementsForCompanyOutput.Abonement(
-                    abonement.id,
+                    abonement.id.toString(),
                     abonement.title,
                     abonement.subabonements.map {
                         GetAbonementsForCompanyOutput.Subabonement(
-                            id = it.id,
+                            id = it.id.toString(),
                             title = it.title,
                             cost = it.cost,
                             usages = it.usages,
@@ -82,7 +80,7 @@ class KtorAbonementNetworkSource(
                             cost = it.cost,
                         )
                     },
-                    input.services
+                    input.services.map(String::toLong)
                 )
             )
             contentType(ContentType.Application.Json)
@@ -90,11 +88,11 @@ class KtorAbonementNetworkSource(
         val body = response.body<CreateAbonementResponse>()
         return CreateAbonementOutput(
             abonement = CreateAbonementOutput.Abonement(
-                id = body.id,
+                id = body.id.toString(),
                 title = body.title,
                 subabonements = body.subabonements.map {
                     CreateAbonementOutput.Subabonement(
-                        id = it.id,
+                        id = it.id.toString(),
                         title = it.title,
                         usages = it.usages,
                         cost = it.cost,
@@ -104,7 +102,7 @@ class KtorAbonementNetworkSource(
                 },
                 services = body.services.map {
                     CreateAbonementOutput.Service(
-                        id = it.id,
+                        id = it.id.toString(),
                         title = it.title,
                         cost = it.cost,
                     )
@@ -119,13 +117,13 @@ class KtorAbonementNetworkSource(
         return GetAbonementsForClientOutput(
             abonements = body.abonements.map {
                 GetAbonementsForClientOutput.ClientAbonement(
-                    id = it.id,
+                    id = it.id.toString(),
                     usages = it.usages,
                     abonement = GetAbonementsForClientOutput.Abonement(
-                        id = it.abonement.id,
+                        id = it.abonement.id.toString(),
                         title = it.abonement.title,
                         subabonement = GetAbonementsForClientOutput.Subabonement(
-                            id = it.abonement.subabonement.id,
+                            id = it.abonement.subabonement.id.toString(),
                             title = it.abonement.subabonement.title,
                             cost = it.abonement.subabonement.cost,
                             maxUsages = it.abonement.subabonement.maxUsages,
@@ -140,7 +138,7 @@ class KtorAbonementNetworkSource(
         client.put("/clients/${input.clientId}/abonements") {
             setBody(
                 AddAbonementToClientRequest(
-                    subabonementId = input.subabonementId,
+                    subabonementId = input.subabonementId.toLong(),
                 )
             )
             contentType(ContentType.Application.Json)

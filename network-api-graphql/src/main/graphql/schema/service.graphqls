@@ -1,0 +1,101 @@
+extend type Query {
+    service(id: ID!): Service!
+    serviceCategory(id: ID!): ServiceCategory!
+}
+
+extend type Company  {
+    serviceCategories: [ServiceCategory!]!
+}
+extend type Network  {
+    serviceCategories: [ServiceCategory!]!
+}
+
+extend type CompanyMutation  {
+    addServiceCategory(input: AddServiceCategoryForCompanyInput!): ServiceCategory!
+}
+
+extend type NetworkMutation {
+    addServiceCategory(input: AddServiceCategoryForNetworkInput!): ServiceCategory!
+}
+
+extend type Mutation {
+    serviceCategory(id: ID!):ServiceCategoryMutation!
+}
+
+input AddServiceCategoryForCompanyInput {
+    title: String!
+}
+
+input AddServiceCategoryForNetworkInput {
+    title:String!
+    companies: [ID!]!
+}
+
+type Service {
+    id: ID!
+    data: ServiceData!
+    serviceCategory: ServiceCategory!
+    network: Network!
+    companies: [Company!]!
+}
+
+type ServiceData {
+    title: String!
+    cost: Cost!
+    durationInMinutes: Int!
+    description: String
+}
+
+type ServiceCategory{
+    id: ID!
+    data: ServiceCategoryData!
+    services(company: ID): [Service!]!
+    network: Network!
+    companies: [Company!]!
+}
+
+type ServiceCategoryData{
+    title: String!
+    description: String
+}
+
+type ServiceCategoryMutation {
+    addService(input: AddServiceInput!): Service!
+}
+
+input AddServiceInput {
+    title: String!
+    companies: [ID!]!
+    cost: Long!
+    durationInMinutes: Int! = 60
+}
+
+
+extend type Service {
+    analytics: ServiceAnalytics!
+}
+
+type ServiceAnalytics {
+    network(period: DateRangeInput!): ServiceAnalyticsItem!
+    company(company: ID!, period: DateRangeInput!): ServiceAnalyticsItem!
+}
+
+type ServiceAnalyticsItem {
+    comeCount: Long!
+    notComeCount: Long!
+    waitingCount: Long!
+    totalCount: Long!
+    popularity: String!
+}
+
+#class ServiceAnalytics(
+#    val _source: Service,
+#)
+#
+#class AnalyticsItem(
+#    var comeCount: Long = 0,
+#    var notComeCount: Long = 0,
+#    var waitingCount: Long = 0,
+#    var totalCount: Long = 0,
+#    var popularity: String = ""
+#)

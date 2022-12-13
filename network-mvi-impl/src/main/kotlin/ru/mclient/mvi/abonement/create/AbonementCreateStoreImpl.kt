@@ -62,7 +62,7 @@ class AbonementCreateStoreImpl(
                     scope.launch {
                         val abonement = abonementNetworkSource.createAbonement(
                             CreateAbonementInput(
-                                params.companyId,
+                                params.companyId.toString(),
                                 intent.title,
                                 intent.subabonements.map {
                                     CreateAbonementInput.Subabonement(
@@ -71,7 +71,7 @@ class AbonementCreateStoreImpl(
                                         cost = it.cost,
                                     )
                                 },
-                                intent.services
+                                intent.services.map(Long::toString)
                             )
                         )
                         syncDispatch(
@@ -79,7 +79,7 @@ class AbonementCreateStoreImpl(
                                 isLoading = false,
                                 isSuccess = true,
                                 isAvailable = false,
-                                abonement = AbonementCreateStore.State.Abonement(abonement.abonement.id),
+                                abonement = AbonementCreateStore.State.Abonement(abonement.abonement.id.toLong()),
                             )
                         )
                     }

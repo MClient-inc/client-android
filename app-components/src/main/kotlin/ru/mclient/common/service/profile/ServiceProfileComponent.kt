@@ -5,14 +5,17 @@ import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
 import ru.mclient.mvi.service.profile.ServiceProfileStore
+import ru.mclient.mvi.service.profile.ServiceProfileStore.State.AnalyticsType.COMPANY
+import ru.mclient.mvi.service.profile.ServiceProfileStore.State.AnalyticsType.NETWORK
 
 class ServiceProfileComponent(
     componentContext: DIComponentContext,
-    serviceId: Long
+    serviceId: Long,
+    companyId: Long,
 ) : ServiceProfile, DIComponentContext by componentContext {
 
     private val store: ServiceProfileStore =
-        getParameterizedStore { ServiceProfileStore.Params(serviceId) }
+        getParameterizedStore { ServiceProfileStore.Params(serviceId, companyId) }
 
     override val state: ServiceProfileState by store.states(this) { it.toState() }
 
@@ -25,7 +28,7 @@ class ServiceProfileComponent(
                 notComeCount = analytics.notComeCount,
                 waitingCount = analytics.waitingCount,
                 totalRecords = analytics.totalRecords,
-                value = analytics.value
+                popularity = analytics.popularity
             )
         )
     }
@@ -39,7 +42,7 @@ class ServiceProfileComponent(
                 notComeCount = analytics.notComeCount,
                 waitingCount = analytics.waitingCount,
                 totalRecords = analytics.totalRecords,
-                value = analytics.value
+                popularity = analytics.popularity
             )
         )
     }
@@ -49,6 +52,11 @@ class ServiceProfileComponent(
             service = service?.toState(),
             network = network?.toState(),
             company = company?.toState(),
+            analyticsType = when (analyticsType) {
+                COMPANY -> ServiceProfileState.AnalyticsType.COMPANY
+                NETWORK -> ServiceProfileState.AnalyticsType.NETWORK
+            },
+            isTypeSelecting = isTypeSelecting,
             isLoading = isLoading
         )
     }
@@ -67,6 +75,22 @@ class ServiceProfileComponent(
 
     override fun onEdit() {
         TODO()
+    }
+
+    override fun onDismiss() {
+        store.accept(ServiceProfileStore.Intent.Dismiss)
+    }
+
+    override fun onToggleCompany() {
+        store.accept(ServiceProfileStore.Intent.ToggleCompany)
+    }
+
+    override fun onToggleNetwork() {
+        store.accept(ServiceProfileStore.Intent.ToggleNetwork)
+    }
+
+    override fun onSelect() {
+        store.accept(ServiceProfileStore.Intent.Select)
     }
 
 }

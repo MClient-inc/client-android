@@ -10,11 +10,12 @@ import java.time.LocalDate
 class StaffScheduleComponent(
     componentContext: DIComponentContext,
     staffId: Long,
+    companyId: Long,
     private val onSuccess: () -> Unit,
 ) : StaffSchedule, DIComponentContext by componentContext {
 
     private val store: StaffScheduleEditStore =
-        getParameterizedStore { StaffScheduleEditStore.Params(staffId) }
+        getParameterizedStore { StaffScheduleEditStore.Params(staffId, companyId) }
 
     override val state: StaffScheduleState by store.states(this) { it.toState() }
 

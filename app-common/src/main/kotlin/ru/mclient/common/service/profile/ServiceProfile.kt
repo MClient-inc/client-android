@@ -4,12 +4,14 @@ data class ServiceProfileState(
     val service: Service?,
     val network: NetworkAnalytics?,
     val company: CompanyAnalytics?,
-    val isLoading: Boolean
+    val analyticsType: AnalyticsType,
+    val isTypeSelecting: Boolean,
+    val isLoading: Boolean,
 ) {
     data class Service(
         val title: String,
         val cost: String,
-        val description: String
+        val description: String,
     )
 
     data class AnalyticsItem(
@@ -17,7 +19,7 @@ data class ServiceProfileState(
         val notComeCount: Long,
         val waitingCount: Long,
         val totalRecords: Long,
-        val value: String
+        val popularity: String,
     )
 
     data class NetworkAnalytics(
@@ -31,6 +33,11 @@ data class ServiceProfileState(
         val title: String,
         val analytics: AnalyticsItem,
     )
+
+    enum class AnalyticsType {
+        COMPANY, NETWORK
+    }
+
 }
 
 interface ServiceProfile {
@@ -41,4 +48,11 @@ interface ServiceProfile {
 
     fun onEdit()
 
+    fun onDismiss()
+
+    fun onToggleCompany()
+
+    fun onToggleNetwork()
+
+    fun onSelect()
 }

@@ -11,11 +11,9 @@ import io.ktor.http.contentType
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.koin.core.annotation.Named
-import org.koin.core.annotation.Single
 import java.time.LocalDate
 import java.time.LocalTime
 
-@Single
 class KtorStaffNetworkSource(
     @Named("authorized")
     val client: HttpClient,
@@ -29,7 +27,7 @@ class KtorStaffNetworkSource(
         return GetStaffForCompanyAndScheduleOutput(
             staff = body.schedule.map {
                 GetStaffForCompanyAndScheduleOutput.Staff(
-                    id = it.staff.id,
+                    id = it.staff.id.toString(),
                     name = it.staff.name,
                     codename = it.staff.codename,
                     role = it.staff.role
@@ -44,7 +42,7 @@ class KtorStaffNetworkSource(
         return GetStaffForCompanyOutput(
             body.staff.map {
                 GetStaffForCompanyOutput.Staff(
-                    id = it.id,
+                    id = it.id.toString(),
                     name = it.name,
                     codename = it.codename,
                     role = it.role,
@@ -57,7 +55,7 @@ class KtorStaffNetworkSource(
         val response = client.get("/staff/${input.staffId}")
         val body = response.body<GetStaffResponse>()
         return GetStaffByIdOutput(
-            id = body.id,
+            id = body.id.toString(),
             name = body.name,
             codename = body.codename,
             role = body.role,
@@ -77,7 +75,7 @@ class KtorStaffNetworkSource(
         }
         val body = response.body<CreateStaffResponse>()
         return CreateStaffOutput(
-            id = body.id,
+            id = body.id.toString(),
             name = body.name,
             codename = body.codename,
             role = body.role,

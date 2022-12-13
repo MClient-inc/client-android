@@ -44,4 +44,5 @@ dependencies {
     implementation(Dependencies.Coroutines.core)
     implementation(Dependencies.Decompose.core)
     implementation(Dependencies.Compose.runtime)
+    implementation(Dependencies.Compose.ui)
 }

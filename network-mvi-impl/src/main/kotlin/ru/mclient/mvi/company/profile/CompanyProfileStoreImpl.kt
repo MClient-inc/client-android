@@ -81,16 +81,16 @@ class CompanyProfileStoreImpl(
             dispatch(Message.Loading)
             scope.launch {
                 try {
-                    val company = companiesSource.getCompany(GetCompanyInput(companyId))
+                    val company = companiesSource.getCompany(GetCompanyInput(companyId.toString()))
                     syncDispatch(
                         Message.Loaded(
                             Message.Loaded.Company(
-                                id = company.company.id,
+                                id = company.company.id.toLong(),
                                 title = company.company.title,
                                 codename = company.company.codename,
                                 description = company.company.description,
                                 icon = company.company.icon,
-                                networkId = company.company.networkId,
+                                networkId = company.company.networkId.toLong(),
                             )
                         )
                     )

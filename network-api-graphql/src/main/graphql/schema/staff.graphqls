@@ -1,0 +1,75 @@
+extend type Query {
+    staff(query: ID!): Staff!
+}
+
+extend type CompanyMutation {
+    addStaff(input: AddStaffInput!): Staff!
+}
+
+extend type Company {
+    staff: [Staff!]!
+    schedule(date: LocalDateTime!, staff: [ID!]! = []): [StaffSchedule!]!
+}
+
+extend type Network {
+    staff: [Staff!]!
+}
+
+extend type Mutation {
+    staff(query: ID!): StaffMutation!
+}
+
+type StaffMutation {
+    schedules(input: [EditStaffScheduleInput!]!): [StaffSchedule!]!
+}
+
+input AddStaffInput {
+    name: String!
+    codename: String!
+    role: String
+}
+
+
+type Staff {
+    id: ID!
+    codename: String!
+    data: StaffData!
+    companies: [Company!]!
+    schedules(company: ID! period: DateRangeInput! = {}): [StaffSchedule!]!
+    schedule(company: ID!): StaffSchedule
+}
+
+type StaffData{
+    name: String!
+    role: String!
+}
+
+type StaffSchedule {
+    date: LocalDate!
+    slots: [StaffScheduleSlot!]!
+    staff: Staff!
+    company: Company!
+}
+
+type StaffScheduleSlot {
+    start: LocalTime!
+    end: LocalTime!
+}
+
+input EditStaffScheduleInput {
+    operation: OperationType!
+    company: ID!
+    date: LocalDate!
+    slots: [EditStaffScheduleSlotInput!]!
+}
+
+
+input EditStaffScheduleSlotInput {
+    start: LocalTime!
+    end: LocalTime!
+}
+
+enum OperationType {
+    EDIT, DELETE,
+}
+

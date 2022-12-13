@@ -80,11 +80,11 @@ class CompanyNetworkProfileByIdStoreImpl(
             dispatch(Message.Loading)
             scope.launch {
                 try {
-                    val company = companiesSource.getNetwork(GetNetworkInput(networkId))
+                    val company = companiesSource.getNetwork(GetNetworkInput(networkId.toString()))
                     syncDispatch(
                         Message.Loaded(
                             Message.Loaded.Company(
-                                id = company.network.id,
+                                id = company.network.id.toLong(),
                                 title = company.network.title,
                                 codename = company.network.codename,
                                 description = company.network.description,

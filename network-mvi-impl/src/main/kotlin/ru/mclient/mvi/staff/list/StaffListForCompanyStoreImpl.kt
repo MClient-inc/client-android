@@ -90,12 +90,12 @@ class StaffListForCompanyStoreImpl(
             scope.launch {
                 try {
                     val response =
-                        staffSource.getStaffForCompany(GetStaffForCompanyInput(companyId))
+                        staffSource.getStaffForCompany(GetStaffForCompanyInput(companyId.toString()))
                     syncDispatch(
                         Message.Loaded(
                             response.staff.map { staff ->
                                 Message.Loaded.Staff(
-                                    id = staff.id,
+                                    id = staff.id.toLong(),
                                     name = staff.name,
                                     codename = staff.codename,
                                     icon = staff.role,

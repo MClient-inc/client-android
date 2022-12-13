@@ -1,0 +1,102 @@
+fragment BasicService on Service{
+    id
+    data {
+        title
+        description
+        cost {
+            ...BasicCost
+        }
+        durationInMinutes
+    }
+    serviceCategory {
+        id
+    }
+}
+
+query GetService($id: ID!){
+    service(id: $id) {
+        ...BasicService
+    }
+}
+
+query GetServicesForCategory($categoryId: ID!, $company: ID) {
+    serviceCategory(id: $categoryId) {
+        services(company: $company) {
+            ...BasicService
+        }
+    }
+}
+
+mutation AddService($categoryId: ID!, $title: String!, $cost: Long!, $durationInMinutes: Int!, $companies: [ID!]!) {
+    serviceCategory(id: $categoryId) {
+        addService(input: {title: $title, cost: $cost, durationInMinutes: $durationInMinutes, companies: $companies, }) {
+            ...BasicService
+        }
+    }
+}
+
+query ServiceCategoriesByCompany($company: ID!) {
+    company(query: $company) {
+        serviceCategories {
+            id
+            data {
+                title
+            }
+        }
+    }
+}
+query ServiceCategoryById($serviceCategory: ID!) {
+    serviceCategory(id: $serviceCategory) {
+        id
+        data {
+            title
+        }
+    }
+}
+
+mutation AddServiceCategory($company: ID!, $title: String!) {
+    company(query: $company) {
+        addServiceCategory(input: {title: $title}) {
+            id
+            data {
+                title
+            }
+        }
+    }
+}
+
+
+fragment ServiceAnalyticsFragment on ServiceAnalyticsItem {
+    comeCount
+    notComeCount
+    waitingCount
+    totalCount
+    popularity
+}
+
+query GetServiceAnalytics($service: ID!, $company: ID!, $range: DateRangeInput!) {
+    service(id: $service) {
+        network {
+            id
+            codename
+            data {
+                title
+            }
+        }
+        analytics {
+            network(period: $range) {
+                ...ServiceAnalyticsFragment
+            }
+            company(company: $company, period: $range) {
+                ...ServiceAnalyticsFragment
+            }
+        }
+    }
+    company(query: $company) {
+        id
+        codename
+        data {
+            title
+        }
+    }
+}

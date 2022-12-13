@@ -61,8 +61,8 @@ class AbonementClientCreateHostStoreImpl(
                     scope.launch {
                         abonementNetworkSource.addAbonementForClient(
                             AddAbonementToClientInput(
-                                clientId = params.clientId,
-                                subabonementId = intent.subabonementId,
+                                clientId = params.clientId.toString(),
+                                subabonementId = intent.subabonementId.toString(),
                             )
                         )
                         syncDispatch(

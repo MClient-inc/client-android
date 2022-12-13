@@ -8,6 +8,7 @@ interface StaffScheduleEditStore :
 
     class Params(
         val staffId: Long,
+        val companyId: Long,
     )
 
     sealed class Intent {

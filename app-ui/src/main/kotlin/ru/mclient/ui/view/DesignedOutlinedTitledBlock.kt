@@ -36,13 +36,11 @@ fun DesignedOutlinedTitledBlock(
     }
 }
 
-
 @Composable
 fun DesignedOutlinedTitledBlock(
     title: String,
-    button: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    trailingContent: @Composable () -> Unit,
     content: @Composable () -> Unit,
 ) {
     Column(
@@ -61,14 +59,33 @@ fun DesignedOutlinedTitledBlock(
                     .fillMaxWidth()
                     .weight(1f, fill = true)
             )
-            TextButton(onClick = onClick) {
-                Text(button)
-            }
+            trailingContent()
         }
         Box(modifier = Modifier.outlined()) {
             content()
         }
     }
+}
+
+
+@Composable
+fun DesignedOutlinedTitledBlock(
+    title: String,
+    button: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    DesignedOutlinedTitledBlock(
+        title = title,
+        trailingContent = {
+            TextButton(onClick = onClick) {
+                Text(button)
+            }
+        },
+        modifier = modifier,
+        content = content
+    )
 }
 
 @Composable

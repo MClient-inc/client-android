@@ -18,7 +18,7 @@ class ServiceCategoryListForCompanyStoreImpl(
     categoriesSource: ServiceCategoryNetworkSource,
 ) : ServiceCategoriesListForCompanyStore,
     Store<ServiceCategoriesListForCompanyStore.Intent, ServiceCategoriesListForCompanyStore.State, ServiceCategoriesListForCompanyStore.Label> by storeFactory.create(
-        name = "CompanyNetworksListForAccountStoreImpl",
+        name = "ServiceCategoriesListForCompanyStoreImpl",
         initialState = ServiceCategoriesListForCompanyStore.State(
             categories = emptyList(),
             companyId = params.companyId,
@@ -82,13 +82,13 @@ class ServiceCategoryListForCompanyStoreImpl(
         }
 
         private fun loadCompanies(
-            companyUd: Long
+            companyId: Long,
         ) {
             dispatch(Message.Loading)
             scope.launch {
                 val response = try {
                     categoriesSource.getServiceCategoriesByCompany(
-                        GetServiceCategoriesByCompanyInput(companyUd)
+                        GetServiceCategoriesByCompanyInput(companyId.toString())
                     )
                 } catch (e: Exception) {
                     syncDispatch(Message.Failed)
@@ -98,7 +98,7 @@ class ServiceCategoryListForCompanyStoreImpl(
                     Message.Loaded(
                         response.categories.map { category ->
                             Message.Loaded.ServiceCategory(
-                                id = category.id,
+                                id = category.id.toLong(),
                                 title = category.title,
                             )
                         }

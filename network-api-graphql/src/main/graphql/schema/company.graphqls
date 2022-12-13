@@ -1,0 +1,32 @@
+extend type Query {
+    company(query: ID!): Company!
+}
+
+extend type Network {
+    companies(range: RequestRangeInput): [Company!]!
+}
+
+extend type Mutation {
+    company(query: ID!): CompanyMutation!
+}
+
+type CompanyMutation {
+    #    TODO:
+    editCompanyData(input: EditCompanyDataInput): Company!
+}
+
+input EditCompanyDataInput {
+    title: String!
+}
+
+type Company {
+    id: ID!
+    codename: String!
+    data: CompanyData!
+    network: Network!
+}
+
+type CompanyData {
+    title: String!
+    description: String
+}

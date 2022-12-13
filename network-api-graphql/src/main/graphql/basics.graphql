@@ -1,0 +1,4 @@
+fragment BasicCost on Cost {
+    formattedCost
+    rawCost
+}

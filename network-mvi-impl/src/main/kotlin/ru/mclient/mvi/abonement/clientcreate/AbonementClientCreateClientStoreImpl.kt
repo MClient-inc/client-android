@@ -81,11 +81,12 @@ class AbonementClientCreateClientStoreImpl(
             dispatch(Message.Loading)
             scope.launch {
                 try {
-                    val response = clientSource.getClientById(GetClientByIdInput(clientId))
+                    val response =
+                        clientSource.getClientById(GetClientByIdInput(clientId.toString()))
                     dispatch(
                         Message.Loaded(
                             Message.Loaded.Client(
-                                id = response.id,
+                                id = response.id.toLong(),
                                 name = response.name,
                                 phone = response.phone
                             ),

@@ -77,12 +77,12 @@ class ServiceCategoryCreateStoreImpl(
                         val response = serviceCategoryNetworkSource.createServiceCategory(
                             CreateServiceCategoryInput(
                                 title = intent.title,
-                                companyId = params.companyId,
+                                companyId = params.companyId.toString(),
                             )
                         )
                         syncDispatch(
                             Message.Success(
-                                categoryId = response.id
+                                categoryId = response.id.toLong()
                             )
                         )
                     }

@@ -114,7 +114,7 @@ class StaffCreateStoreImpl(
             scope.launch {
                 val response = staffNetworkSource.createStaff(
                     CreateStaffInput(
-                        companyId = params.companyId,
+                        companyId = params.companyId.toString(),
                         name = name,
                         codename = codename,
                         role = role
@@ -122,7 +122,7 @@ class StaffCreateStoreImpl(
                 )
                 dispatch(
                     Message.Success(
-                        staffId = response.id,
+                        staffId = response.id.toLong(),
                         codename = response.codename,
                         name = response.name,
                         role = response.role,

@@ -99,21 +99,21 @@ class AbonementProfileStoreImpl(
             scope.launch {
                 try {
                     val response =
-                        abonnementSource.getAbonementById(GetAbonementByIdInput(abonementId))
+                        abonnementSource.getAbonementById(GetAbonementByIdInput(abonementId.toString()))
                     dispatch(
                         Message.Loaded(
                             abonement = Message.Loaded.Abonement(
-                                id = response.abonement.id,
+                                id = response.abonement.id.toLong(),
                                 services = response.abonement.services.map {
                                     Message.Loaded.Service(
-                                        id = it.id,
+                                        id = it.id.toLong(),
                                         title = it.title,
                                         cost = it.cost
                                     )
                                 },
                                 subabonements = response.abonement.subabonements.map {
                                     Message.Loaded.Subabonement(
-                                        id = it.id,
+                                        id = it.id.toLong(),
                                         liveTimeInMillis = it.liveTimeInMillis,
                                         availableUntil = it.availableUntil,
                                         usages = it.usages,

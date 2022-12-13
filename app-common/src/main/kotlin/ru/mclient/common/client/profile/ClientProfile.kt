@@ -59,8 +59,13 @@ class ClientProfileState(
         val time: Time,
         val staff: Staff,
         val services: List<Service>,
-        val totalCost: Long
+        val totalCost: Long,
+        val status: RecordStatus,
     )
+
+    enum class RecordStatus {
+        WAITING, COME, NOT_COME,
+    }
 
     class Service(
         val id: Long,
@@ -80,7 +85,7 @@ class ClientProfileState(
     )
 
     class Company(
-        val id:Long,
+        val id: Long,
         val title: String,
     )
 

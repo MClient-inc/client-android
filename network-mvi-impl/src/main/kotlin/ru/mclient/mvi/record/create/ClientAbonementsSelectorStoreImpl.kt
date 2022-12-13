@@ -90,16 +90,16 @@ class ClientAbonementsSelectorStoreImpl(
                     if (clientId != null)
                         scope.launch {
                             val abonements = abonementNetworkSource.getAbonementsForClient(
-                                GetAbonementsForClientInput(clientId)
+                                GetAbonementsForClientInput(clientId.toString())
                             ).abonements.map {
                                 ClientAbonementsSelectorStore.State.ClientAbonement(
-                                    id = it.id,
+                                    id = it.id.toLong(),
                                     usages = it.usages,
                                     abonement = ClientAbonementsSelectorStore.State.Abonement(
-                                        id = it.abonement.id,
+                                        id = it.abonement.id.toLong(),
                                         title = it.abonement.title,
                                         subabonement = ClientAbonementsSelectorStore.State.Subabonement(
-                                            id = it.abonement.subabonement.id,
+                                            id = it.abonement.subabonement.id.toLong(),
                                             title = it.abonement.subabonement.title,
                                             cost = it.abonement.subabonement.cost,
                                             maxUsages = it.abonement.subabonement.maxUsages,
@@ -139,7 +139,7 @@ class ClientAbonementsSelectorStoreImpl(
                         )
                         scope.launch {
                             val abonements = abonementNetworkSource.getAbonementsForClient(
-                                GetAbonementsForClientInput(clientId)
+                                GetAbonementsForClientInput(clientId.toString())
                             )
                             syncDispatch(
                                 state.copy(
@@ -148,13 +148,13 @@ class ClientAbonementsSelectorStoreImpl(
                                     selectedAbonements = emptyMap(),
                                     clientAbonements = abonements.abonements.map {
                                         ClientAbonementsSelectorStore.State.ClientAbonement(
-                                            id = it.id,
+                                            id = it.id.toLong(),
                                             usages = it.usages,
                                             abonement = ClientAbonementsSelectorStore.State.Abonement(
-                                                id = it.abonement.id,
+                                                id = it.abonement.id.toLong(),
                                                 title = it.abonement.title,
                                                 subabonement = ClientAbonementsSelectorStore.State.Subabonement(
-                                                    id = it.abonement.subabonement.id,
+                                                    id = it.abonement.subabonement.id.toLong(),
                                                     title = it.abonement.subabonement.title,
                                                     cost = it.abonement.subabonement.cost,
                                                     maxUsages = it.abonement.subabonement.maxUsages,

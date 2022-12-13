@@ -1,0 +1,20 @@
+extend type Query {
+    network(query: ID!): Network!
+}
+
+extend type Account {
+    networks(range: RequestRangeInput = null): [Network!]!
+}
+
+type NetworkMutation {  }
+
+type Network {
+    id: ID!
+    codename: String!
+    data: NetworkData!
+}
+
+type NetworkData {
+    title: String!
+    description: String
+}

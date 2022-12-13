@@ -47,7 +47,7 @@ class ServiceListForCategoryAndCompanyStoreImpl(
                             id = company.id,
                             title = company.title,
                             cost = company.cost,
-                            formattedCost = "${company.cost} ₽"
+                            formattedCost = company.formattedCost,
                         )
                     },
                     category = ServiceListForCategoryAndCompanyStore.State.ServiceCategory(
@@ -101,22 +101,26 @@ class ServiceListForCategoryAndCompanyStoreImpl(
             scope.launch {
                 try {
                     val categoryResponse = categoriesSource.getServiceCategoryById(
-                        GetServiceCategoryByIdInput(categoryId)
+                        GetServiceCategoryByIdInput(categoryId.toString())
                     )
                     val servicesResponse = serviceSource.getServicesForCategoryAndCompany(
-                        GetServicesForCategoryAndCompanyInput(companyId, categoryId)
+                        GetServicesForCategoryAndCompanyInput(
+                            companyId.toString(),
+                            categoryId.toString()
+                        )
                     )
                     syncDispatch(
                         Message.Loaded(
                             servicesResponse.services.map { service ->
                                 Message.Loaded.Service(
-                                    id = service.id,
+                                    id = service.id.toLong(),
                                     title = service.title,
                                     cost = service.cost,
+                                    formattedCost = service.formattedCost,
                                 )
                             },
                             category = Message.Loaded.ServiceCategory(
-                                id = categoryResponse.id,
+                                id = categoryResponse.id.toLong(),
                                 title = categoryResponse.title,
                             )
                         )
@@ -145,6 +149,7 @@ class ServiceListForCategoryAndCompanyStoreImpl(
                 val id: Long,
                 val title: String,
                 val cost: Long,
+                val formattedCost: String,
             )
 
             class ServiceCategory(

@@ -9,7 +9,7 @@ interface RecordCreateServicesSelectorStore :
 
     sealed class Intent {
 
-        class Select(val id: Long, val title: String, val cost: Long) :
+        class Select(val id: Long, val title: String, val cost: Long, val formattedCost: String) :
             Intent()
 
         class Move(val isExpanded: Boolean) : Intent()

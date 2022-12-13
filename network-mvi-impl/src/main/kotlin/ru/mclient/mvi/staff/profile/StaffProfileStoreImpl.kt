@@ -93,12 +93,17 @@ class CompanyProfileStoreImpl(
             dispatch(Message.Loading)
             scope.launch {
                 try {
-                    val response = staffSource.getStaffById(GetStaffByIdInput(staffId))
-                    val schedule = staffSource.getStaffSchedule(GetStaffScheduleByIdInput(staffId))
+                    val response = staffSource.getStaffById(GetStaffByIdInput(staffId.toString()))
+                    val schedule = staffSource.getStaffSchedule(
+                        GetStaffScheduleByIdInput(
+                            staffId.toString(),
+                            params.companyId.toString()
+                        )
+                    )
                     dispatch(
                         Message.Loaded(
                             staff = Message.Loaded.Staff(
-                                id = response.id,
+                                id = response.id.toLong(),
                                 name = response.name,
                                 codename = response.codename,
                                 role = response.role,

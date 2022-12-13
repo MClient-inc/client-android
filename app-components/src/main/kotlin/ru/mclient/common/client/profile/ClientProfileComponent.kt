@@ -5,17 +5,21 @@ import ru.mclient.common.DIComponentContext
 import ru.mclient.common.utils.getParameterizedStore
 import ru.mclient.common.utils.states
 import ru.mclient.mvi.client.profile.ClientProfileStore
+import ru.mclient.mvi.client.profile.ClientProfileStore.State.RecordStatus.COME
+import ru.mclient.mvi.client.profile.ClientProfileStore.State.RecordStatus.NOT_COME
+import ru.mclient.mvi.client.profile.ClientProfileStore.State.RecordStatus.WAITING
 
 class ClientProfileComponent(
     componentContext: DIComponentContext,
     clientId: Long,
+    companyId: Long?,
     private val onAbonementCreate: () -> Unit,
     private val onQRCode: () -> Unit,
     private val onRecord: (Long) -> Unit,
 ) : ClientProfile, DIComponentContext by componentContext {
 
     private val store: ClientProfileStore =
-        getParameterizedStore { ClientProfileStore.Params(clientId) }
+        getParameterizedStore { ClientProfileStore.Params(clientId, companyId) }
 
     override val state: ClientProfileState by store.states(this) { it.toState() }
 
@@ -86,7 +90,12 @@ class ClientProfileComponent(
                         end = record.time.end,
                         date = record.time.date
                     ),
-                    totalCost = record.totalCost
+                    totalCost = record.totalCost,
+                    status = when (record.status) {
+                        WAITING -> ClientProfileState.RecordStatus.WAITING
+                        COME -> ClientProfileState.RecordStatus.COME
+                        NOT_COME -> ClientProfileState.RecordStatus.NOT_COME
+                    }
                 )
             },
             isLoading = isLoading,

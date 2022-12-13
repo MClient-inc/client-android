@@ -47,11 +47,11 @@ class CompanyComponent(
         navigation.push(Config.StaffFromCompany(companyId))
     }
 
-    private fun onStaff(staffId: Long, replaceCurrent: Boolean = false) {
+    private fun onStaff(staffId: Long, companyId: Long, replaceCurrent: Boolean = false) {
         if (replaceCurrent) {
-            navigation.replaceCurrent(Config.StaffProfile(staffId))
+            navigation.replaceCurrent(Config.StaffProfile(staffId, companyId))
         } else {
-            navigation.push(Config.StaffProfile(staffId))
+            navigation.push(Config.StaffProfile(staffId, companyId))
         }
     }
 
@@ -91,12 +91,12 @@ class CompanyComponent(
         navigation.push(Config.ClientsList(companyId))
     }
 
-    private fun onServiceSelect(serviceId: Long) {
-        navigation.push(Config.ServiceProfile(serviceId))
+    private fun onServiceSelect(serviceId: Long, companyId: Long) {
+        navigation.push(Config.ServiceProfile(serviceId, companyId))
     }
 
-    private fun onClient(clientId: Long) {
-        navigation.push(Config.ClientProfile(clientId))
+    private fun onClient(clientId: Long, companyId: Long) {
+        navigation.push(Config.ClientProfile(clientId, companyId))
     }
 
     private fun onClientCreate(companyId: Long) {
@@ -107,8 +107,8 @@ class CompanyComponent(
         navigation.pop()
     }
 
-    private fun onEditSchedule(staffId: Long) {
-        navigation.push(Config.StaffScheduleEdit(staffId))
+    private fun onEditSchedule(staffId: Long, companyId: Long) {
+        navigation.push(Config.StaffScheduleEdit(staffId, companyId = companyId))
     }
 
     private fun onEditScheduleSuccess(staffId: Long) {
@@ -149,7 +149,7 @@ class CompanyComponent(
                 StaffListForCompanyHostComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
-                    onSelect = ::onStaff,
+                    onSelect = { onStaff(it, config.companyId) },
                     onCreate = { onCreateStaff(config.companyId) },
                 )
             )
@@ -158,7 +158,8 @@ class CompanyComponent(
                 StaffProfileHostComponent(
                     componentContext = componentContext,
                     staffId = config.staffId,
-                    onEditSchedule = { onEditSchedule(config.staffId) },
+                    companyId = config.companyId,
+                    onEditSchedule = { onEditSchedule(config.staffId, config.companyId) },
                 )
             )
 
@@ -166,7 +167,7 @@ class CompanyComponent(
                 StaffCreateHostComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
-                    onSuccess = { onStaff(it, true) },
+                    onSuccess = { onStaff(it, config.companyId, true) },
                 )
             )
 
@@ -197,7 +198,7 @@ class CompanyComponent(
                     companyId = config.companyId,
                     categoryId = config.categoryId,
                     onCreate = { onCreateService(config.companyId, config.categoryId) },
-                    onSelect = this::onServiceSelect
+                    onSelect = { onServiceSelect(it, config.companyId) }
                 )
             )
 
@@ -221,7 +222,8 @@ class CompanyComponent(
             is Config.ServiceProfile -> Company.Child.ServiceProfile(
                 ServiceProfileHostComponent(
                     componentContext = componentContext,
-                    serviceId = config.serviceId
+                    serviceId = config.serviceId,
+                    companyId = config.companyId,
                 )
             )
 
@@ -230,7 +232,7 @@ class CompanyComponent(
                     componentContext = componentContext,
                     companyId = config.companyId,
                     onCreate = { onClientCreate(config.companyId) },
-                    onClient = { onClient(it.id) }
+                    onClient = { onClient(it.id, config.companyId) }
                 )
             )
 
@@ -238,6 +240,7 @@ class CompanyComponent(
                 ClientProfileHostComponent(
                     componentContext = componentContext,
                     clientId = config.clientId,
+                    companyId = config.companyId,
                     onAbonementCreate = { onAbonementClientCreate(config.clientId) },
                     onRecord = { onRecordSelect(it) }
                 )
@@ -247,6 +250,7 @@ class CompanyComponent(
                 StaffScheduleHostComponent(
                     componentContext = componentContext,
                     staffId = config.staffId,
+                    companyId = config.companyId,
                     onSuccess = { onEditScheduleSuccess(config.staffId) }
                 )
             )
@@ -286,13 +290,13 @@ class CompanyComponent(
         data class StaffFromCompany(val companyId: Long) : Config()
 
         @Parcelize
-        data class StaffProfile(val staffId: Long) : Config()
+        data class StaffProfile(val staffId: Long, val companyId: Long) : Config()
 
         @Parcelize
         data class CreateStaff(val companyId: Long) : Config()
 
         @Parcelize
-        data class StaffScheduleEdit(val staffId: Long) : Config()
+        data class StaffScheduleEdit(val staffId: Long, val companyId: Long) : Config()
 
         @Parcelize
         data class CompanyNetwork(val networkId: Long) : Config()
@@ -310,13 +314,13 @@ class CompanyComponent(
         data class ServiceCategoryCreate(val companyId: Long) : Config()
 
         @Parcelize
-        data class ServiceProfile(val serviceId: Long) : Config()
+        data class ServiceProfile(val serviceId: Long, val companyId: Long) : Config()
 
         @Parcelize
         data class ClientsList(val companyId: Long) : Config()
 
         @Parcelize
-        data class ClientProfile(val clientId: Long) : Config()
+        data class ClientProfile(val clientId: Long, val companyId: Long) : Config()
 
         @Parcelize
         data class ClientCreate(val companyId: Long) : Config()

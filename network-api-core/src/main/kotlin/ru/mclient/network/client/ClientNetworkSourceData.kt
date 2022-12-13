@@ -3,46 +3,46 @@ package ru.mclient.network.client
 import java.time.LocalDate
 import java.time.LocalTime
 
-class GetClientsForCompanyInput(val companyId: Long)
+class GetClientsForCompanyInput(val companyId: String)
 class GetClientsForCompanyOutput(
     val clients: List<Client>,
 ) {
     class Client(
-        val id: Long,
+        val id: String,
         val title: String,
         val phone: String,
     )
 }
 
 data class GetClientByIdInput(
-    val clientId: Long,
+    val clientId: String,
 )
 
 data class GetClientByIdOutput(
-    val id: Long,
+    val id: String,
     val name: String,
     val phone: String,
 )
 
 class CreateClientInput(
-    val companyId: Long,
+    val companyId: String,
     val name: String,
     val phone: String,
 )
 
 class CreateClientOutput(
-    val id: Long,
+    val id: String,
     val name: String,
     val phone: String,
 )
 
-data class GetClientCardInput(val clientId: Long)
+data class GetClientCardInput(val clientId: String)
 
 data class GetClientCardOutput(val code: String)
 
 data class GetClientAnalyticsInput(
-    val clientId: Long,
-    val companyId: Long?
+    val clientId: String,
+    val companyId: String?,
 )
 
 data class GetClientAnalyticsOutput(
@@ -51,13 +51,13 @@ data class GetClientAnalyticsOutput(
     val company: CompanyAnalytics?,
 ) {
     class NetworkAnalytics(
-        val id: Long,
+        val id: String,
         val title: String,
         val analytics: ClientAnalyticsItem,
     )
 
     class CompanyAnalytics(
-        val id: Long,
+        val id: String,
         val title: String,
         val analytics: ClientAnalyticsItem,
     )
@@ -65,37 +65,45 @@ data class GetClientAnalyticsOutput(
         val notComeCount: Long,
         val comeCount: Long,
         val waitingCount: Long,
-        val totalCount: Long
+        val totalCount: Long,
     )
+
     class Record(
-        val id: Long,
+        val id: String,
         val company: Company,
         val time: Time,
         val staff: Staff,
         val services: List<Service>,
         val totalCost: Long,
+        val status: RecordStatus,
     )
+
+    enum class RecordStatus {
+        WAITING, COME, NOT_COME,
+    }
+
     class Time(
         val date: LocalDate,
         val start: LocalTime,
-        val end: LocalTime
+        val end: LocalTime,
     )
+
     class Service(
-        val id: Long,
+        val id: String,
         val title: String,
-        val cost:Long,
+        val cost: Long,
     )
     class Staff(
-        val id:Long,
+        val id: String,
         val name: String,
     )
     class Company(
-        val id: Long,
-        val title: String
+        val id: String,
+        val title: String,
     )
 }
 //    class Record(
-//        val id: Long,
+//        val id: String,
 //        val company: Company,
 //        val time: Time,
 //        val staff: Staff,
@@ -110,13 +118,13 @@ data class GetClientAnalyticsOutput(
 //    )
 //
 //    class NetworkAnalytics(
-//        val id: Long,
+//        val id: String,
 //        val title: String,
 //        val analytics: ClientAnalyticsItem,
 //    )
 //
 //    class CompanyAnalytics(
-//        val id: Long,
+//        val id: String,
 //        val title: String,
 //        val analytics: ClientAnalyticsItem,
 //    )
@@ -124,13 +132,13 @@ data class GetClientAnalyticsOutput(
 
 //
 //    class Service(
-//        val id: Long,
+//        val id: String,
 //        val title: String,
 //        val cost: Long,
 //    )
 //
 //    class Staff(
-//        val id: Long,
+//        val id: String,
 //        val name: String,
 //    )
 //
@@ -141,7 +149,7 @@ data class GetClientAnalyticsOutput(
 //    )
 //
 //    class Company(
-//        val id:Long,
+//        val id: String,
 //        val title: String,
 //    )
 //

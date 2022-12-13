@@ -9,12 +9,13 @@ import ru.mclient.mvi.staff.profile.StaffProfileStore
 class StaffProfileComponent(
     componentContext: DIComponentContext,
     staffId: Long,
+    companyId: Long,
     private val onEditSchedule: () -> Unit,
 ) : StaffProfile, DIComponentContext by componentContext {
 
 
     private val store: StaffProfileStore =
-        getParameterizedStore { StaffProfileStore.Params(staffId) }
+        getParameterizedStore { StaffProfileStore.Params(staffId, companyId) }
 
     override val state: StaffProfileState by store.states(this) { it.toState() }
 

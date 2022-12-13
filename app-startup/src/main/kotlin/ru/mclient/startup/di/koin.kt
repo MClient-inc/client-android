@@ -9,6 +9,8 @@ import org.koin.ksp.generated.module
 import ru.mclient.local.LocalModule
 import ru.mclient.mvi.NetworkMVIModule
 import ru.mclient.network.ApiNetworkModule
+import ru.mclient.network.GraphQLNetworkModule
+import ru.mclient.startup.GraphQLClientModule
 import ru.mclient.startup.HttpClientModule
 import ru.mclient.startup.oauth.AndroidOAuthModule
 
@@ -23,7 +25,9 @@ fun Context.initializeKoin(): KoinApplication {
             BaseMviModule().module,
             HttpClientModule().module,
             ApiNetworkModule().module,
-            LocalModule().module
+            LocalModule().module,
+            GraphQLNetworkModule().module,
+            GraphQLClientModule().module,
         )
     }
 }

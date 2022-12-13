@@ -1,0 +1,13 @@
+extend type Query {
+    account: Account!
+}
+
+type Account {
+    id: ID!
+    username: String!
+    data: AccountData!
+}
+
+type AccountData{
+    name: String!
+}

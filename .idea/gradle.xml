@@ -7,7 +7,7 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="Embedded JDK" />
+        <option name="gradleJvm" value="corretto-18" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/app-ui" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/network-api-core" />
+            <option value="$PROJECT_DIR$/network-api-graphql" />
             <option value="$PROJECT_DIR$/network-api-impl" />
             <option value="$PROJECT_DIR$/network-local-core" />
             <option value="$PROJECT_DIR$/network-local-impl" />

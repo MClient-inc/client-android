@@ -72,7 +72,7 @@ class ServiceCreateStoreImpl(
 
         override fun executeIntent(
             intent: ServiceCreateStore.Intent,
-            getState: () -> ServiceCreateStore.State
+            getState: () -> ServiceCreateStore.State,
         ) {
             when (intent) {
                 is ServiceCreateStore.Intent.Create -> {
@@ -84,15 +84,15 @@ class ServiceCreateStoreImpl(
                         val response = serviceNetworkSource.createService(
                             CreateServiceInput(
                                 title = state.title,
-                                companyId = params.companyId,
-                                categoryId = params.categoryId,
+                                companyId = params.companyId.toString(),
+                                categoryId = params.categoryId.toString(),
                                 description = state.description,
-                                cost = state.cost,
+                                cost = state.cost.toLongOrNull() ?: 0,
                             )
                         )
                         syncDispatch(
                             Message.Success(
-                                categoryId = response.id,
+                                categoryId = response.categoryId.toLong(),
                                 title = response.title,
                                 cost = response.cost,
                                 description = response.description,

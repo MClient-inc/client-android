@@ -1,8 +1,15 @@
 package ru.mclient.ui.client.profile
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,14 +30,28 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,14 +59,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
 import ru.mclient.ui.abonement.clientcreate.NoAbonement
+import ru.mclient.ui.client.profile.ClientProfilePageState.AnalyticsType.*
+import ru.mclient.ui.record.profile.RecordProfilePageState.RecordStatus.*
 import ru.mclient.ui.record.profile.toPhoneFormat
+import ru.mclient.ui.record.upcoming.EmptyRecords
 import ru.mclient.ui.record.upcoming.format
 import ru.mclient.ui.utils.defaultPlaceholder
+import ru.mclient.ui.view.DesignedDropdownMenu
+import ru.mclient.ui.view.DesignedDropdownMenuItem
 import ru.mclient.ui.view.DesignedListPoint
-import ru.mclient.ui.view.DesignedOutlinedTitledBlock
 import ru.mclient.ui.view.DesignedRefreshColumn
-import ru.mclient.ui.view.DesignedTitledBlock
+import ru.mclient.ui.view.DesignedTab
+import ru.mclient.ui.view.DesignedTabRow
 import ru.mclient.ui.view.outlined
 import ru.shafran.ui.R
 import java.time.LocalDate
@@ -103,12 +133,17 @@ data class ClientProfilePageState(
 
     class Record(
         val id: Long,
+        val status: RecordStatus,
         val company: Company,
         val time: Time,
         val staff: Staff,
         val services: List<Service>,
-        val totalCost: Long
+        val totalCost: Long,
     )
+
+    enum class RecordStatus {
+        WAITING, COME, NOT_COME,
+    }
 
     class Service(
         val id: Long,
@@ -131,8 +166,14 @@ data class ClientProfilePageState(
         val id: Long,
         val title: String,
     )
+
+    enum class AnalyticsType {
+        COMPANY, NETWORK
+    }
 }
 
+
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ClientProfilePage(
     state: ClientProfilePageState,
@@ -157,29 +198,150 @@ fun ClientProfilePage(
                 modifier = Modifier
                     .fillMaxWidth()
             )
-        if (state.records != null)
-            ClientRecords(
-                state = state,
-                onRecord = { onRecord(it) },
-                modifier = Modifier.fillMaxWidth(),
+        val pagerState = rememberPagerState()
+        val scope = rememberCoroutineScope()
+        val type = remember { mutableStateOf(COMPANY) }
+        DesignedTabRow {
+            val currentPage by remember { derivedStateOf { pagerState.currentPage } }
+            DesignedTab(
+                selected = currentPage == 0,
+                onSelect = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(0)
+                    }
+                },
+                title = {
+                    Text("Записи")
+                }
             )
-        if (state.abonements != null)
-            ClientProfileAbonementsList(
-                abonements = state.abonements,
-                onCreateAbonement = onCreateAbonement,
-                modifier = Modifier.fillMaxWidth()
+            DesignedTab(
+                selected = currentPage == 1,
+                onSelect = {
+                    if (currentPage == 1) {
+                        onCreateAbonement()
+                    } else {
+                        scope.launch {
+                            pagerState.animateScrollToPage(1)
+                        }
+                    }
+                },
+                title = {
+                    Text("Абонементы")
+                },
+                trailingContent = {
+                    AnimatedVisibility(
+                        visible = currentPage == 1,
+                        enter = fadeIn(tween(100)) + slideInHorizontally(tween(100)),
+                        exit = fadeOut(tween(100)) + slideOutHorizontally(tween(100))
+                    ) {
+                        Icon(Icons.Outlined.Add, null)
+                    }
+                }
             )
+            Box {
+                val isTypeSelecting = rememberSaveable { mutableStateOf(false) }
+                DesignedTab(
+                    selected = currentPage == 2,
+                    onSelect = {
+                        if (currentPage == 2) {
+                            isTypeSelecting.value = true
+                        } else {
+                            scope.launch {
+                                pagerState.animateScrollToPage(2)
+                            }
+                        }
+                    },
+                    title = {
+                        if (currentPage != 2) {
+                            Text("Аналитика")
+                        } else {
+                            Text(
+                                "Аналитика: ${
+                                    when (type.value) {
+                                        COMPANY -> "компания"
+                                        NETWORK -> "сеть"
+                                    }
+                                }",
+                            )
+                        }
+                    },
+                    trailingContent = {
+                        androidx.compose.animation.AnimatedVisibility(
+                            visible = currentPage == 2,
+                            enter = fadeIn(tween(100)) + slideInHorizontally(tween(100)),
+                            exit = fadeOut(tween(100)) + slideOutHorizontally(tween(100))
+                        ) {
+                            Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = null)
+                        }
+                    }
+                )
+                DesignedDropdownMenu(
+                    expanded = isTypeSelecting.value,
+                    onDismissRequest = { isTypeSelecting.value = false },
+                    modifier = Modifier.width(250.dp)
+                ) {
+                    DesignedDropdownMenuItem(
+                        text = {
+                            androidx.compose.material.Text("Компания")
+                        }, trailingIcon = {
+                            AnimatedVisibility(type.value == COMPANY) {
+                                androidx.compose.material.Icon(Icons.Outlined.Check, "выбрано")
+                            }
+                        },
+                        onClick = {
+                            type.value = COMPANY
+                            isTypeSelecting.value = false
+                        }
+                    )
+                    DesignedDropdownMenuItem(
+                        text = {
+                            androidx.compose.material.Text("Сеть")
+                        }, trailingIcon = {
+                            AnimatedVisibility(type.value == NETWORK) {
+                                androidx.compose.material.Icon(Icons.Outlined.Check, "выбрано")
+                            }
+                        },
+                        onClick = {
+                            type.value = NETWORK
+                            isTypeSelecting.value = false
+                        }
+                    )
+                }
+            }
+        }
+        HorizontalPager(count = 3, state = pagerState, verticalAlignment = Alignment.Top) { page ->
+            when (page) {
+                0 -> {
+                    if (state.records != null)
+                        ClientRecords(
+                            state = state,
+                            onRecord = { onRecord(it) },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                }
 
-        if (state.networkAnalytics != null)
-            ClientNetworkAnalyticsItem(
-                networkAnalytics = state.networkAnalytics,
-                modifier = Modifier.fillMaxWidth()
-            )
-        if (state.companyAnalytics != null)
-            ClientCompanyAnalyticsItem(
-                companyAnalytics = state.companyAnalytics,
-                modifier = Modifier.fillMaxWidth()
-            )
+                1 -> {
+                    if (state.abonements != null)
+                        ClientProfileAbonementsList(
+                            abonements = state.abonements,
+                            onCreateAbonement = onCreateAbonement,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                }
+
+                2 -> {
+                    if (state.networkAnalytics != null)
+                        ClientAnalyticsItem(
+                            selectedType = type.value,
+                            network = state.networkAnalytics,
+                            company = state.companyAnalytics,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                }
+            }
+        }
+
+
     }
 }
 
@@ -250,29 +412,24 @@ fun ClientProfileAbonementsList(
     onCreateAbonement: () -> Unit,
     modifier: Modifier,
 ) {
-    DesignedTitledBlock(
-        title = "Абонементы",
-        button = "Добавить",
-        onClick = onCreateAbonement,
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier,
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            if (abonements.isEmpty())
-                NoAbonement(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(onClick = onCreateAbonement)
+        if (abonements.isEmpty())
+            NoAbonement(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .outlined()
+                    .clickable(onClick = onCreateAbonement)
+            )
+        else
+            abonements.forEach {
+                ClientProfileAbonementItem(
+                    abonement = it,
+                    modifier = Modifier.fillMaxWidth()
                 )
-            else
-                abonements.forEach {
-                    ClientProfileAbonementItem(
-                        abonement = it,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-        }
+            }
     }
 }
 
@@ -309,165 +466,99 @@ fun ClientProfileAbonementItem(
 }
 
 @Composable
-fun ClientNetworkAnalyticsItem(
-    networkAnalytics: ClientProfilePageState.NetworkAnalytics,
+fun ClientAnalyticsItem(
+    selectedType: ClientProfilePageState.AnalyticsType,
+    network: ClientProfilePageState.NetworkAnalytics,
+    company: ClientProfilePageState.CompanyAnalytics?,
     modifier: Modifier,
 ) {
-    DesignedOutlinedTitledBlock(title = "Сеть", modifier = modifier) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            NetworkAnalyticsItemBlock(
-                item = networkAnalytics.analytics
-            )
-        }
-    }
-}
-
-@Composable
-fun ClientCompanyAnalyticsItem(
-    companyAnalytics: ClientProfilePageState.CompanyAnalytics,
-    modifier: Modifier,
-) {
-    DesignedOutlinedTitledBlock(title = "Компания", modifier = modifier) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            CompanyAnalyticsItemBlock(
-                item = companyAnalytics.analytics
-            )
-        }
-    }
-
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun NetworkAnalyticsItemBlock(
-    item: ClientProfilePageState.ClientAnalyticsItem,
-) {
-    ListItem(
-        leadingContent = {
-            Icon(
-                Icons.Default.KeyboardArrowRight,
-                contentDescription = null,
-                modifier = Modifier.sizeIn(25.dp),
-                tint = Color.Green
-            )
+    AnalyticsItemBlock(
+        item = when (selectedType) {
+            COMPANY -> company?.analytics ?: network.analytics
+            NETWORK -> network.analytics
         },
-        headlineText = {
-            Text(text = "${item.comeCount}", color = Color.Green)
-        },
-        overlineText = {
-            Text(text = "Пришёл")
-        }
-    )
-    ListItem(
-        leadingContent = {
-            Icon(
-                Icons.Default.KeyboardArrowLeft,
-                contentDescription = null,
-                modifier = Modifier.sizeIn(25.dp),
-                tint = Color.Red
-            )
-        },
-        headlineText = {
-            Text(text = "${item.notComeCount}", color = Color.Red)
-        },
-        overlineText = {
-            Text(text = "Не пришёл")
-        }
-    )
-    ListItem(
-        leadingContent = {
-            Icon(
-                Icons.Default.PlayArrow,
-                contentDescription = null,
-                modifier = Modifier.sizeIn(0.dp),
-                tint = Color(255, 150, 0, 255)
-            )
-        },
-        headlineText = {
-            Text(text = "${item.waitingCount}", color = Color(255, 150, 0, 255))
-        },
-        overlineText = {
-            Text(text = "В ожидании")
-        }
+        modifier = modifier.outlined()
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CompanyAnalyticsItemBlock(
+private fun AnalyticsItemBlock(
     item: ClientProfilePageState.ClientAnalyticsItem,
+    modifier: Modifier,
 ) {
-    ListItem(
-        leadingContent = {
-            Icon(
-                Icons.Default.KeyboardArrowRight,
-                contentDescription = null,
-                modifier = Modifier.sizeIn(25.dp),
-                tint = Color.Green
-            )
-        },
-        headlineText = {
-            Text(text = "${item.comeCount}", color = Color.Green)
-        },
-        overlineText = {
-            Text(text = "Пришёл")
-        }
-    )
+    Column(
+        modifier = modifier,
+    ) {
+        ListItem(
+            leadingContent = {
+                Icon(
+                    Icons.Default.KeyboardArrowRight,
+                    contentDescription = null,
+                    modifier = Modifier.sizeIn(25.dp),
+                    tint = Color.Green
+                )
+            },
+            supportingText = {
+                Text(text = "${item.comeCount}", color = Color.Green)
+            },
+            headlineText = {
+                Text(text = "Пришёл")
+            }
+        )
 
-    ListItem(
-        leadingContent = {
-            Icon(
-                Icons.Default.KeyboardArrowLeft,
-                contentDescription = null,
-                modifier = Modifier.sizeIn(25.dp),
-                tint = Color.Red
-            )
-        },
-        headlineText = {
-            Text(text = "${item.notComeCount}", color = Color.Red)
-        },
-        overlineText = {
-            Text(text = "Не пришёл")
-        }
-    )
+        ListItem(
+            leadingContent = {
+                Icon(
+                    Icons.Default.KeyboardArrowLeft,
+                    contentDescription = null,
+                    modifier = Modifier.sizeIn(25.dp),
+                    tint = Color.Red
+                )
+            },
+            supportingText = {
+                Text(text = "${item.notComeCount}", color = Color.Red)
+            },
+            headlineText = {
+                Text(text = "Не пришёл")
+            }
+        )
 
-    ListItem(
-        leadingContent = {
-            Icon(
-                Icons.Default.PlayArrow,
-                contentDescription = null,
-                modifier = Modifier.sizeIn(25.dp),
-                tint = Color(255, 150, 0, 255)
-            )
-        },
-        headlineText = {
-            Text(text = "${item.waitingCount}", color = Color(255, 150, 0, 255))
-        },
-        overlineText = {
-            Text(text = "В ожидании")
-        }
-    )
+        ListItem(
+            leadingContent = {
+                Icon(
+                    Icons.Default.PlayArrow,
+                    contentDescription = null,
+                    modifier = Modifier.sizeIn(25.dp),
+                    tint = Color(255, 150, 0, 255)
+                )
+            },
+            supportingText = {
+                Text(text = "${item.waitingCount}", color = Color(255, 150, 0, 255))
+            },
+            headlineText = {
+                Text(text = "В ожидании")
+            }
+        )
+    }
 }
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ClientRecords(
     state: ClientProfilePageState,
     onRecord: (Long) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
-    DesignedTitledBlock(title = "Ближайшие записи пользователя", modifier = modifier) {
+    if (state.records?.isEmpty() == true) {
+        EmptyRecords(modifier = Modifier.fillMaxWidth())
+    } else {
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Adaptive(180.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = 600.dp),
+            modifier = modifier.heightIn(max = 600.dp),
             content = {
                 if (state.records != null)
                     when {
@@ -490,13 +581,12 @@ fun ClientRecords(
                                 RecordItem(
                                     record = record,
                                     modifier = Modifier
-                                        .padding(5.dp)
                                         .width(180.dp)
-                                        .height(70.dp)
                                         .outlined()
                                         .clickable {
                                             onRecord(record.id)
                                         }
+                                        .padding(10.dp)
                                 )
                             }
                         }
@@ -512,10 +602,12 @@ private fun RecordItem(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(3.dp)
+        modifier = modifier
     ) {
+        RecordStatus(status = record.status)
         RecordSchedule(schedule = record.time)
         RecordStaff(staff = record.staff)
+        RecordCost(cost = record.totalCost)
     }
 }
 
@@ -547,6 +639,45 @@ private fun RecordStaff(
 }
 
 @Composable
+private fun RecordStatus(
+    status: ClientProfilePageState.RecordStatus,
+    modifier: Modifier = Modifier,
+) {
+    when (status) {
+        ClientProfilePageState.RecordStatus.WAITING ->
+            CompositionLocalProvider(LocalContentColor provides Color(255, 150, 0, 255)) {
+                DesignedListPoint(
+                    Icons.Outlined.PlayArrow,
+                    text = "Ожидание",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = modifier,
+                )
+            }
+
+        ClientProfilePageState.RecordStatus.COME -> CompositionLocalProvider(LocalContentColor provides Color.Green) {
+            DesignedListPoint(
+                Icons.Outlined.KeyboardArrowRight,
+                text = "Пришел",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = modifier,
+            )
+        }
+
+        ClientProfilePageState.RecordStatus.NOT_COME ->
+            CompositionLocalProvider(LocalContentColor provides Color.Red) {
+                DesignedListPoint(
+                    Icons.Outlined.KeyboardArrowLeft,
+                    text = "Не пришел",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = modifier,
+                )
+            }
+    }
+
+}
+
+
+@Composable
 private fun RecordSchedule(
     schedule: ClientProfilePageState.Time,
     modifier: Modifier = Modifier,
@@ -555,16 +686,27 @@ private fun RecordSchedule(
         DesignedListPoint(
             icon = painterResource(id = R.drawable.date),
             text = schedule.date.format(),
-            style = MaterialTheme.typography.labelLarge,
-            modifier = modifier
+            style = MaterialTheme.typography.bodyMedium,
         )
         DesignedListPoint(
             icon = painterResource(id = R.drawable.time),
             text = format(schedule.start, schedule.end),
-            style = MaterialTheme.typography.labelLarge,
-            modifier = modifier
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
+}
+
+@Composable
+private fun RecordCost(
+    cost: Long,
+    modifier: Modifier = Modifier,
+) {
+    DesignedListPoint(
+        icon = painterResource(id = R.drawable.cost),
+        text = "$cost ₽",
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -673,8 +815,9 @@ fun ClientProfilePagePreview() {
                         start = LocalTime.of(22, 30),
                         end = LocalTime.of(23, 30)
                     ),
-                    totalCost = 1000,
-                ),
+                    totalCost = 1000, status = ClientProfilePageState.RecordStatus.COME,
+
+                    ),
                 ClientProfilePageState.Record(
                     id = 2,
                     company = ClientProfilePageState.Company(
@@ -697,8 +840,9 @@ fun ClientProfilePagePreview() {
                         start = LocalTime.of(21, 45),
                         end = LocalTime.of(22, 15)
                     ),
-                    totalCost = 500,
-                ),
+                    totalCost = 500, status = ClientProfilePageState.RecordStatus.COME,
+
+                    ),
                 ClientProfilePageState.Record(
                     id = 3,
                     company = ClientProfilePageState.Company(
@@ -722,6 +866,7 @@ fun ClientProfilePagePreview() {
                         end = LocalTime.of(16, 10)
                     ),
                     totalCost = 1500,
+                    status = ClientProfilePageState.RecordStatus.COME,
                 )
             ),
             isLoading = false,

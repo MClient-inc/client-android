@@ -63,7 +63,8 @@ class ClientQRProfileStoreImpl(
             dispatch(state.copy(isLoading = true))
             scope.launch {
                 try {
-                    val response = clientSource.getClientCard(GetClientCardInput(clientId))
+                    val response =
+                        clientSource.getClientCard(GetClientCardInput(clientId.toString()))
                     syncDispatch(
                         state.copy(isFailure = false, isLoading = false, code = response.code)
                     )

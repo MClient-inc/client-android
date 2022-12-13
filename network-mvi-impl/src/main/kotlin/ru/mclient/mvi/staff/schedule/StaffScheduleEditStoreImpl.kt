@@ -45,9 +45,10 @@ class StaffScheduleEditStoreImpl(
                     scope.launch {
                         staffSource.createStaffSchedule(
                             CreateStaffScheduleInput(
-                                params.staffId,
+                                params.staffId.toString(),
                                 state.selectedSchedule.map {
                                     CreateStaffScheduleInput.Schedule(
+                                        companyId = params.companyId.toString(),
                                         start = it.start,
                                         end = it.end
                                     )

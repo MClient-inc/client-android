@@ -109,7 +109,7 @@ class StaffListForCompanyAndScheduleStoreImpl(
                     val response =
                         staffSource.getStaffForCompanyAndSchedule(
                             GetStaffForCompanyAndScheduleInput(
-                                companyId = companyId,
+                                companyId = companyId.toString(),
                                 date = schedule
                             )
                         )
@@ -117,7 +117,7 @@ class StaffListForCompanyAndScheduleStoreImpl(
                         Message.Loaded(
                             response.staff.map { staff ->
                                 Message.Loaded.Staff(
-                                    id = staff.id,
+                                    id = staff.id.toLong(),
                                     name = staff.name,
                                     codename = staff.codename,
                                     icon = staff.role,
@@ -128,7 +128,7 @@ class StaffListForCompanyAndScheduleStoreImpl(
                         )
                     )
                 } catch (e: Exception) {
-                    syncDispatch(Message.Failed)
+                    syncDispatch(Message.Failed(e))
                     return@launch
                 }
             }
@@ -141,7 +141,10 @@ class StaffListForCompanyAndScheduleStoreImpl(
     }
 
     sealed class Message {
-        object Failed : Message()
+        data class Failed(
+            private val exception: Exception,
+        ) : Message()
+
         object Loading : Message()
         class Loaded(
             val staff: List<Staff>,

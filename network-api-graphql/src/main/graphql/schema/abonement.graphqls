@@ -1,0 +1,80 @@
+extend type Query  {
+    abonement(id: ID!): Abonement!
+    clientAbonement(id: ID!): ClientAbonement!
+}
+
+extend type Network {
+    abonements: [Abonement!]!
+}
+
+extend type Company {
+    abonements: [Abonement!]!
+}
+
+extend type Client{
+    abonements: [ClientAbonement!]!
+}
+
+extend type CompanyMutation  {
+    addAbonement(input: AddAbonementInput!): Abonement!
+}
+
+input AddAbonementInput {
+    title: String!
+    description: String = null
+    services: [ID!]! = []
+    subabonements: [AddAbonementSubabonementInput!]! = []
+}
+input AddAbonementSubabonementInput {
+    title: String!
+    cost: Long!
+    usages: Int!
+}
+
+extend type ClientMutation {
+    addClientAbonement(subabonement: ID!): ClientAbonement!
+}
+
+type Abonement {
+    id: ID!
+    data: AbonementData!
+    network: Network!
+    services: [Service!]!
+    subabonements: [Subabonement!]!
+}
+
+type AbonementData{
+    title: String!
+    description: String
+}
+
+type Subabonement {
+    id: ID!
+    data: SubabonementData!
+    info: SubabonementInfo!
+    abonement: Abonement!
+}
+
+type SubabonementData {
+    title:String!
+    cost: Cost!
+}
+
+type SubabonementInfo {
+    usages: Int!
+    liveInMillis: Long!
+    availableUntil: LocalDateTime!
+}
+
+
+type ClientAbonement {
+    id: ID!
+    subabonement: Subabonement!
+    data: ClientAbonementData!
+    client: Client!
+}
+
+type ClientAbonementData{
+    cost: Cost!
+    currentUsages: Int!
+}

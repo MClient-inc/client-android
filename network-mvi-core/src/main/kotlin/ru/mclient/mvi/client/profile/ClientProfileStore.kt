@@ -7,10 +7,9 @@ import java.time.LocalTime
 interface ClientProfileStore :
     ParametrizedStore<ClientProfileStore.Intent, ClientProfileStore.State, ClientProfileStore.Label, ClientProfileStore.Params> {
 
-
-    @JvmInline
-    value class Params(
+    data class Params(
         val clientId: Long,
+        val companyId: Long?,
     )
 
     sealed class Intent {
@@ -34,73 +33,89 @@ interface ClientProfileStore :
             val phone: String,
         )
 
-        class ClientAbonement(
+        data class ClientAbonement(
             val id: Long,
             val usages: Int,
             val abonement: Abonement,
         )
 
-        class Abonement(
+        data class Abonement(
             val title: String,
             val subabonement: Subabonement,
         )
 
-        class Subabonement(
+        data class Subabonement(
             val title: String,
             val maxUsages: Int,
         )
 
         //    Analytics
 
-        class ClientAnalyticsItem(
+        data class ClientAnalyticsItem(
             var notComeCount: Long,
             var comeCount: Long,
             var waitingCount: Long,
             val totalCount: Long,
         )
 
-        class NetworkAnalytics(
+        data class NetworkAnalytics(
             val id: Long,
             val title: String,
             val analytics: ClientAnalyticsItem,
         )
 
-        class CompanyAnalytics(
+        data class CompanyAnalytics(
             val id: Long,
             val title: String,
             val analytics: ClientAnalyticsItem,
         )
 
-        class Record(
+        data class Record(
             val id: Long,
             val company: Company,
             val time: Time,
             val staff: Staff,
             val services: List<Service>,
-            val totalCost: Long
+            val totalCost: Long,
+            val status: RecordStatus,
         )
 
-        class Service(
+        enum class RecordStatus {
+            WAITING, COME, NOT_COME,
+        }
+
+        data class Service(
             val id: Long,
             val title: String,
             val cost: Long,
         )
 
-        class Staff(
+        data class Staff(
             val id: Long,
             val name: String,
         )
 
-        class Time(
+        data class Time(
             val date: LocalDate,
             val start: LocalTime,
             val end: LocalTime,
         )
 
-        class Company(
-            val id:Long,
+        data class Company(
+            val id: Long,
             val title: String,
         )
+
+        sealed class CurrentPage {
+            object Abonements : CurrentPage()
+            object Records : CurrentPage()
+            data class Analytics(val type: AnalyticsType) : CurrentPage() {
+                enum class AnalyticsType {
+                    COMPANY, NETWORK
+                }
+            }
+
+        }
 
     }
 

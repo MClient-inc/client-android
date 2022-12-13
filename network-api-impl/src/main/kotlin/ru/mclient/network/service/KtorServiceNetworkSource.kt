@@ -10,12 +10,10 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.Serializable
 import org.koin.core.annotation.Named
-import org.koin.core.annotation.Single
 
-@Single
 class KtorServiceNetworkSource(
     @Named("authorized")
-    val client: HttpClient
+    val client: HttpClient,
 ) : ServiceNetworkSource {
 
     override suspend fun getServicesForCategoryAndCompany(input: GetServicesForCategoryAndCompanyInput): GetServicesForCategoryAndCompanyOutput {
@@ -26,10 +24,11 @@ class KtorServiceNetworkSource(
         return GetServicesForCategoryAndCompanyOutput(
             services = body.services.map {
                 GetServicesForCategoryAndCompanyOutput.Service(
-                    id = it.id,
-                    categoryId = it.categoryId,
+                    id = it.id.toString(),
+                    categoryId = it.categoryId.toString(),
                     title = it.title,
                     cost = it.cost,
+                    formattedCost = it.cost.toString(),
                 )
             }
         )
@@ -40,19 +39,19 @@ class KtorServiceNetworkSource(
             setBody(
                 CreateServiceRequest(
                     title = input.title,
-                    cost = input.cost.toLongOrNull() ?: 0,
-                    companyId = input.companyId,
+                    cost = input.cost,
+                    companyId = input.companyId.toLong(),
                 )
             )
             contentType(ContentType.Application.Json)
         }
         val body = response.body<CreateServiceResponse>()
         return CreateServiceOutput(
-            id = body.id,
+            id = body.id.toString(),
             title = body.title,
             cost = body.cost.toString(),
             description = "",
-            categoryId = body.categoryId,
+            categoryId = body.categoryId.toString(),
         )
     }
 
@@ -60,13 +59,16 @@ class KtorServiceNetworkSource(
         val response = client.get("/services/${input.serviceId}")
         val body = response.body<GetServiceResponse>()
         return GetServiceByIdOutput(
-            id = body.service.id,
+            id = body.service.id.toString(),
             title = body.service.title,
             description = "",
             cost = body.service.cost.toString(),
         )
     }
 
+    override suspend fun getServiceAnalytics(input: GetServiceAnalyticsInput): GetServiceAnalyticsOutput {
+        TODO("Not yet implemented")
+    }
 }
 
 

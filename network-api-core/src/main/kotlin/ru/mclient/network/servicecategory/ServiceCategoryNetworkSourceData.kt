@@ -1,33 +1,33 @@
 package ru.mclient.network.servicecategory
 
 class GetServiceCategoriesByCompanyInput(
-    val companyId: Long,
+    val companyId: String,
 )
 
 class GetServiceCategoriesByCompanyOutput(
     val categories: List<ServiceCategory>,
 ) {
     data class ServiceCategory(
-        val id: Long,
+        val id: String,
         val title: String,
     )
 }
 
 data class GetServiceCategoryByIdInput(
-    val categoryId: Long,
+    val categoryId: String,
 )
 
 data class GetServiceCategoryByIdOutput(
-    val id: Long,
+    val id: String,
     val title: String,
 )
 
 data class CreateServiceCategoryInput(
     val title: String,
-    val companyId: Long,
+    val companyId: String,
 )
 
 data class CreateServiceCategoryOutput(
-    val id: Long,
+    val id: String,
     val title: String,
 )
